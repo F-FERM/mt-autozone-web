@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { Poppins } from "next/font/google";
 import styles from "./herosection.module.css";
-import bgCarImage from "../../../public/images/bgcar.png"
+import bgCarImage from "../../../public/images/bmw.png";
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
@@ -51,7 +52,13 @@ const SERVICES = [
           strokeLinejoin="round"
         />
         <circle cx="7.5" cy="16.5" r="1.8" stroke="#E40000" strokeWidth="1.6" />
-        <circle cx="17.5" cy="16.5" r="1.8" stroke="#E40000" strokeWidth="1.6" />
+        <circle
+          cx="17.5"
+          cy="16.5"
+          r="1.8"
+          stroke="#E40000"
+          strokeWidth="1.6"
+        />
       </svg>
     ),
   },
@@ -60,33 +67,70 @@ const SERVICES = [
     label: "Professional Vehicle Appearance Solutions",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="3" y="3" width="7" height="7" rx="1.2" stroke="#E40000" strokeWidth="1.6" />
-        <rect x="14" y="3" width="7" height="7" rx="1.2" stroke="#E40000" strokeWidth="1.6" />
-        <rect x="3" y="14" width="7" height="7" rx="1.2" stroke="#E40000" strokeWidth="1.6" />
-        <path d="M17.5 14v7M14 17.5h7" stroke="#E40000" strokeWidth="1.6" strokeLinecap="round" />
+        <rect
+          x="3"
+          y="3"
+          width="7"
+          height="7"
+          rx="1.2"
+          stroke="#E40000"
+          strokeWidth="1.6"
+        />
+        <rect
+          x="14"
+          y="3"
+          width="7"
+          height="7"
+          rx="1.2"
+          stroke="#E40000"
+          strokeWidth="1.6"
+        />
+        <rect
+          x="3"
+          y="14"
+          width="7"
+          height="7"
+          rx="1.2"
+          stroke="#E40000"
+          strokeWidth="1.6"
+        />
+        <path
+          d="M17.5 14v7M14 17.5h7"
+          stroke="#E40000"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
       </svg>
     ),
   },
 ];
 
 const STATS = [
-  { id: "experience", value: "22", label: "Year Of\nExperience", className: styles.statExperience },
-  { id: "satisfaction", value: "4.8", label: "customer\nSatisfaction", className: styles.statSatisfaction },
-  { id: "cars", value: "22301", label: "Cars Served", className: styles.statCars },
+  {
+    id: "experience",
+    value: "22",
+    label: "Year Of\nExperience",
+    className: styles.statExperience,
+  },
+  {
+    id: "satisfaction",
+    value: "4.8",
+    label: "customer\nSatisfaction",
+    className: styles.statSatisfaction,
+  },
+  {
+    id: "cars",
+    value: "22301",
+    label: "Cars Served",
+    className: styles.statCars,
+  },
 ];
 
 export default function HeroSection() {
   return (
     <section className={`${styles.hero} ${poppins.variable}`}>
       {/* Background photo — replace /public/images/hero-bg.jpg with your own asset */}
-      <Image
-        src={bgCarImage}
-        alt=""
-        fill
-        priority
-        className={styles.bgImage}
-       
-      />
+      <Image src={bgCarImage} alt="" fill priority className={styles.bgImage} />
       <div className={styles.bgWash} aria-hidden="true" />
 
       {/* Wordmark */}
@@ -110,7 +154,11 @@ export default function HeroSection() {
             ))}
           </div>
           <svg className={styles.connector} viewBox="0 0 40 90" fill="none">
-            <path d="M2 2C2 40 38 40 38 80" stroke="rgba(255,255,255,0.5)" strokeWidth="1" />
+            <path
+              d="M2 2C2 40 38 40 38 80"
+              stroke="rgba(255,255,255,0.5)"
+              strokeWidth="1"
+            />
           </svg>
           <span className={styles.dot} />
         </div>
@@ -150,7 +198,11 @@ export default function HeroSection() {
 
         <button type="button" className={styles.exploreBtn}>
           Explore
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M7 17L17 7M17 7H9M17 7V15"
               stroke="#fff"
@@ -166,8 +218,8 @@ export default function HeroSection() {
       <div className={styles.bottomBar}>
         <p>
           Elevating every vehicle with professional detailing, body polishing,
-          paint protection, window tinting, and complete interior &amp;
-          exterior care.
+          paint protection, window tinting, and complete interior &amp; exterior
+          care.
         </p>
       </div>
     </section>

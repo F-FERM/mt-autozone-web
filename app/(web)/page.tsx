@@ -1,10 +1,9 @@
-import Navbar from "../component/layout/Navbar";
+import HeroSection from "../component/hero/HeroSection";
 
 export default function HomePage() {
   return (
-    <main>
-<h1>page</h1>
-   
+    <main className="min-h-screen bg-[#050505]">
+      <HeroSection />
     </main>
   );
 }

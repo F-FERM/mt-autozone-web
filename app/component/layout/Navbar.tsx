@@ -12,7 +12,7 @@ import phoneIcon from "../../../public/images/phone.png";
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Service", href: "/service" },
+  { label: "Service", href: "/services" },
   { label: "Works", href: "/works" },
 ];
 
@@ -87,9 +87,9 @@ export default function Navbar() {
         </nav>
 
         {/* ================= DESKTOP CONTACT ================= */}
-<a
-  href="tel:+10000000000"
-  className="
+        <a
+          href="tel:+10000000000"
+          className="
     group
     hidden md:flex
     items-center
@@ -116,26 +116,26 @@ export default function Navbar() {
     hover:bg-[linear-gradient(135deg,#4A2929_0%,#572C2C_25%,#8B2525_55%,#C91A1A_78%,#E00000_100%)]
     hover:shadow-[0_7px_6px_rgba(0,0,0,0.55)]
   "
->
-  <div className="flex items-center gap-[10px]">
-    <span
-      className="text-white whitespace-nowrap"
-      style={{
-        fontWeight: 500,
-        fontSize: "20px",
-        lineHeight: "100%",
-      }}
-    >
-      Contact
-    </span>
+        >
+          <div className="flex items-center gap-[10px]">
+            <span
+              className="text-white whitespace-nowrap"
+              style={{
+                fontWeight: 500,
+                fontSize: "20px",
+                lineHeight: "100%",
+              }}
+            >
+              Contact
+            </span>
 
-    <span className="flex items-center justify-center w-[25px] h-[25px] shrink-0">
-      <Image
-        src={phoneIcon}
-        alt="Phone"
-        width={25}
-        height={25}
-        className="
+            <span className="flex items-center justify-center w-[25px] h-[25px] shrink-0">
+              <Image
+                src={phoneIcon}
+                alt="Phone"
+                width={25}
+                height={25}
+                className="
           w-[25px]
           h-[25px]
           object-contain
@@ -145,10 +145,10 @@ export default function Navbar() {
           duration-300
           ease-out
         "
-      />
-    </span>
-  </div>
-</a>
+              />
+            </span>
+          </div>
+        </a>
         {/* ================= MOBILE MENU ================= */}
         <button
           type="button"
