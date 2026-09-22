@@ -1,535 +1,229 @@
-"use client";
+'use client';
 
-// Keep your existing BG_IMAGE constant exactly as it was in your file —
-// paste the same base64 string back in here. It's used below as CAR_IMAGE,
-// masked so it reads as a "cutout" floating over the dark backdrop.
-const BG_IMAGE = "/images/bmw.png";
+import Image from 'next/image';
+import { CheckCircle2, Droplet, Cloud, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import carBg from "../../../public/images/bgcar.png"
+import carHero from "../../../public/images/gt.jpg"
+/**
+ * HeroSection
+ * ---------------------------------------------------------------------------
+ * Changes from the previous pass, per your screenshot feedback:
+ * 1. Header/navbar REMOVED from this component entirely (you're handling
+ *    that as its own piece elsewhere).
+ * 2. "MT AUTO" / "ZONE" typography now sits BEHIND the car (z-index 0,
+ *    car is z-20) and is pushed down/reflowed so it clears card 1 instead
+ *    of overlapping it.
+ * 3. Added the three curved connector lines from the reference shot: one
+ *    from "22 Year Of Experience" down to a point near the roof, one from
+ *    "4.8 Customer Satisfaction" to the headlight, one from "22301 Cars
+ *    Served" up to the front tyre. Drawn as a single SVG overlay so the
+ *    curves + end-dots sit on top of the car like in your reference image.
+ * ---------------------------------------------------------------------------
+ * ASSUMPTIONS still in play (flagged, since exact coordinates were only
+ * given for the two cards):
+ * - Canvas reference is 1920x1080; boxToStyle() converts the spec'd card
+ *   pixels into % so everything stays proportional. Update CANVAS_W/H if
+ *   your real Figma frame differs.
+ * - Connector-line endpoints (roof / headlight / tyre) and the car's own
+ *   position are eyeballed off your reference screenshots, not exact
+ *   coordinates — nudge the `x`/`y` values in `connectors` below against
+ *   your actual car asset once it's in place, since every car render
+ *   crops differently.
+ * - Image paths (/images/...) are placeholders — point them at your real
+ *   assets in /public/images.
+ * ---------------------------------------------------------------------------
+ */
 
-const CAR_IMAGE = BG_IMAGE;
+const CANVAS_W = 1920;
+const CANVAS_H = 1080;
+
+const boxToStyle = (top: number, left: number, width: number, height: number) => ({
+  top: `${(top / CANVAS_H) * 100}%`,
+  left: `${(left / CANVAS_W) * 100}%`,
+  width: `${(width / CANVAS_W) * 100}%`,
+  height: `${(height / CANVAS_H) * 100}%`,
+});
 
 const services = [
+  { icon: CheckCircle2, label: 'Complete Car Detailing & Cleaning' },
+  { icon: Droplet, label: 'Advanced Paint Protection & Polishing' },
+  { icon: Cloud, label: 'Premium Interior & Exterior Care' },
+  { icon: ShieldCheck, label: 'Professional Vehicle Appearance Solutions' },
+];
+
+// Connector lines: label anchor (where the text sits) -> car point (dot on the car)
+// All coordinates are in the 1920x1080 canvas space, same as boxToStyle().
+const connectors = [
   {
-    label: "Complete Car Detailing & Cleaning",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2.4}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M20 6L9 17l-5-5" />
-      </svg>
-    ),
+    id: 'experience',
+    value: '22',
+    label: 'Year Of Experience',
+    labelX: 1660,
+    labelY: 90,
+    align: 'left' as const,
+    carX: 1180,
+    carY: 300,
+    // control point for the curve
+    ctrlX: 1420,
+    ctrlY: 140,
   },
   {
-    label: "Advanced Paint Protection & Polishing",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2.2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z" />
-      </svg>
-    ),
+    id: 'satisfaction',
+    value: '4.8',
+    label: 'Customer Satisfaction',
+    labelX: 60,
+    labelY: 420,
+    align: 'left' as const,
+    carX: 740,
+    carY: 560,
+    ctrlX: 300,
+    ctrlY: 480,
   },
   {
-    label: "Premium Interior & Exterior Care",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2.2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M3 13l1.5-5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13" />
-        <path d="M3 13h18v4H3z" />
-        <circle cx="7" cy="19" r="1.4" />
-        <circle cx="17" cy="19" r="1.4" />
-      </svg>
-    ),
-  },
-  {
-    label: "Professional Vehicle Appearance Solutions",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2.2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="3" y="3" width="7" height="7" rx="1" />
-        <rect x="14" y="3" width="7" height="7" rx="1" />
-        <rect x="3" y="14" width="7" height="7" rx="1" />
-        <rect x="14" y="14" width="7" height="7" rx="1" />
-      </svg>
-    ),
+    id: 'served',
+    value: '22301',
+    label: 'Cars Served',
+    labelX: 620,
+    labelY: 866,
+    align: 'left' as const,
+    carX: 840,
+    carY: 790,
+    ctrlX: 700,
+    ctrlY: 850,
   },
 ];
 
-export default function Hero() {
+export default function HeroSection() {
   return (
-    <section className="hero">
-      {/* dark backdrop — no photo here, just tone + a little smoke */}
-      <div className="heroBackdrop" />
-
-      {/* wordmark sits behind the car, full bleed */}
-      <div className="heroWordmark">
-        <span className="wordmarkSolid">MT AUTO</span>
-        <span className="wordmarkGhost">ZONE</span>
-      </div>
-
-      {/* the car — now full width/height (cover), masked only at the very
-          edges so it fills the frame instead of sitting in a boxed-in area */}
-      <div
-        className="heroCar"
-        style={{ backgroundImage: `url(${CAR_IMAGE})` }}
+    <section className="relative w-full overflow-hidden bg-black text-white aspect-[1920/1080]">
+      {/* Background image */}
+      <Image
+        src={carBg}
+        alt=""
+        fill
+        priority
+        className="object-cover"
+        sizes="100vw"
       />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/60" />
 
-      <div className="content">
-        {/* top row: intro card + services card (unchanged) */}
-        <div className="topRow">
-          <div className="introCard">
-            <h2>Premium Care. Impeccable Finish.</h2>
-            <p>
-              Professional car detailing to restore, protect, and enhance your
-              vehicle&apos;s appearance.
-            </p>
-          </div>
+      {/* Headline typography — BEHIND the car (z-0) */}
+      <h1
+        aria-hidden
+        className="pointer-events-none absolute left-[3%] top-[36%] z-0 select-none font-[Poppins] text-[8vw] font-semibold leading-none tracking-tight text-white/90"
+      >
+        MT AUTO
+      </h1>
+      <h1
+        aria-hidden
+        className="pointer-events-none absolute bottom-[8%] right-[4%] z-0 select-none font-[Poppins] text-[8vw] font-semibold leading-none tracking-tight text-white/15"
+      >
+        ZONE
+      </h1>
 
-          <div className="servicesCard">
-            <h3>Premium Automotive Detailing Solutions</h3>
-            <ul className="servicesList">
-              {services.map((service) => (
-                <li key={service.label}>
-                  <span className="iconBadge">{service.icon}</span>
-                  {service.label}
-                </li>
-              ))}
-            </ul>
+      {/* Car image — in FRONT of the headline text */}
 
-            <button type="button" className="exploreBtn">
-              Explore
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M7 17L17 7M9 7h8v8" />
-              </svg>
-            </button>
-          </div>
+
+      {/* Curved connector lines, drawn over the car */}
+      <svg
+        aria-hidden
+        viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
+        className="pointer-events-none absolute inset-0 z-30 h-full w-full"
+        preserveAspectRatio="none"
+      >
+        {connectors.map((c) => (
+          <g key={c.id}>
+            <path
+              d={`M ${c.labelX} ${c.labelY} Q ${c.ctrlX} ${c.ctrlY} ${c.carX} ${c.carY}`}
+              fill="none"
+              stroke="rgba(255,255,255,0.45)"
+              strokeWidth={1.5}
+              vectorEffect="non-scaling-stroke"
+            />
+            <circle cx={c.carX} cy={c.carY} r={4} fill="white" fillOpacity={0.9} />
+            <circle cx={c.carX} cy={c.carY} r={8} fill="none" stroke="white" strokeOpacity={0.35} />
+          </g>
+        ))}
+      </svg>
+
+      {/* Stat labels */}
+      {connectors.map((c) => (
+        <div
+          key={c.id}
+          className="absolute z-30 text-sm text-white/70"
+          style={{
+            left: `${(c.labelX / CANVAS_W) * 100}%`,
+            top: `${(c.labelY / CANVAS_H) * 100}%`,
+          }}
+        >
+          <p className="font-[Poppins] text-2xl font-semibold text-white">{c.value}</p>
+          <p className="whitespace-nowrap">{c.label}</p>
         </div>
+      ))}
 
-        {/* STAGE: just reserves vertical room + carries the leader-lines and
-            stat bubbles that point down onto the full-bleed car behind it */}
-        <div className="stage">
-          {/* leader-lines + stat bubbles pointing at the car */}
-          <svg
-            className="stageLines"
-            viewBox="0 0 1000 560"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M 860 70 C 760 70, 660 120, 555 235"
-              className="leaderPath"
-            />
-            <circle cx="555" cy="235" r="4" className="leaderDot" />
+      {/* Supporting paragraph */}
+      <p className="absolute bottom-[6%] left-[4%] z-30 max-w-[26%] font-[Poppins] text-base leading-relaxed text-white/70">
+        Elevating every vehicle with professional detailing, body polishing, paint protection,
+        window tinting, and complete interior &amp; exterior care.
+      </p>
 
-            <path
-              d="M 150 420 C 260 400, 360 380, 435 340"
-              className="leaderPath"
-            />
-            <circle cx="435" cy="340" r="4" className="leaderDot" />
-
-            <path
-              d="M 870 500 C 780 470, 700 440, 645 400"
-              className="leaderPath"
-            />
-            <circle cx="645" cy="400" r="4" className="leaderDot" />
-          </svg>
-
-          <div className="statFloat statExp">
-            <span className="num">22</span>
-            <span className="label">
-              Year Of
-              <br />
-              Experience
-            </span>
-          </div>
-
-          <div className="statFloat statSat">
-            <span className="num">4.8</span>
-            <span className="label">
-              customer
-              <br />
-              Satisfaction
-            </span>
-          </div>
-
-          <div className="statFloat statCars">
-            <span className="num">22301</span>
-            <span className="label">Cars Served</span>
-          </div>
-        </div>
-
-        {/* bottom row */}
-        <div className="bottomRow">
-          <p className="bottomCopy">
-            Elevating every vehicle with professional detailing, body polishing,
-            paint protection, window tinting, and complete interior &amp;
-            exterior care.
+      {/* Card 1 — Premium Care. Impeccable Finish. */}
+      <div
+        className="absolute z-40 overflow-hidden rounded-2xl"
+        style={boxToStyle(205, 162, 425, 197)}
+      >
+        <Image
+          src={carHero}
+          alt=""
+          fill
+          className="object-cover"
+          sizes="(min-width: 1024px) 425px, 60vw"
+        />
+        <div className="absolute inset-0 bg-black/45" />
+        <div className="relative flex h-full flex-col justify-center gap-3 px-6">
+          <h2 className="font-[Poppins] text-[22px] font-medium leading-none tracking-normal text-white">
+            Premium Care. Impeccable Finish.
+          </h2>
+          <p className="font-[Poppins] text-base font-normal leading-none tracking-normal text-[#C8C8C8]">
+            Professional car detailing to restore, protect, and enhance your vehicle&apos;s
+            appearance.
           </p>
         </div>
       </div>
 
-      <style jsx>{`
-        .hero {
-          position: relative;
-          width: 100%;
-          min-height: 100vh;
-          overflow: hidden;
-          background: #000;
-          padding-top: env(safe-area-inset-top, 0px);
-          padding-bottom: env(safe-area-inset-bottom, 0px);
-          font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
-          color: #f2f0ec;
-        }
+      {/* Card 2 — Premium Automotive Detailing Solutions */}
+      <div
+        className="absolute z-40 flex flex-col gap-[13px] rounded-[20px] border border-white/10 bg-white/[0.04] py-5 backdrop-blur-md"
+        style={boxToStyle(202, 1297, 523, 444)}
+      >
+        <h2 className="px-8 font-[Poppins] text-2xl font-medium leading-none tracking-normal text-white">
+          Premium Automotive Detailing Solutions
+        </h2>
 
-        .heroBackdrop {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-          background:
-            radial-gradient(
-              ellipse 70% 55% at 50% 35%,
-              rgba(255, 255, 255, 0.06),
-              transparent 65%
-            ),
-            radial-gradient(
-              ellipse 90% 70% at 15% 90%,
-              rgba(255, 255, 255, 0.04),
-              transparent 60%
-            ),
-            linear-gradient(180deg, #050505 0%, #0c0c0c 55%, #030303 100%);
-        }
+        <ul className="flex flex-1 flex-col justify-center gap-1">
+          {services.map(({ icon: Icon, label }, i) => (
+            <li key={label}>
+              {i !== 0 && <div className="mx-8 border-t border-white/10" />}
+              <div className="flex items-center gap-3 px-8 py-4">
+                <Icon className="h-5 w-5 shrink-0 text-red-500" strokeWidth={1.75} />
+                <span className="font-[Poppins] text-lg font-normal leading-none tracking-normal text-[#C0C0C0]">
+                  {label}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
 
-        .content {
-          position: relative;
-          z-index: 3;
-          width: 100%;
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: clamp(28px, 5vw, 64px) clamp(20px, 5vw, 56px);
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
-
-        .topRow {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          gap: 24px;
-          flex-wrap: wrap;
-        }
-
-        .introCard {
-          background: linear-gradient(
-            135deg,
-            rgba(10, 10, 10, 0.72),
-            rgba(10, 10, 10, 0.45)
-          );
-          backdrop-filter: blur(6px);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 4px;
-          padding: 22px 26px;
-          max-width: 360px;
-        }
-
-        .introCard h2 {
-          font-size: clamp(1.15rem, 1.6vw, 1.45rem);
-          font-weight: 600;
-          line-height: 1.25;
-          margin-bottom: 10px;
-          letter-spacing: -0.01em;
-        }
-
-        .introCard p {
-          font-size: 0.92rem;
-          line-height: 1.55;
-          color: #b9b6b1;
-          max-width: 300px;
-          margin: 0;
-        }
-
-        .servicesCard {
-          background: rgba(12, 12, 12, 0.62);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 6px;
-          padding: 30px 32px 26px;
-          width: 100%;
-          max-width: 400px;
-        }
-
-        .servicesCard h3 {
-          font-size: clamp(1.3rem, 1.9vw, 1.65rem);
-          font-weight: 600;
-          line-height: 1.3;
-          margin-bottom: 22px;
-          letter-spacing: -0.01em;
-        }
-
-        .servicesList {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          margin: 0;
-          padding: 0;
-        }
-
-        .servicesList li {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          padding: 13px 0;
-          font-size: 0.95rem;
-          color: #e9e7e3;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-        }
-
-        .servicesList li:last-of-type {
-          border-bottom: none;
-        }
-
-        .iconBadge {
-          flex: 0 0 auto;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background: rgba(226, 38, 58, 0.14);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #e2263a;
-        }
-
-        .iconBadge svg {
-          width: 15px;
-          height: 15px;
-        }
-
-        .exploreBtn {
-          margin-top: 22px;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          color: #f2f0ec;
-          font-size: 0.95rem;
-          font-weight: 500;
-          padding: 14px 0;
-          border-radius: 999px;
-          cursor: pointer;
-          transition:
-            background 0.25s ease,
-            border-color 0.25s ease;
-        }
-
-        .exploreBtn:hover {
-          background: rgba(255, 255, 255, 0.09);
-          border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .exploreBtn svg {
-          width: 15px;
-          height: 15px;
-        }
-
-        /* ---------- full-bleed wordmark + car layers (behind .content) ---------- */
-
-        .heroWordmark {
-          position: absolute;
-          inset: 0;
-          z-index: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: clamp(10px, 2vw, 26px);
-          font-family: "Arial Black", "Helvetica Neue", sans-serif;
-          font-weight: 900;
-          letter-spacing: -0.02em;
-          line-height: 0.85;
-          user-select: none;
-          pointer-events: none;
-        }
-
-        .wordmarkSolid {
-          color: #fdfdfc;
-          font-size: clamp(3.4rem, 9vw, 7.6rem);
-        }
-
-        .wordmarkGhost {
-          color: transparent;
-          -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.28);
-          font-size: clamp(3.4rem, 9vw, 7.6rem);
-        }
-
-        .heroCar {
-          position: absolute;
-          inset: 0;
-          z-index: 2;
-          width: 100%;
-          height: 100%;
-          background-size: cover;
-          background-position: center 58%;
-          background-repeat: no-repeat;
-          filter: saturate(1.05) contrast(1.05);
-          /* opaque only over roughly where the car itself sits — fades to
-             transparent well before the sides, so the wordmark shows
-             through on the left and right like the reference shot */
-          -webkit-mask-image: radial-gradient(
-            ellipse 46% 78% at 50% 58%,
-            #000 40%,
-            transparent 78%
-          );
-          mask-image: radial-gradient(
-            ellipse 46% 78% at 50% 58%,
-            #000 40%,
-            transparent 78%
-          );
-        }
-
-        /* ---------- STAGE: reserves layout room + carries leaders/stats ---------- */
-
-        .stage {
-          position: relative;
-          flex: 1;
-          min-height: 46vh;
-          margin: 10px 0;
-        }
-
-        .stageLines {
-          position: absolute;
-          inset: 0;
-          z-index: 3;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-        }
-
-        .leaderPath {
-          fill: none;
-          stroke: rgba(255, 255, 255, 0.45);
-          stroke-width: 1.2;
-        }
-
-        .leaderDot {
-          fill: rgba(255, 255, 255, 0.85);
-        }
-
-        .statFloat {
-          position: absolute;
-          z-index: 3;
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          pointer-events: none;
-        }
-
-        .statFloat .num {
-          font-size: clamp(1.6rem, 3vw, 2.3rem);
-          font-weight: 700;
-          letter-spacing: -0.01em;
-        }
-
-        .statFloat .label {
-          font-size: 0.78rem;
-          color: #b9b6b1;
-          line-height: 1.3;
-        }
-
-        .statExp {
-          top: 2%;
-          right: 8%;
-          text-align: left;
-        }
-
-        .statSat {
-          bottom: 14%;
-          left: 3%;
-          text-align: left;
-        }
-
-        .statCars {
-          bottom: 2%;
-          right: 4%;
-          text-align: right;
-        }
-
-        /* ---------- bottom row ---------- */
-
-        .bottomRow {
-          display: flex;
-          align-items: flex-end;
-          justify-content: flex-start;
-        }
-
-        .bottomCopy {
-          background: rgba(8, 8, 8, 0.4);
-          backdrop-filter: blur(3px);
-          padding: 14px 18px;
-          border-radius: 4px;
-          max-width: 620px;
-          font-size: clamp(0.9rem, 1.1vw, 1.02rem);
-          line-height: 1.55;
-          color: #ece9e4;
-          margin: 0;
-        }
-
-        @media (max-width: 900px) {
-          .topRow {
-            flex-direction: column;
-          }
-          .servicesCard,
-          .introCard {
-            max-width: 100%;
-          }
-          .stage {
-            min-height: 60vh;
-          }
-          .statExp,
-          .statSat,
-          .statCars {
-            position: static;
-            margin: 6px 0;
-          }
-        }
-
-        @media (max-width: 520px) {
-          .wordmarkSolid,
-          .wordmarkGhost {
-            font-size: 2.6rem;
-          }
-        }
-      `}</style>
+        <div className="px-8">
+          <a
+            href="#explore"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-white/10 py-3 text-sm font-medium text-white transition-colors hover:bg-white/20"
+          >
+            Explore
+            <ArrowUpRight className="h-4 w-4" strokeWidth={2} />
+          </a>
+        </div>
+      </div>
     </section>
   );
 }
