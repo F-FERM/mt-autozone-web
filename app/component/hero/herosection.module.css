@@ -1,0 +1,379 @@
+/*
+  Layout is authored against a 1920 x 1000 design canvas (the Figma frame).
+  Every offset below is written as `calc(DESIGN_PX / 1920 * 100cqw)`.
+  Because the canvas keeps a fixed aspect ratio, this single formula scales
+  every value — horizontal AND vertical — in exact proportion at any
+  container width. Swap the raw numbers if your Figma frame changes size.
+*/
+
+.hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1920 / 1000;
+  overflow: hidden;
+  background: #050505;
+  container-type: inline-size;
+  font-family: var(--font-poppins), "Poppins", sans-serif;
+}
+
+/* ===== Background ===== */
+.bgImage {
+  object-fit: cover;
+  mix-blend-mode: lighten;
+  z-index: 0;
+}
+
+.bgWash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+      ellipse 45% 45% at 15% 12%,
+      rgba(255, 255, 255, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 45% at 88% 10%,
+      rgba(255, 255, 255, 0.08),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #000 0%, #050505 40%, #030303 100%);
+  mix-blend-mode: multiply;
+}
+
+/* ===== Wordmark ===== */
+.wordmarkLine1,
+.wordmarkLine2 {
+  position: absolute;
+  z-index: 2;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+}
+
+.wordmarkLine1 {
+  top: calc(340 / 1920 * 100cqw);
+  left: calc(162 / 1920 * 100cqw);
+  font-size: calc(150 / 1920 * 100cqw);
+  letter-spacing: calc(2 / 1920 * 100cqw);
+}
+
+.wordmarkFaint {
+  color: transparent;
+  -webkit-text-stroke: calc(1 / 1920 * 100cqw) rgba(255, 255, 255, 0.28);
+}
+
+.wordmarkLine2 {
+  top: calc(600 / 1920 * 100cqw);
+  left: calc(1080 / 1920 * 100cqw);
+  font-size: calc(170 / 1920 * 100cqw);
+  letter-spacing: calc(2 / 1920 * 100cqw);
+  color: transparent;
+  -webkit-text-stroke: calc(1 / 1920 * 100cqw) rgba(255, 255, 255, 0.35);
+}
+
+/* ===== Stat callouts ===== */
+.stat {
+  position: absolute;
+  z-index: 3;
+  text-align: center;
+  color: #fff;
+}
+
+.statNumber {
+  font-size: calc(40 / 1920 * 100cqw);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.statLabel {
+  margin-top: calc(4 / 1920 * 100cqw);
+  font-size: calc(14 / 1920 * 100cqw);
+  font-weight: 400;
+  color: #d9d9d9;
+  line-height: 1.35;
+}
+
+.connector {
+  position: absolute;
+  width: calc(40 / 1920 * 100cqw);
+  height: calc(90 / 1920 * 100cqw);
+  top: 100%;
+  left: 50%;
+}
+
+.dot {
+  position: absolute;
+  width: calc(8 / 1920 * 100cqw);
+  height: calc(8 / 1920 * 100cqw);
+  border-radius: 50%;
+  border: calc(1.5 / 1920 * 100cqw) solid #ddd;
+  left: calc(50% + 36 / 1920 * 100cqw);
+  top: calc(100% + 78 / 1920 * 100cqw);
+}
+
+.statExperience {
+  top: calc(290 / 1920 * 100cqw);
+  left: calc(1180 / 1920 * 100cqw);
+}
+
+.statSatisfaction {
+  top: calc(505 / 1920 * 100cqw);
+  left: calc(400 / 1920 * 100cqw);
+}
+
+.statCars {
+  top: calc(725 / 1920 * 100cqw);
+  left: calc(1005 / 1920 * 100cqw);
+}
+
+/* ===== Card 1: intro card ===== */
+.cardIntro {
+  position: absolute;
+  z-index: 4;
+  top: calc(205 / 1920 * 100cqw);
+  left: calc(162 / 1920 * 100cqw);
+  width: calc(425 / 1920 * 100cqw);
+  height: calc(197 / 1920 * 100cqw);
+  border-radius: calc(14 / 1920 * 100cqw);
+  overflow: hidden;
+  background: #0d0d0d;
+  box-shadow: 0 calc(20 / 1920 * 100cqw) calc(50 / 1920 * 100cqw) rgba(0, 0, 0, 0.55);
+}
+
+.cardIntroImage {
+  object-fit: cover;
+  filter: brightness(0.65);
+}
+
+.cardIntroFade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.55) 55%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+}
+
+.cardIntroContent {
+  position: absolute;
+  left: calc(24 / 1920 * 100cqw);
+  right: calc(24 / 1920 * 100cqw);
+  bottom: calc(20 / 1920 * 100cqw);
+}
+
+.cardIntroContent h2 {
+  margin: 0 0 calc(8 / 1920 * 100cqw) 0;
+  font-weight: 500;
+  font-size: calc(22 / 1920 * 100cqw);
+  line-height: 100%;
+  color: #ffffff;
+}
+
+.cardIntroContent p {
+  margin: 0;
+  font-weight: 400;
+  font-size: calc(16 / 1920 * 100cqw);
+  line-height: 140%;
+  color: #c8c8c8;
+}
+
+/* ===== Card 2: services panel ===== */
+.cardServices {
+  position: absolute;
+  z-index: 4;
+  top: calc(202 / 1920 * 100cqw);
+  left: calc(1297 / 1920 * 100cqw);
+  width: calc(523 / 1920 * 100cqw);
+  height: calc(444 / 1920 * 100cqw);
+  border-radius: calc(20 / 1920 * 100cqw);
+  padding: calc(20 / 1920 * 100cqw) calc(30 / 1920 * 100cqw);
+  display: flex;
+  flex-direction: column;
+  gap: calc(13 / 1920 * 100cqw);
+  background: #78787833;
+  backdrop-filter: blur(calc(18 / 1920 * 100cqw));
+  -webkit-backdrop-filter: blur(calc(18 / 1920 * 100cqw));
+}
+
+.cardServices::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: calc(20 / 1920 * 100cqw);
+  padding: calc(1 / 1920 * 100cqw);
+  background: linear-gradient(216.36deg, #2f2f2f -2.36%, #2b2b2b 91.82%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.cardServices h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: calc(24 / 1920 * 100cqw);
+  line-height: 100%;
+  color: #ffffff;
+}
+
+.serviceList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.serviceItem {
+  display: flex;
+  align-items: center;
+  gap: calc(16 / 1920 * 100cqw);
+  padding: calc(14 / 1920 * 100cqw) calc(4 / 1920 * 100cqw);
+  border-bottom: calc(1 / 1920 * 100cqw) solid rgba(255, 255, 255, 0.08);
+}
+
+.serviceItem:last-child {
+  border-bottom: none;
+}
+
+.serviceIcon {
+  width: calc(24 / 1920 * 100cqw);
+  height: calc(24 / 1920 * 100cqw);
+  flex: 0 0 calc(24 / 1920 * 100cqw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.serviceIcon svg {
+  width: 92%;
+  height: 92%;
+}
+
+.serviceItem span:last-child {
+  font-weight: 400;
+  font-size: calc(18 / 1920 * 100cqw);
+  line-height: 100%;
+  color: #c0c0c0;
+}
+
+.exploreBtn {
+  margin-top: auto;
+  width: 100%;
+  height: calc(55 / 1920 * 100cqw);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: calc(19 / 1920 * 100cqw);
+  padding: 0 calc(24 / 1920 * 100cqw);
+  background: #ffffff24;
+  border: calc(1 / 1920 * 100cqw) solid #e400002b;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: calc(17 / 1920 * 100cqw);
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.exploreBtn:hover {
+  background: #ffffff3a;
+}
+
+.exploreBtn svg {
+  width: calc(18 / 1920 * 100cqw);
+  height: calc(18 / 1920 * 100cqw);
+}
+
+/* ===== Bottom description bar ===== */
+.bottomBar {
+  position: absolute;
+  z-index: 4;
+  top: calc(741 / 1920 * 100cqw);
+  left: calc(162 / 1920 * 100cqw);
+  width: calc(782 / 1920 * 100cqw);
+  height: calc(68 / 1920 * 100cqw);
+  border-radius: calc(10 / 1920 * 100cqw);
+  padding: calc(10 / 1920 * 100cqw) calc(30 / 1920 * 100cqw);
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(calc(6 / 1920 * 100cqw));
+  -webkit-backdrop-filter: blur(calc(6 / 1920 * 100cqw));
+  border-left: calc(2 / 1920 * 100cqw) solid rgba(255, 255, 255, 0.5);
+}
+
+.bottomBar p {
+  margin: 0;
+  font-weight: 400;
+  font-size: calc(15 / 1920 * 100cqw);
+  line-height: 140%;
+  color: #ffffff;
+}
+
+/* ===== Small-viewport fallback =====
+   Below ~640px the proportional canvas gets too small to read comfortably;
+   stack everything instead of shrinking it further. Adjust the breakpoint
+   and stacked layout to match your product's needs. */
+@container (max-width: 640px) {
+  .hero {
+    aspect-ratio: auto;
+    height: auto;
+    padding: 24px 16px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .wordmarkLine1,
+  .wordmarkLine2,
+  .stat {
+    display: none;
+  }
+
+  .cardIntro,
+  .cardServices,
+  .bottomBar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .cardIntro {
+    aspect-ratio: 425 / 197;
+  }
+
+  .cardServices {
+    padding: 20px;
+  }
+
+  .cardIntroContent h2 {
+    font-size: 20px;
+  }
+  .cardIntroContent p {
+    font-size: 14px;
+  }
+  .cardServices h3 {
+    font-size: 20px;
+  }
+  .serviceItem span:last-child {
+    font-size: 15px;
+  }
+  .exploreBtn {
+    height: 50px;
+    font-size: 15px;
+  }
+  .bottomBar p {
+    font-size: 14px;
+  }
+  .serviceIcon {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
+  }
+}

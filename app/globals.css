@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -136,4 +135,25 @@
   html {
     @apply font-sans;
   }
+  .contact-btn {
+  width: 181px;
+  height: 55px;
+  border-radius: 19px;
+  border: 1px solid #E400002B;
+  background: #FFFFFF24;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+ 
+.contact-btn:hover,
+.contact-btn:focus-visible {
+  background: radial-gradient(
+    circle at 30% 20%,
+    #FF2D2D 0%,
+    #B30000 55%,
+    #2a0000 100%
+  );
+  border-color: #E40000;
+  outline: none;
+}
+ 
 }
