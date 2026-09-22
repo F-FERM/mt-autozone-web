@@ -34,7 +34,7 @@ export default function ServicesHero() {
           h-full
           px-5 sm:px-8 md:px-12
           gap-3 sm:gap-4 lg:gap-[19px]
-          w-full max-w-[912px] mx-auto
+          w-full  mx-auto
           justify-center
           text-center
         "
@@ -57,7 +57,7 @@ export default function ServicesHero() {
             leading-tight sm:leading-snug lg:leading-[100%]
             tracking-normal
             text-white
-            max-w-[575px]
+            max-w-[575px] mb-4
           "
         >
           Our Expert Automotive Services
@@ -67,13 +67,13 @@ export default function ServicesHero() {
           className="
             font-poppins font-normal
             text-sm sm:text-base
-            leading-relaxed lg:leading-[150%]
+            leading-relaxed lg:leading-[180%]
             tracking-normal
             text-[#C0C0C0]
             max-w-[880px]
           "
         >
-          At M.T. Autozone, we provide professional automotive care focused
+          At <span className=" text-[#E40000]">M.T. Autozone</span> , we provide professional automotive care focused
           on maintaining your vehicle&rsquo;s appearance, comfort, and
           overall presentation. Our experienced team combines skilled
           workmanship, quality materials, advanced equipment, and modern
@@ -82,7 +82,7 @@ export default function ServicesHero() {
           specific needs. With precision and professionalism at every stage,
           we are committed to maintaining high standards and delivering a
           dependable customer experience. At{" "}
-          <span className="text-white">M.T. Autozone</span>, quality,
+          <span className=" text-[#E40000]">M.T. Autozone</span>, quality,
           attention to detail, and customer satisfaction remain at the heart
           of everything we do.
         </p>

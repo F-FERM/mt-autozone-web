@@ -2,7 +2,6 @@ import Image from "next/image";
 import missionBg from "../../../public/images/missionvision.jpg";
 import visionBg from "../../../public/images/missionvision.jpg";
 
-
 const CARDS = [
   {
     key: "mission",
@@ -29,39 +28,37 @@ export default function MissionVisionCards() {
         relative w-full overflow-hidden
         bg-black isolate
         px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-[228px]
-        pt-6 sm:pt-8 md:pt-10 lg:pt-12
+        
         pb-16 sm:pb-20 md:pb-24
       "
     >
       {/* Red glow bleeding in from the left, fading to black on the right */}
+
+      {/* Secondary red bloom, top-left corner, to blend with the section above */}
+
+      {/* Vertical fade in from black at the top, continuing the glow from AboutUs above */}
       <div
         aria-hidden
         className="
-          pointer-events-none absolute inset-y-0 left-0 z-0
-          w-full
-          bg-gradient-to-r from-[#E40000]/65 via-[#E40000]/10 to-transparent
+          pointer-events-none absolute inset-x-0 top-0 z-[1]
+          h-24 sm:h-32 md:h-40
+          bg-gradient-to-t from-transparent to-black
         "
       />
-      {/* Secondary red bloom, top-left corner, to blend with the section above */}
+      {/* Vertical fade to black at the bottom, so it blends into the gap below */}
       <div
         aria-hidden
         className="
-          pointer-events-none absolute z-0
-          -left-24 -top-24
-          h-[220px] w-[220px]
-          sm:h-[300px] sm:w-[300px]
-          md:h-[380px] md:w-[380px]
-          lg:h-[480px] lg:w-[480px]
-          rounded-full
-          bg-[#E40000]/35
-          blur-[80px] sm:blur-[100px] lg:blur-[110px]
+          pointer-events-none absolute inset-x-0 bottom-0 z-[1]
+          h-24 sm:h-32 md:h-40
+          bg-gradient-to-b from-transparent to-black
         "
       />
 
       <div
         className="
           relative z-10
-          flex flex-col md:flex-row
+          flex flex-col md:flex-row md:items-stretch
           gap-5 md:gap-4 lg:gap-5 xl:gap-[20px]
           w-full max-w-[1464px] mx-auto
         "
@@ -75,7 +72,7 @@ export default function MissionVisionCards() {
               min-h-[216px]
               rounded-2xl lg:rounded-[20px]
               px-6 py-9 sm:px-8 sm:py-10 lg:px-9 lg:py-[45px]
-              flex flex-col justify-center gap-2.5
+              flex flex-col justify-start gap-2.5
             "
           >
             {/* Background image (bottom-most layer, z-0) */}
@@ -95,7 +92,6 @@ export default function MissionVisionCards() {
               className="
                 absolute inset-0 z-10
                 bg-black/85
-                
                 transition-opacity duration-500
                 group-hover:opacity-0
               "
@@ -120,7 +116,7 @@ export default function MissionVisionCards() {
                 text-white
                 transition-colors duration-500
                 group-hover:text-[#E40000]
-                max-w-full lg:max-w-[650px]
+                max-w-full lg:max-w-[650px] mb-2
               "
             >
               {card.title}
@@ -132,7 +128,7 @@ export default function MissionVisionCards() {
                 relative z-30
                 font-poppins font-normal
                 text-sm lg:text-[14px]
-                leading-relaxed lg:leading-normal
+                leading-loose lg:leading-[1.9]
                 tracking-normal
                 text-[#A9A9A9]
                 transition-colors duration-500

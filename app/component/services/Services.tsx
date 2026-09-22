@@ -18,6 +18,11 @@ import serviceSteamCleaning from "../../../public/images/serviceshero.jpg";
 import serviceDashboardTreatment from "../../../public/images/serviceshero.jpg";
 import serviceTireShine from "../../../public/images/serviceshero.jpg";
 
+// Point icons — update paths/extensions to match your actual icon filenames
+import shieldIcon from "../../../public/images/phone.png";
+import sparkleIcon from "../../../public/images/phone.png";
+import sprayIcon from "../../../public/images/phone.png";
+
 const SERVICES = [
   {
     key: "body-waxing",
@@ -237,54 +242,43 @@ const SERVICES = [
   },
 ];
 
+const ICON_MAP = {
+  shield: shieldIcon,
+  sparkle: sparkleIcon,
+  spray: sprayIcon,
+};
+
 function PointIcon({ type }: { type: "shield" | "sparkle" | "spray" }) {
-  if (type === "shield") {
-    return (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M11 2L18.5 5V10.5C18.5 15 15.5 18.5 11 20C6.5 18.5 3.5 15 3.5 10.5V5L11 2Z"
-          stroke="#E40000"
-          strokeWidth="1.4"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M8 11L10 13L14.5 8.5"
-          stroke="#E40000"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (type === "sparkle") {
-    return (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M11 2L12.6 8.9L19.5 10.5L12.6 12.1L11 19L9.4 12.1L2.5 10.5L9.4 8.9L11 2Z"
-          stroke="#E40000"
-          strokeWidth="1.3"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
   return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="8" y="8.5" width="6" height="11" rx="1.4" stroke="#E40000" strokeWidth="1.4" />
-      <path d="M9.5 8.5V5.5C9.5 4.4 10.4 3.5 11.5 3.5C12.6 3.5 13.5 4.4 13.5 5.5" stroke="#E40000" strokeWidth="1.4" />
-      <path d="M3.5 6.5L5.5 8.5M18.5 6.5L16.5 8.5M4.5 11.5H2.5M19.5 11.5H17.5" stroke="#E40000" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
+    <span className="relative inline-block shrink-0 w-4 h-4 sm:w-5 sm:h-5 lg:w-[22px] lg:h-[22px]">
+      <Image
+        src={ICON_MAP[type]}
+        alt={type}
+        fill
+        sizes="22px"
+        className="object-contain"
+      />
+    </span>
   );
 }
 
 function ArrowIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="
+        flex-shrink-0
+        transition-transform duration-300 ease-out
+        [transform:rotate(-45deg)]
+        group-hover/btn:[transform:translateX(6px)_rotate(0deg)]
+      "
+    >
       <path
-        d="M4 14L14 4M14 4H6M14 4V12"
+        d="M2.5 9H15.5M15.5 9L10.5 4M15.5 9L10.5 14"
         stroke="#E40000"
         strokeWidth="1.6"
         strokeLinecap="round"
@@ -321,9 +315,8 @@ export default function ServicesGrid() {
               pb-8 sm:pb-9 lg:pb-[39px]
               pl-6 sm:pl-8 lg:pl-[34px]
               flex flex-col justify-end
-              gap-2.5
-              transition-transform duration-500
-              hover:-translate-y-1
+              transition-transform duration-500 ease-out
+              hover:-translate-y-1 hover:scale-[1.02]
             "
           >
             {/* Background image */}
@@ -339,95 +332,104 @@ export default function ServicesGrid() {
               "
             />
 
-            {/* Dark gradient overlay so text always reads clearly */}
+            {/* Dark gradient overlay — hidden by default, fades in with content on hover */}
             <div
               aria-hidden
               className="
                 absolute inset-0 z-10
                 bg-gradient-to-t from-black/90 via-black/50 to-black/10
+                opacity-0
+                transition-opacity duration-500 ease-out
+                group-hover:opacity-100
               "
             />
 
-            {/* Title */}
-            <h3
-              className="
-                relative z-20
-                font-poppins font-medium
-                text-xl lg:text-[24px]
-                leading-none tracking-normal
-                text-white
-              "
-            >
-              {service.title}
-            </h3>
-
-            {/* Description */}
-            <p
-              className="
-                relative z-20
-                font-poppins font-normal
-                text-sm lg:text-[14px]
-                leading-relaxed
-                tracking-normal
-                text-[#ADADAD]
-              "
-            >
-              {service.description}
-            </p>
-
-            {/* 3 feature points, icon above label */}
+            {/* Content — hidden by default, fades + slides + scales in on hover */}
             <div
               className="
-                relative z-20
-                flex items-start justify-between
-                w-full lg:max-w-[358px]
-                pt-1
+                relative z-20 flex flex-col gap-2.5
+                opacity-0 translate-y-3 scale-95
+                transition-all duration-500 ease-out
+                group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100
               "
             >
-              {service.points.map((point) => (
-                <div
-                  key={point.label}
-                  className="flex  items-start gap-1.5 max-w-[110px]"
-                >
-                  <PointIcon type={point.icon as "shield" | "sparkle" | "spray"} />
-                  <span
-                    className="
-                      font-poppins font-medium
-                      text-xs lg:text-[12px]
-                      leading-tight tracking-normal
-                      text-[#D3D3D3]
-                    "
-                  >
-                    {point.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* View Service link */}
-            <button
-              type="button"
-              className="
-                relative z-20
-                flex items-center
-                gap-2.5
-                w-fit
-                mt-1
-              "
-            >
-              <span
+              {/* Title */}
+              <h3
                 className="
-                  font-poppins font-normal
-                  text-base lg:text-[19px]
+                  font-poppins font-medium
+                  text-xl lg:text-[24px]
                   leading-none tracking-normal
-                  text-[#E40000]
-                  whitespace-nowrap
+                  text-white
                 "
               >
-                View Service
-              </span>
-              <ArrowIcon />
-            </button>
+                {service.title}
+              </h3>
+
+              {/* Description */}
+              <p
+                className="
+                  font-poppins font-normal
+                  text-sm lg:text-[14px]
+                  leading-relaxed
+                  tracking-normal
+                  text-[#ADADAD]
+                "
+              >
+                {service.description}
+              </p>
+
+              {/* 3 feature points, icon above label */}
+              <div
+                className="
+                  flex items-start justify-between
+                  w-full lg:max-w-[358px]
+                  pt-1
+                "
+              >
+                {service.points.map((point) => (
+                  <div
+                    key={point.label}
+                    className="flex items-start gap-1.5 max-w-[110px] mb-4"
+                  >
+                    <PointIcon type={point.icon as "shield" | "sparkle" | "spray"} />
+                    <span
+                      className="
+                        font-poppins font-medium
+                        text-xs lg:text-[12px]
+                        leading-[180%] tracking-normal
+                        text-[#D3D3D3]
+                      "
+                    >
+                      {point.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* View Service link */}
+              <button
+                type="button"
+                className="
+    group/btn
+    flex items-center
+    gap-2.5
+    w-fit
+  "
+              >
+                <span
+                  className="
+      font-poppins font-normal
+      text-base lg:text-[19px]
+      leading-none tracking-normal
+      text-[#E40000]
+      whitespace-nowrap
+    "
+                >
+                  View Service
+                </span>
+                <ArrowIcon />
+              </button>
+            </div>
           </div>
         ))}
       </div>
