@@ -32,6 +32,7 @@ export default function AboutUs() {
           "
         />
 
+
         <div
           className="
             relative z-10
@@ -131,8 +132,6 @@ export default function AboutUs() {
         </div>
       </section>
 
-      {/* Gap between About Us and Mission/Vision cards */}
-      <div className="h-6 sm:h-8 md:h-10 bg-black" />
 
       <MissionVisionCards />
     </div>

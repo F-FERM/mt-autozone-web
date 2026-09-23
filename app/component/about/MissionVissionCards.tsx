@@ -28,32 +28,31 @@ export default function MissionVisionCards() {
         relative w-full overflow-hidden
         bg-black isolate
         px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-[228px]
-        
-        pb-16 sm:pb-20 md:pb-24
+        py-10 sm:py-14 md:py-16
       "
     >
-      {/* Red glow bleeding in from the left, fading to black on the right */}
-
-      {/* Secondary red bloom, top-left corner, to blend with the section above */}
-
-      {/* Vertical fade in from black at the top, continuing the glow from AboutUs above */}
+      {/* Red glow bleeding in from the left, fading to black on the right —
+          same treatment as the Hero's right-side glow, mirrored, so it
+          reads as one continuous light source running down the page's
+          left edge across Hero → Mission → Why Choose Us. */}
+      <div
+        aria-hidden
+        className="
+          pointer-events-none absolute inset-y-0 left-0 z-0
+          w-full
+          bg-gradient-to-r from-[#E40000]/45 via-[#E40000]/10 to-transparent 
+        "
+      />
+      {/* Vertical fade to black at the top, so the glow blends into the gap above */}
       <div
         aria-hidden
         className="
           pointer-events-none absolute inset-x-0 top-0 z-[1]
           h-24 sm:h-32 md:h-40
-          bg-gradient-to-t from-transparent to-black
+          bg-gradient-to-b from-black to-transparent
         "
       />
-      {/* Vertical fade to black at the bottom, so it blends into the gap below */}
-      <div
-        aria-hidden
-        className="
-          pointer-events-none absolute inset-x-0 bottom-0 z-[1]
-          h-24 sm:h-32 md:h-40
-          bg-gradient-to-b from-transparent to-black
-        "
-      />
+
 
       <div
         className="

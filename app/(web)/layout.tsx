@@ -1,4 +1,5 @@
 import HeroSection from "../component/hero/HeroSection";
+import Footer from "../component/layout/Footer";
 import Navbar from "../component/layout/Navbar";
 
 
@@ -15,7 +16,7 @@ export default function WebLayout({
       />
    
       <div className="w-full">{children}</div>
-      {/* <Footer/> */}
+      <Footer/>
     </>
   );
 }
