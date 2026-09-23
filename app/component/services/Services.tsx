@@ -248,19 +248,7 @@ const ICON_MAP = {
   spray: sprayIcon,
 };
 
-function PointIcon({ type }: { type: "shield" | "sparkle" | "spray" }) {
-  return (
-    <span className="relative inline-block shrink-0 w-4 h-4 sm:w-5 sm:h-5 lg:w-[22px] lg:h-[22px]">
-      <Image
-        src={ICON_MAP[type]}
-        alt={type}
-        fill
-        sizes="22px"
-        className="object-contain"
-      />
-    </span>
-  );
-}
+function PointIcon({ type, }: { type: "shield" | "sparkle" | "spray"; }) { return ( <span className=" relative block h-[30px] w-[30px] shrink-0 " > <Image src={ICON_MAP[type]} alt="" fill sizes="30px" className="object-contain" /> </span> ); }
 
 function ArrowIcon() {
   return (
@@ -379,32 +367,7 @@ export default function ServicesGrid() {
               </p>
 
               {/* 3 feature points, icon above label */}
-              <div
-                className="
-                  flex items-start justify-between
-                  w-full lg:max-w-[358px]
-                  pt-1
-                "
-              >
-                {service.points.map((point) => (
-                  <div
-                    key={point.label}
-                    className="flex items-start gap-1.5 max-w-[110px] mb-4"
-                  >
-                    <PointIcon type={point.icon as "shield" | "sparkle" | "spray"} />
-                    <span
-                      className="
-                        font-poppins font-medium
-                        text-xs lg:text-[12px]
-                        leading-[180%] tracking-normal
-                        text-[#D3D3D3]
-                      "
-                    >
-                      {point.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <div className=" flex flex-wrap items-center gap-5 sm:gap-6 pt-1 " > {service.points.map((point) => ( <div key={point.label} className=" flex items-center gap-4 " > <PointIcon type={point.icon as "shield" | "sparkle" | "spray"} /> <span className=" max-w-[100px] font-poppins text-xs font-normal leading-[150%] text-white sm:text-sm " > {point.label} </span> </div> ))} </div>
 
               {/* View Service link */}
               <button
