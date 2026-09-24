@@ -6,9 +6,12 @@ export default function ContactForm() {
   const [form, setForm] = useState({ name: "", phone: "", message: "" });
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setForm((previous) => ({ ...previous, [event.target.name]: event.target.value }));
+    setForm((previous) => ({
+      ...previous,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleSubmit = (event: React.FormEvent) => {

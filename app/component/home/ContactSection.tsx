@@ -12,13 +12,7 @@ export default function ContactSection() {
     <section className="relative overflow-hidden bg-black px-4 py-16 sm:px-6 lg:py-24">
       {/* LEFT IMAGE — width:1119 height:746 */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-0 hidden w-[60%] max-w-[1119px] md:block">
-        <Image
-          src={leftImage}
-          alt=""
-          fill
-          priority
-          className="object-cover"
-        />
+        <Image src={leftImage} alt="" fill priority className="object-cover" />
         <div
           className="absolute inset-0"
           style={{
@@ -30,13 +24,7 @@ export default function ContactSection() {
 
       {/* RIGHT IMAGE — width:746 height:746, left:1174px */}
       <div className="pointer-events-none absolute inset-y-0 right-0 z-0 hidden w-[45%] max-w-[746px] md:block">
-        <Image
-          src={rightImage}
-          alt=""
-          fill
-          priority
-          className="object-cover"
-        />
+        <Image src={rightImage} alt="" fill priority className="object-cover" />
         <div
           className="absolute inset-0"
           style={{
@@ -74,11 +62,11 @@ export default function ContactSection() {
           <p className="font-poppins text-base font-normal leading-relaxed text-[#878787]">
             Looking for expert car care service? Book your appointment with{" "}
             <span className="text-[#E40000]">MT Auto Zone</span> today and
-            experience professional care for your vehicle. Our detailing
-            experts restore, enhance, and protect your vehicle with precision
-            care and a flawless showroom finish. Restore your vehicle&apos;s
-            beauty with expert detailing, premium protection, and meticulous
-            care for a flawless finish.
+            experience professional care for your vehicle. Our detailing experts
+            restore, enhance, and protect your vehicle with precision care and a
+            flawless showroom finish. Restore your vehicle&apos;s beauty with
+            expert detailing, premium protection, and meticulous care for a
+            flawless finish.
           </p>
         </div>
 
