@@ -1,4 +1,4 @@
-import ContactForm from "@/app/(web)/contact-us/page";
+import ContactForm from "@/app/component/contact/ContactForm";
 
 
 const INFO_CARDS = [
