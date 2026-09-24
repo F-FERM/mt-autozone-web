@@ -61,20 +61,11 @@ export default function AboutSection() {
   const halfCleanReveal = Math.min(revealProgress * 2, 100);
   const cleanReveal = Math.max(0, (revealProgress - 50) * 2);
 
+  // Light shows only on hover, and never while the progress bar is being dragged
+  const showLight = isHoveringCar && !isDragging;
+
   return (
     <section className="relative mx-auto w-full max-w-[1920px] overflow-hidden py-10">
-      <div
-        className={`pointer-events-none absolute inset-y-[-15%] left-0 right-0 z-0 transition-opacity duration-700 ease-out ${
-          isHoveringCar ? "opacity-100" : "opacity-0"
-        }`}
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 45%, rgba(255,255,255,0) 75%)",
-          clipPath: "polygon(100% 30%, 0% 0%, 0% 100%, 100% 70%)",
-          mixBlendMode: "screen",
-        }}
-      />
-
       <div className="relative z-10 mx-auto flex max-w-[1464px] flex-col items-center gap-10 px-4 sm:px-6 lg:flex-row lg:items-center lg:gap-16">
         <div className="flex w-full max-w-[631px] flex-col gap-3.5 text-center lg:text-left">
           <p className="font-poppins text-base font-normal leading-none text-[#E40000]">
@@ -140,6 +131,22 @@ export default function AboutSection() {
             onMouseLeave={() => setIsHoveringCar(false)}
             className="relative aspect-[940/520] w-full select-none bg-black"
           >
+            {/* Triangular light beam: apex = center of the car image, spreads to the left.
+                Hover-only: hidden entirely on devices without hover (touch). */}
+            <div
+              aria-hidden
+              className={`pointer-events-none absolute right-1/2 top-1/2 z-0 hidden w-[1200px] -translate-y-1/2 transition-opacity duration-700 ease-out [@media(hover:hover)]:block ${showLight ? "opacity-100" : "opacity-0"
+                }`}
+              style={{
+                height: "170%",
+                background:
+                  "linear-gradient(270deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.14) 40%, rgba(255,255,255,0) 100%)",
+                clipPath: "polygon(100% 50%, 0% 0%, 0% 100%)",
+                mixBlendMode: "screen",
+              }}
+            />
+
+            {/* Images: driven ONLY by the progress bar (handlePosition), never by hover */}
             <Image
               src={dustyCar}
               alt="MT Auto Zone — before detailing"

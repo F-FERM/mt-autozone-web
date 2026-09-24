@@ -7,6 +7,8 @@ export default function AboutPage() {
             <ContactInfoSection />
 
 
+
+
         </main>
     );
 }

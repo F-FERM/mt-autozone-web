@@ -81,65 +81,51 @@ const INFO_CARDS = [
 
 export default function ContactInfoSection() {
   return (
-    <section className="relative overflow-hidden bg-black px-4 py-16 sm:px-6 lg:py-24">
-      {/* Corner glow — top right */}
+    <section className="relative w-full overflow-hidden bg-black isolate">
+      {/* Red glow — TOP RIGHT corner, fading out toward the left and down */}
       <div
         aria-hidden
         className="
-          pointer-events-none absolute z-0
-          -right-24 -top-24
-          h-[260px] w-[260px]
-          sm:h-[340px] sm:w-[340px]
-          lg:h-[420px] lg:w-[420px]
-          rounded-full
-          opacity-70
-          blur-[90px] sm:blur-[100px] lg:blur-[120px]
+          pointer-events-none absolute inset-0 z-0
+          bg-[radial-gradient(ellipse_55%_90%_at_100%_0%,rgba(228,0,0,0.6)_0%,rgba(228,0,0,0.25)_45%,transparent_80%)]
         "
-        style={{
-          background:
-            "radial-gradient(60% 60% at 50% 50%, rgba(228,0,0,0.55) 0%, rgba(228,0,0,0) 100%)",
-        }}
       />
 
-      {/* Corner glow — bottom left */}
+      {/* Red glow — BOTTOM LEFT corner, fading out toward the right and up */}
       <div
         aria-hidden
         className="
-          pointer-events-none absolute z-0
-          -left-24 -bottom-24
-          h-[260px] w-[260px]
-          sm:h-[340px] sm:w-[340px]
-          lg:h-[420px] lg:w-[420px]
-          rounded-full
-          opacity-70
-          blur-[90px] sm:blur-[100px] lg:blur-[120px]
+          pointer-events-none absolute inset-0 z-0
+          bg-[radial-gradient(ellipse_40%_65%_at_0%_100%,rgba(228,0,0,0.55)_0%,rgba(228,0,0,0.2)_45%,transparent_80%)]
         "
-        style={{
-          background:
-            "radial-gradient(60% 60% at 50% 50%, rgba(228,0,0,0.55) 0%, rgba(228,0,0,0) 100%)",
-        }}
       />
 
-      {/* subtle red glow behind the card */}
+      {/*
+        CONTENT WRAPPER
+        Same container + padding as OurWorks (max-w 1464, px-4/sm:px-6/lg:px-0,
+        same top/bottom padding) so the start and end points line up exactly.
+      */}
       <div
-        className="pointer-events-none absolute right-0 top-1/2 z-0 h-[471px] w-[722px] max-w-full -translate-y-1/2 rounded-[30px] opacity-70 blur-[80px]"
-        style={{
-          background:
-            "radial-gradient(60% 60% at 70% 50%, rgba(174,0,0,0.6) 0%, rgba(174,0,0,0) 100%)",
-        }}
-      />
-
-      {/* CONTENT */}
-      <div className="relative z-10 mx-auto flex max-w-[1464px] flex-col items-center gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-[111px]">
-        {/* LEFT CONTENT */}
-        <div className="flex w-full max-w-[631px] flex-col gap-3.5 text-center lg:text-left">
+        className="
+          relative z-10
+          flex flex-col items-center gap-10
+          pt-8 sm:pt-12 md:pt-14 lg:pt-16 xl:pt-24
+          pb-14 sm:pb-20 md:pb-28 lg:pb-10
+          w-full max-w-[1464px] mx-auto
+          px-4 sm:px-6 lg:px-0
+          lg:flex-row lg:items-start lg:justify-between
+          lg:gap-4
+        "
+      >
+        {/* LEFT SECTION — 724 x 549, gap 20px */}
+        <div className="flex w-full max-w-[724px] flex-col gap-5 text-center lg:h-[549px] lg:text-left">
           <p className="font-poppins text-base font-normal leading-none tracking-normal text-[#E40000] text-center lg:text-left">
             Contact
           </p>
-          <h2 className="font-poppins text-[26px] font-semibold leading-tight tracking-normal text-white sm:text-[30px] lg:text-[36px] lg:leading-[100%]">
+          <h2 className="font-poppins text-[26px] font-semibold leading-none tracking-normal text-white sm:text-[30px] lg:text-[36px]">
             Connect With MT Auto Zone
           </h2>
-          <p className="font-poppins text-base font-normal leading-none tracking-normal text-[#878787]">
+          <p className="font-poppins text-base font-normal leading-[150%] tracking-normal text-[#878787] lg:h-[120px] lg:w-[724px]">
             Looking for professional car detailing? Book your appointment with{" "}
             <span className="text-[#E40000]">MT Auto Zone</span> today and give
             your vehicle the care it deserves. Our skilled detailing specialists
@@ -149,31 +135,33 @@ export default function ContactInfoSection() {
             showroom-quality appearance with our trusted detailing services.
           </p>
 
-          {/* INFO CARDS */}
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-[15px]">
+          {/* 4 CARDS — grid width 724 x 311, gap 11px */}
+          <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-[11px] lg:h-[311px] lg:w-[724px]">
             {INFO_CARDS.map((card) => (
               <div
                 key={card.key}
                 className="
-                  flex flex-col
-                  w-full sm:w-[355px] sm:max-w-full
-                  min-h-[150px]
+                  flex w-full flex-col items-start justify-center
+                  text-left
+                  sm:w-[355px] sm:max-w-full
+                  min-h-[150px] lg:h-[150px]
                   rounded-[20px]
                   gap-[10px]
                   pt-[21px] pr-[26px] pb-[21px] pl-[26px]
-                  bg-white/5
-                  border border-white/10
-                  backdrop-blur-[6px]
-                  text-left
                 "
+                style={{
+                  background: "#A2A2A221",
+                  backdropFilter: "blur(4px)",
+                  WebkitBackdropFilter: "blur(4px)",
+                }}
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center justify-start gap-2.5">
                   {card.icon}
                   <h3 className="font-poppins text-2xl font-medium leading-none tracking-normal text-white">
                     {card.title}
                   </h3>
                 </div>
-                <p className="font-poppins text-base font-normal leading-snug tracking-normal text-[#A9A9A9]">
+                <p className="font-poppins text-base font-normal leading-[150%] tracking-normal text-[#A9A9A9]">
                   {card.value}
                 </p>
               </div>
@@ -181,8 +169,10 @@ export default function ContactInfoSection() {
           </div>
         </div>
 
-        {/* RIGHT FORM CARD — reused */}
-        <ContactForm />
+        {/* RIGHT SECTION — 722 x 628, radius 30 */}
+        <div className="w-full lg:w-auto rounded-[30px]">
+          <ContactForm />
+        </div>
       </div>
     </section>
   );
