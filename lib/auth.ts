@@ -1,4 +1,4 @@
 export const logout = () => {
-  localStorage.removeItem("token");
-  window.location.href = "/admin/login/";
+  localStorage.removeItem("access_token");
+  window.location.href = "/admin/login";
 };

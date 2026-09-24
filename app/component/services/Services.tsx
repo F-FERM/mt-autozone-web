@@ -260,7 +260,8 @@ const ICON_MAP = {
 
 function PointIcon({ type }: { type: PointIconType }) {
   return (
-    <span className="relative block h-[30px] w-[30px] shrink-0">
+    // Slightly smaller icon so icon + label fit side by side inside 3 columns
+    <span className="relative block h-5 w-5 shrink-0 sm:h-6 sm:w-6 xl:h-[30px] xl:w-[30px]">
       <Image
         src={ICON_MAP[type]}
         alt=""
@@ -323,7 +324,7 @@ export default function ServicesGrid() {
         className="
           relative z-10
           grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
-          gap-x-5 lg:gap-x-[20px]
+          gap-x-6 sm:gap-x-7 lg:gap-x-[30px]
           gap-y-10 sm:gap-y-12 lg:gap-y-[45px]
           px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24
           pt-10 sm:pt-14 md:pt-16 lg:pt-20
@@ -407,15 +408,15 @@ export default function ServicesGrid() {
                 {service.description}
               </p>
 
-              {/* 3 feature points — always one row, icon above label */}
-              <div className="grid grid-cols-3 gap-2 pt-1">
+              {/* 3 feature points — one row, and each point is icon + label on ONE line */}
+              <div className="grid grid-cols-3 gap-2 pt-1 sm:gap-3">
                 {service.points.map((point) => (
                   <div
                     key={point.label}
-                    className="flex flex-col items-start gap-1.5"
+                    className="flex min-w-0 flex-row items-center gap-1.5 sm:gap-2"
                   >
                     <PointIcon type={point.icon} />
-                    <span className="font-poppins text-xs font-normal leading-[150%] text-white sm:text-sm">
+                    <span className="min-w-0 break-words font-poppins text-[11px] font-normal leading-tight text-white sm:text-xs xl:text-sm">
                       {point.label}
                     </span>
                   </div>

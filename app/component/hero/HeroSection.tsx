@@ -10,10 +10,10 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 import carImg from "../../../public/images/homemaincar.png";
 import card1Bg from "../../../public/images/card1car.jpg";
-import checkIcon from "../../../public/images/phone.png";
-import dropIcon from "../../../public/images/phone.png";
-import carIcon from "../../../public/images/phone.png";
-import gridIcon from "../../../public/images/phone.png";
+import checkIcon from "../../../public/images/qlementine-icons_certified-16.png";
+import dropIcon from "../../../public/images/ri_paint-line.png";
+import carIcon from "../../../public/images/carbon_car.png";
+import gridIcon from "../../../public/images/fluent_glance-horizontal-sparkles-24-regular.png";
 
 // ============================================================
 // FEATURES
@@ -28,6 +28,13 @@ const features = [
 
 // ============================================================
 // DESIGN CANVAS SIZE (unchanged pixel design, just scaled)
+//
+// The whole section is one fixed 1920x900 canvas that is scaled down
+// (never up) to fit whatever width its container has — phone, tablet,
+// desktop, ultra-wide. Because everything inside scales together as
+// one unit, the UI itself never changes shape at any breakpoint; only
+// its size does. That's what makes this "responsive" without needing
+// a separate mobile layout.
 // ============================================================
 
 const DESIGN_WIDTH = 1920;
@@ -35,6 +42,13 @@ const DESIGN_HEIGHT = 900;
 
 function useCanvasScale(designWidth: number, designHeight: number) {
   const containerRef = useRef<HTMLDivElement>(null);
+  // Always start at 1 — identical on the server and on the client's
+  // first render. Reading window.innerWidth here would give the
+  // server and client different initial values for the same render,
+  // which React flags as a hydration mismatch and can leave mobile
+  // stuck on the unscaled (server) layout. useLayoutEffect below runs
+  // synchronously before the browser paints, so the correct scale is
+  // applied before the user sees anything — no window read needed here.
   const [scale, setScale] = useState(1);
 
   useLayoutEffect(() => {
@@ -48,12 +62,29 @@ function useCanvasScale(designWidth: number, designHeight: number) {
 
     update();
 
+    // ResizeObserver covers container-size changes (sidebar toggles,
+    // font loading, etc.). We also listen for resize/orientation
+    // changes directly as a fallback for browsers/edge cases where
+    // ResizeObserver doesn't fire on its own (e.g. some mobile
+    // Safari orientation-change sequences), so scaling stays correct
+    // across every screen size and rotation.
     const ro = new ResizeObserver(update);
     ro.observe(el);
-    return () => ro.disconnect();
+    window.addEventListener("resize", update);
+    window.addEventListener("orientationchange", update);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+      window.removeEventListener("orientationchange", update);
+    };
   }, [designWidth]);
 
-  return { containerRef, scale, height: scale * designHeight };
+  // Guard against a stray 0/negative/NaN scale (e.g. container not
+  // yet laid out) ever collapsing or blowing up the canvas.
+  const safeScale = scale > 0 && Number.isFinite(scale) ? scale : 1;
+
+  return { containerRef, scale: safeScale, height: safeScale * designHeight };
 }
 
 // ============================================================
@@ -150,13 +181,13 @@ export default function HeroSection() {
   const { containerRef, scale, height } = useCanvasScale(DESIGN_WIDTH, DESIGN_HEIGHT);
 
   return (
-    <section className="relative w-full overflow-x-hidden overflow-y-hidden bg-black">
+    <section className="relative w-full min-w-0 overflow-x-hidden overflow-y-hidden bg-black">
       {/* Scaling stage: outer div reports real width, inner div is the
           untouched 1920x900 design, scaled to fit. Nothing inside the
           inner div changes at any screen size — only the scale changes. */}
       <div
         ref={containerRef}
-        className="relative mx-auto w-full max-w-[1920px]"
+        className="relative mx-auto w-full min-w-0 max-w-[1920px]"
         style={{ height }}
       >
         <div
@@ -314,7 +345,7 @@ export default function HeroSection() {
             </ul>
 
             <div className="px-[42px]">
-             
+
               <Link
                 href="/services"
                 className="
