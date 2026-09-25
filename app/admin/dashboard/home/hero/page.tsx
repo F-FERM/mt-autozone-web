@@ -182,8 +182,8 @@ function Field({
           {label}
         </label>
         {hasChanged && (
-          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-            <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+            <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
             Changed
           </span>
         )}
@@ -194,16 +194,16 @@ function Field({
 }
 
 const inputCls =
-  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors";
+  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors";
 
 const inputChangedCls =
-  "w-full rounded-[10px] border-2 border-[#EA580C] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors";
+  "w-full rounded-[10px] border-2 border-[#E40000] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors";
 
 const textareaCls =
-  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors resize-y min-h-[80px]";
+  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors resize-y min-h-[80px]";
 
 const textareaChangedCls =
-  "w-full rounded-[10px] border-2 border-[#EA580C] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors resize-y min-h-[80px]";
+  "w-full rounded-[10px] border-2 border-[#E40000] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors resize-y min-h-[80px]";
 
 // ================= IMAGE UPLOAD =================
 
@@ -260,8 +260,8 @@ function ImageUpload({
       <div className="mb-[6px] flex items-center gap-[6px]">
         <Label className="text-[12px] font-medium text-[#2A2A2A]">{label}</Label>
         {hasChanged && (
-          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-            <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+            <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
             Changed
           </span>
         )}
@@ -278,7 +278,7 @@ function ImageUpload({
         className={`
           relative flex ${heightCls} w-full cursor-pointer items-center justify-center overflow-hidden rounded-[12px] border border-dashed border-[#E4C9B4] bg-[#FFF9F4] transition-colors hover:bg-[#FFF4EC]
           ${uploading ? "pointer-events-none opacity-70" : ""}
-          ${hasChanged ? "border-2 border-[#EA580C] bg-[#FFF9F4]" : ""}
+          ${hasChanged ? "border-2 border-[#E40000] bg-[#FFF9F4]" : ""}
         `}
       >
         {value ? (
@@ -298,14 +298,14 @@ function ImageUpload({
             </div>
           </>
         ) : (
-          <div className="flex flex-col items-center gap-[4px] text-[#C2410C]">
+          <div className="flex flex-col items-center gap-[4px] text-[#E40000]">
             <UploadCloud className="h-[20px] w-[20px]" />
             <span className="text-[11px] font-medium">Upload image</span>
           </div>
         )}
         {uploading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white/70">
-            <Loader2 className="h-[20px] w-[20px] animate-spin text-[#EA580C]" />
+            <Loader2 className="h-[20px] w-[20px] animate-spin text-[#E40000]" />
           </div>
         )}
       </div>
@@ -313,8 +313,8 @@ function ImageUpload({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Or paste image URL"
-        className={`mt-[4px] h-[36px] rounded-[10px] border-[#E4E4E4] bg-white text-[12px] focus-visible:ring-[#EA580C]/30 ${
-          hasChanged ? "border-2 border-[#EA580C] bg-[#FFF9F4]" : ""
+        className={`mt-[4px] h-[36px] rounded-[10px] border-[#E4E4E4] bg-white text-[12px] focus-visible:ring-[#E40000]/30 ${
+          hasChanged ? "border-2 border-[#E40000] bg-[#FFF9F4]" : ""
         }`}
       />
     </div>
@@ -377,7 +377,7 @@ function IconUpload({
         className={`
           relative flex h-[40px] w-[40px] shrink-0 items-center justify-center overflow-hidden rounded-[8px] border border-dashed border-[#E4C9B4] bg-[#FFF9F4] transition-colors hover:bg-[#FFF4EC]
           ${uploading ? "pointer-events-none opacity-70" : ""}
-          ${hasChanged ? "border-2 border-[#EA580C]" : ""}
+          ${hasChanged ? "border-2 border-[#E40000]" : ""}
         `}
         title="Upload icon"
       >
@@ -391,9 +391,9 @@ function IconUpload({
             className="object-contain p-[4px]"
           />
         ) : uploading ? (
-          <Loader2 className="h-[16px] w-[16px] animate-spin text-[#EA580C]" />
+          <Loader2 className="h-[16px] w-[16px] animate-spin text-[#E40000]" />
         ) : (
-          <UploadCloud className="h-[16px] w-[16px] text-[#C2410C]" />
+          <UploadCloud className="h-[16px] w-[16px] text-[#E40000]" />
         )}
       </button>
 
@@ -483,7 +483,7 @@ function AddButton({ onClick, label }: { onClick: () => void; label: string }) {
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-[6px] self-start rounded-[10px] border border-dashed border-[#E4C9B4] px-[14px] py-[9px] text-[12px] font-medium text-[#C2410C] transition-colors hover:border-[#EA580C] hover:bg-[#FFF4EC]"
+      className="flex items-center gap-[6px] self-start rounded-[10px] border border-dashed border-[#E4C9B4] px-[14px] py-[9px] text-[12px] font-medium text-[#E40000] transition-colors hover:border-[#E40000] hover:bg-[#FFF4EC]"
     >
       <Plus className="h-[13px] w-[13px]" />
       {label}
@@ -640,7 +640,7 @@ function HomeHeroEditModal({
         {/* HEADER */}
         <div className="flex shrink-0 items-center justify-between border-b border-[#E4C9B4] bg-white px-[20px] py-[14px] sm:px-[28px] sm:py-[16px]">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-widest text-[#EA580C]">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-[#E40000]">
               Edit Home Hero
             </p>
             <h2 className="mt-[1px] text-[16px] font-semibold text-[#111111] sm:text-[18px]">
@@ -661,7 +661,7 @@ function HomeHeroEditModal({
             {/* SECTION HEADER */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Layers className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Layers className="h-[15px] w-[15px] text-[#E40000]" />
                 Section Header
               </h3>
 
@@ -784,7 +784,7 @@ function HomeHeroEditModal({
                     Section Active
                   </Label>
                   {hasChanged("isActive") && (
-                    <CircleDot className="h-[10px] w-[10px] fill-[#EA580C] text-[#EA580C]" />
+                    <CircleDot className="h-[10px] w-[10px] fill-[#E40000] text-[#E40000]" />
                   )}
                 </div>
               </div>
@@ -794,12 +794,12 @@ function HomeHeroEditModal({
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <div className="mb-[14px] flex items-center justify-between">
                 <h3 className="flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                  <Sparkles className="h-[15px] w-[15px] text-[#EA580C]" />
+                  <Sparkles className="h-[15px] w-[15px] text-[#E40000]" />
                   Stats
                 </h3>
                 {hasChanged("stats") && (
-                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-                    <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+                    <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
                     Changed
                   </span>
                 )}
@@ -921,12 +921,12 @@ function HomeHeroEditModal({
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <div className="mb-[14px] flex flex-wrap items-center justify-between gap-[8px]">
                 <h3 className="flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                  <List className="h-[15px] w-[15px] text-[#EA580C]" />
+                  <List className="h-[15px] w-[15px] text-[#E40000]" />
                   Services ({form.services.length})
                 </h3>
                 {hasChanged("services") && (
-                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-                    <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+                    <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
                     Changed
                   </span>
                 )}
@@ -1038,7 +1038,7 @@ function HomeHeroEditModal({
                             Active
                           </Label>
                           {hasChanged(`services.${idx}.isActive`) && (
-                            <CircleDot className="h-[10px] w-[10px] fill-[#EA580C] text-[#EA580C]" />
+                            <CircleDot className="h-[10px] w-[10px] fill-[#E40000] text-[#E40000]" />
                           )}
                         </div>
 
@@ -1074,7 +1074,7 @@ function HomeHeroEditModal({
             {/* BUTTON */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Settings className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Settings className="h-[15px] w-[15px] text-[#E40000]" />
                 Button
               </h3>
 
@@ -1122,7 +1122,7 @@ function HomeHeroEditModal({
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-[7px] rounded-[10px] bg-[#EA580C] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-[7px] rounded-[10px] bg-[#E40000] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {saving ? (
               <Loader2 className="h-[14px] w-[14px] animate-spin" />
@@ -1248,7 +1248,7 @@ function HomeHeroCreateModal({
       >
         <div className="flex shrink-0 items-center justify-between border-b border-[#E4C9B4] bg-white px-[20px] py-[14px] sm:px-[28px] sm:py-[16px]">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-widest text-[#EA580C]">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-[#E40000]">
               Create
             </p>
             <h2 className="mt-[1px] text-[16px] font-semibold text-[#111111] sm:text-[18px]">
@@ -1268,7 +1268,7 @@ function HomeHeroCreateModal({
             {/* SECTION HEADER */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Layers className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Layers className="h-[15px] w-[15px] text-[#E40000]" />
                 Section Header
               </h3>
               <div className="grid gap-[14px] sm:grid-cols-2">
@@ -1367,7 +1367,7 @@ function HomeHeroCreateModal({
             {/* STATS */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Sparkles className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Sparkles className="h-[15px] w-[15px] text-[#E40000]" />
                 Stats
               </h3>
               <div className="grid gap-[14px] sm:grid-cols-2">
@@ -1441,7 +1441,7 @@ function HomeHeroCreateModal({
             {/* SERVICES */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <List className="h-[15px] w-[15px] text-[#EA580C]" />
+                <List className="h-[15px] w-[15px] text-[#E40000]" />
                 Services ({form.services.length})
               </h3>
 
@@ -1509,7 +1509,7 @@ function HomeHeroCreateModal({
             {/* BUTTON */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Settings className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Settings className="h-[15px] w-[15px] text-[#E40000]" />
                 Button
               </h3>
               <div className="grid gap-[14px] sm:grid-cols-2">
@@ -1544,7 +1544,7 @@ function HomeHeroCreateModal({
           <button
             onClick={handleCreate}
             disabled={saving}
-            className="flex items-center gap-[7px] rounded-[10px] bg-[#EA580C] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-[7px] rounded-[10px] bg-[#E40000] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {saving ? (
               <Loader2 className="h-[14px] w-[14px] animate-spin" />
@@ -1644,7 +1644,7 @@ export default function HomeHeroAdmin() {
             color: "#fff",
             fontSize: "14px",
           },
-          success: { iconTheme: { primary: "#EA580C", secondary: "#fff" } },
+          success: { iconTheme: { primary: "#E40000", secondary: "#fff" } },
           error: { iconTheme: { primary: "#DC2626", secondary: "#fff" } },
         }}
       />
@@ -1667,12 +1667,12 @@ export default function HomeHeroAdmin() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search..."
-              className="h-[42px] w-full rounded-[12px] border-[#E4E4E4] bg-white pl-[36px] text-[13px] focus-visible:ring-[#EA580C]/30 sm:w-[220px]"
+              className="h-[42px] w-full rounded-[12px] border-[#E4E4E4] bg-white pl-[36px] text-[13px] focus-visible:ring-[#E40000]/30 sm:w-[220px]"
             />
           </div>
           <Button
             onClick={() => setCreateOpen(true)}
-            className="flex h-[42px] items-center justify-center gap-[8px] rounded-[14px] bg-[#EA580C] text-[13px] font-medium text-white hover:bg-[#EA580C] hover:shadow-[0_14px_30px_rgba(234,88,12,0.3)] sm:h-[44px] sm:px-[20px] sm:text-[14px]"
+            className="flex h-[42px] items-center justify-center gap-[8px] rounded-[14px] bg-[#E40000] text-[13px] font-medium text-white hover:bg-[#E40000] hover:shadow-[0_14px_30px_rgba(234,88,12,0.3)] sm:h-[44px] sm:px-[20px] sm:text-[14px]"
           >
             <Plus className="h-[17px] w-[17px]" />
             Add Home Hero
@@ -1684,12 +1684,12 @@ export default function HomeHeroAdmin() {
       <div className="mx-auto mt-[22px] max-w-[1600px] sm:mt-[28px] lg:mt-[32px]">
         {loading ? (
           <div className="flex min-h-[200px] items-center justify-center">
-            <Loader2 className="h-[28px] w-[28px] animate-spin text-[#EA580C]" />
+            <Loader2 className="h-[28px] w-[28px] animate-spin text-[#E40000]" />
           </div>
         ) : filtered.length === 0 ? (
           <Card className="rounded-[20px] border border-dashed border-[#E4C9B4] bg-white/60">
             <CardContent className="flex flex-col items-center justify-center gap-[10px] p-[48px] text-center">
-              <Sparkles className="h-[32px] w-[32px] text-[#C2410C]/50" />
+              <Sparkles className="h-[32px] w-[32px] text-[#E40000]/50" />
               <p className="text-[14px] font-medium text-[#333333]">
                 No home hero found
               </p>
@@ -1722,13 +1722,13 @@ export default function HomeHeroAdmin() {
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
-                          <ImageIcon className="h-[28px] w-[28px] text-[#C2410C]/40" />
+                          <ImageIcon className="h-[28px] w-[28px] text-[#E40000]/40" />
                         </div>
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                       <div className="absolute inset-x-0 bottom-0 p-[16px] sm:p-[20px]">
                         {item.eyebrow && (
-                          <span className="text-[10px] font-medium uppercase tracking-widest text-[#EA580C] sm:text-[11px]">
+                          <span className="text-[10px] font-medium uppercase tracking-widest text-[#E40000] sm:text-[11px]">
                             {item.eyebrow}
                           </span>
                         )}
@@ -1764,7 +1764,7 @@ export default function HomeHeroAdmin() {
                       {item.stats && (
                         <div className="grid grid-cols-3 gap-[8px] sm:gap-[12px]">
                           <div className="rounded-[10px] bg-[#FFF9F4] p-[10px] text-center sm:p-[12px]">
-                            <div className="text-[16px] font-bold text-[#EA580C] sm:text-[20px]">
+                            <div className="text-[16px] font-bold text-[#E40000] sm:text-[20px]">
                               {item.stats.yearsOfExperience}+
                             </div>
                             <div className="text-[9px] text-[#666] sm:text-[10px]">
@@ -1772,7 +1772,7 @@ export default function HomeHeroAdmin() {
                             </div>
                           </div>
                           <div className="rounded-[10px] bg-[#FFF9F4] p-[10px] text-center sm:p-[12px]">
-                            <div className="text-[16px] font-bold text-[#EA580C] sm:text-[20px]">
+                            <div className="text-[16px] font-bold text-[#E40000] sm:text-[20px]">
                               {item.stats.customerSatisfaction}
                             </div>
                             <div className="text-[9px] text-[#666] sm:text-[10px]">
@@ -1780,7 +1780,7 @@ export default function HomeHeroAdmin() {
                             </div>
                           </div>
                           <div className="rounded-[10px] bg-[#FFF9F4] p-[10px] text-center sm:p-[12px]">
-                            <div className="text-[16px] font-bold text-[#EA580C] sm:text-[20px]">
+                            <div className="text-[16px] font-bold text-[#E40000] sm:text-[20px]">
                               {item.stats.carsServiced}+
                             </div>
                             <div className="text-[9px] text-[#666] sm:text-[10px]">
@@ -1834,7 +1834,7 @@ export default function HomeHeroAdmin() {
                       {/* Button preview */}
                       {item.buttonText && (
                         <div className="mt-[14px] flex items-center gap-[6px]">
-                          <span className="text-[11px] font-medium text-[#EA580C] sm:text-[12px]">
+                          <span className="text-[11px] font-medium text-[#E40000] sm:text-[12px]">
                             {item.buttonText}
                           </span>
                           <span className="text-[10px] text-[#999] sm:text-[11px]">
@@ -1847,7 +1847,7 @@ export default function HomeHeroAdmin() {
                         <Button
                           onClick={() => setEditTarget(item)}
                           variant="outline"
-                          className="h-[34px] gap-[6px] rounded-[10px] border-[#E4C9B4] bg-white px-[12px] text-[12px] font-medium text-[#C2410C] hover:bg-[#FFF4EC] hover:text-[#C2410C] sm:h-[36px] sm:text-[13px]"
+                          className="h-[34px] gap-[6px] rounded-[10px] border-[#E4C9B4] bg-white px-[12px] text-[12px] font-medium text-[#E40000] hover:bg-[#FFF4EC] hover:text-[#E40000] sm:h-[36px] sm:text-[13px]"
                         >
                           <Pencil className="h-[13px] w-[13px]" />
                           Edit

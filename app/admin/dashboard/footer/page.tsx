@@ -163,8 +163,8 @@ function Field({
           {label}
         </label>
         {hasChanged && (
-          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-            <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+            <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
             Changed
           </span>
         )}
@@ -175,10 +175,10 @@ function Field({
 }
 
 const inputCls =
-  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors";
+  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors";
 
 const inputChangedCls =
-  "w-full rounded-[10px] border-2 border-[#EA580C] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors";
+  "w-full rounded-[10px] border-2 border-[#E40000] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors";
 
 // ================= ITEM CARD =================
 
@@ -256,7 +256,7 @@ function AddButton({ onClick, label }: { onClick: () => void; label: string }) {
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-[6px] self-start rounded-[10px] border border-dashed border-[#E4C9B4] px-[14px] py-[9px] text-[12px] font-medium text-[#C2410C] transition-colors hover:border-[#EA580C] hover:bg-[#FFF4EC]"
+      className="flex items-center gap-[6px] self-start rounded-[10px] border border-dashed border-[#E4C9B4] px-[14px] py-[9px] text-[12px] font-medium text-[#E40000] transition-colors hover:border-[#E40000] hover:bg-[#FFF4EC]"
     >
       <Plus className="h-[13px] w-[13px]" />
       {label}
@@ -474,7 +474,7 @@ function FooterEditModal({
         {/* HEADER */}
         <div className="flex shrink-0 items-center justify-between border-b border-[#E4C9B4] bg-white px-[20px] py-[14px] sm:px-[28px] sm:py-[16px]">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-widest text-[#EA580C]">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-[#E40000]">
               Edit Footer
             </p>
             <h2 className="mt-[1px] text-[16px] font-semibold text-[#111111] sm:text-[18px]">
@@ -495,7 +495,7 @@ function FooterEditModal({
             {/* ADDRESS */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <MapPin className="h-[15px] w-[15px] text-[#EA580C]" />
+                <MapPin className="h-[15px] w-[15px] text-[#E40000]" />
                 Address
               </h3>
               <div className="grid gap-[14px] sm:grid-cols-2">
@@ -533,12 +533,12 @@ function FooterEditModal({
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <div className="mb-[14px] flex flex-wrap items-center justify-between gap-[8px]">
                 <h3 className="flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                  <Wrench className="h-[15px] w-[15px] text-[#EA580C]" />
+                  <Wrench className="h-[15px] w-[15px] text-[#E40000]" />
                   Services ({form.services?.length ?? 0})
                 </h3>
                 {hasChanged("services") && (
-                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-                    <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+                    <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
                     Changed
                   </span>
                 )}
@@ -664,7 +664,7 @@ function FooterEditModal({
                           Active
                         </Label>
                         {hasChanged(`services.${idx}.isActive`) && (
-                          <CircleDot className="h-[10px] w-[10px] fill-[#EA580C] text-[#EA580C]" />
+                          <CircleDot className="h-[10px] w-[10px] fill-[#E40000] text-[#E40000]" />
                         )}
                       </div>
                     </div>
@@ -681,12 +681,12 @@ function FooterEditModal({
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <div className="mb-[14px] flex flex-wrap items-center justify-between gap-[8px]">
                 <h3 className="flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                  <Building2 className="h-[15px] w-[15px] text-[#EA580C]" />
+                  <Building2 className="h-[15px] w-[15px] text-[#E40000]" />
                   Company Links ({form.companyLinks?.length ?? 0})
                 </h3>
                 {hasChanged("companyLinks") && (
-                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-                    <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+                    <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
                     Changed
                   </span>
                 )}
@@ -829,7 +829,7 @@ function FooterEditModal({
                           Active
                         </Label>
                         {hasChanged(`companyLinks.${idx}.isActive`) && (
-                          <CircleDot className="h-[10px] w-[10px] fill-[#EA580C] text-[#EA580C]" />
+                          <CircleDot className="h-[10px] w-[10px] fill-[#E40000] text-[#E40000]" />
                         )}
                       </div>
                     </div>
@@ -845,7 +845,7 @@ function FooterEditModal({
             {/* CONTACT */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Phone className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Phone className="h-[15px] w-[15px] text-[#E40000]" />
                 Contact
               </h3>
               <div className="grid gap-[14px] sm:grid-cols-2">
@@ -901,12 +901,12 @@ function FooterEditModal({
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <div className="mb-[14px] flex flex-wrap items-center justify-between gap-[8px]">
                 <h3 className="flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                  <Share2 className="h-[15px] w-[15px] text-[#EA580C]" />
+                  <Share2 className="h-[15px] w-[15px] text-[#E40000]" />
                   Social Links ({form.socialLinks?.length ?? 0})
                 </h3>
                 {hasChanged("socialLinks") && (
-                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-                    <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+                    <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
                     Changed
                   </span>
                 )}
@@ -1037,7 +1037,7 @@ function FooterEditModal({
                           Active
                         </Label>
                         {hasChanged(`socialLinks.${idx}.isActive`) && (
-                          <CircleDot className="h-[10px] w-[10px] fill-[#EA580C] text-[#EA580C]" />
+                          <CircleDot className="h-[10px] w-[10px] fill-[#E40000] text-[#E40000]" />
                         )}
                       </div>
                     </div>
@@ -1057,7 +1057,7 @@ function FooterEditModal({
                 Footer Active
               </Label>
               {hasChanged("isActive") && (
-                <CircleDot className="h-[10px] w-[10px] fill-[#EA580C] text-[#EA580C]" />
+                <CircleDot className="h-[10px] w-[10px] fill-[#E40000] text-[#E40000]" />
               )}
             </div>
           </div>
@@ -1074,7 +1074,7 @@ function FooterEditModal({
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-[7px] rounded-[10px] bg-[#EA580C] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-[7px] rounded-[10px] bg-[#E40000] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {saving ? (
               <Loader2 className="h-[14px] w-[14px] animate-spin" />
@@ -1242,7 +1242,7 @@ function FooterCreateModal({
       >
         <div className="flex shrink-0 items-center justify-between border-b border-[#E4C9B4] bg-white px-[20px] py-[14px] sm:px-[28px] sm:py-[16px]">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-widest text-[#EA580C]">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-[#E40000]">
               Create
             </p>
             <h2 className="mt-[1px] text-[16px] font-semibold text-[#111111] sm:text-[18px]">
@@ -1262,7 +1262,7 @@ function FooterCreateModal({
             {/* ADDRESS */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <MapPin className="h-[15px] w-[15px] text-[#EA580C]" />
+                <MapPin className="h-[15px] w-[15px] text-[#E40000]" />
                 Address
               </h3>
               <div className="grid gap-[14px] sm:grid-cols-2">
@@ -1290,7 +1290,7 @@ function FooterCreateModal({
             {/* SERVICES */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Wrench className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Wrench className="h-[15px] w-[15px] text-[#E40000]" />
                 Services ({form.services?.length ?? 0})
               </h3>
               <div className="mb-[14px]">
@@ -1371,7 +1371,7 @@ function FooterCreateModal({
             {/* COMPANY LINKS */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Building2 className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Building2 className="h-[15px] w-[15px] text-[#E40000]" />
                 Company Links ({form.companyLinks?.length ?? 0})
               </h3>
               <div className="mb-[14px]">
@@ -1466,7 +1466,7 @@ function FooterCreateModal({
             {/* CONTACT */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Phone className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Phone className="h-[15px] w-[15px] text-[#E40000]" />
                 Contact
               </h3>
               <div className="grid gap-[14px] sm:grid-cols-2">
@@ -1508,7 +1508,7 @@ function FooterCreateModal({
             {/* SOCIAL LINKS */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Share2 className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Share2 className="h-[15px] w-[15px] text-[#E40000]" />
                 Social Links ({form.socialLinks?.length ?? 0})
               </h3>
               <div className="flex flex-col gap-[10px]">
@@ -1606,7 +1606,7 @@ function FooterCreateModal({
           <button
             onClick={handleCreate}
             disabled={saving}
-            className="flex items-center gap-[7px] rounded-[10px] bg-[#EA580C] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-[7px] rounded-[10px] bg-[#E40000] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {saving ? (
               <Loader2 className="h-[14px] w-[14px] animate-spin" />
@@ -1705,7 +1705,7 @@ export default function FooterAdmin() {
             color: "#fff",
             fontSize: "14px",
           },
-          success: { iconTheme: { primary: "#EA580C", secondary: "#fff" } },
+          success: { iconTheme: { primary: "#E40000", secondary: "#fff" } },
           error: { iconTheme: { primary: "#DC2626", secondary: "#fff" } },
         }}
       />
@@ -1729,12 +1729,12 @@ export default function FooterAdmin() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search..."
-              className="h-[42px] w-full rounded-[12px] border-[#E4E4E4] bg-white pl-[36px] text-[13px] focus-visible:ring-[#EA580C]/30 sm:w-[220px]"
+              className="h-[42px] w-full rounded-[12px] border-[#E4E4E4] bg-white pl-[36px] text-[13px] focus-visible:ring-[#E40000]/30 sm:w-[220px]"
             />
           </div>
           <Button
             onClick={() => setCreateOpen(true)}
-            className="flex h-[42px] items-center justify-center gap-[8px] rounded-[14px] bg-[#EA580C] text-[13px] font-medium text-white hover:bg-[#EA580C] hover:shadow-[0_14px_30px_rgba(234,88,12,0.3)] sm:h-[44px] sm:px-[20px] sm:text-[14px]"
+            className="flex h-[42px] items-center justify-center gap-[8px] rounded-[14px] bg-[#E40000] text-[13px] font-medium text-white hover:bg-[#E40000] hover:shadow-[0_14px_30px_rgba(234,88,12,0.3)] sm:h-[44px] sm:px-[20px] sm:text-[14px]"
           >
             <Plus className="h-[17px] w-[17px]" />
             Add Footer
@@ -1746,12 +1746,12 @@ export default function FooterAdmin() {
       <div className="mx-auto mt-[22px] max-w-[1600px] sm:mt-[28px] lg:mt-[32px]">
         {loading ? (
           <div className="flex min-h-[200px] items-center justify-center">
-            <Loader2 className="h-[28px] w-[28px] animate-spin text-[#EA580C]" />
+            <Loader2 className="h-[28px] w-[28px] animate-spin text-[#E40000]" />
           </div>
         ) : filtered.length === 0 ? (
           <Card className="rounded-[20px] border border-dashed border-[#E4C9B4] bg-white/60">
             <CardContent className="flex flex-col items-center justify-center gap-[10px] p-[48px] text-center">
-              <Sparkles className="h-[32px] w-[32px] text-[#C2410C]/50" />
+              <Sparkles className="h-[32px] w-[32px] text-[#E40000]/50" />
               <p className="text-[14px] font-medium text-[#333333]">
                 No footer found
               </p>
@@ -1776,7 +1776,7 @@ export default function FooterAdmin() {
                       <div className="mb-[14px] flex flex-wrap items-start justify-between gap-[10px]">
                         <div className="flex items-start gap-[10px]">
                           <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[10px] bg-[#FFF4EC]">
-                            <MapPin className="h-[18px] w-[18px] text-[#EA580C]" />
+                            <MapPin className="h-[18px] w-[18px] text-[#E40000]" />
                           </div>
                           <div>
                             <p className="text-[11px] font-semibold uppercase tracking-widest text-[#888888]">
@@ -1801,15 +1801,15 @@ export default function FooterAdmin() {
                       {/* CONTACT PREVIEW */}
                       <div className="mb-[14px] flex flex-wrap items-center gap-[14px] text-[12px] text-[#555]">
                         <span className="flex items-center gap-[6px]">
-                          <Phone className="h-[13px] w-[13px] text-[#EA580C]" />
+                          <Phone className="h-[13px] w-[13px] text-[#E40000]" />
                           {item.phone || "—"}
                         </span>
                         <span className="flex items-center gap-[6px]">
-                          <Mail className="h-[13px] w-[13px] text-[#EA580C]" />
+                          <Mail className="h-[13px] w-[13px] text-[#E40000]" />
                           {item.email || "—"}
                         </span>
                         <span className="flex items-center gap-[6px]">
-                          <AtSign className="h-[13px] w-[13px] text-[#EA580C]" />
+                          <AtSign className="h-[13px] w-[13px] text-[#E40000]" />
                           {item.salesEmail || "—"}
                         </span>
                       </div>
@@ -1829,7 +1829,7 @@ export default function FooterAdmin() {
                               key={srv._id || i}
                               className="flex items-center gap-[4px] rounded-full border border-[#E4C9B4] bg-white px-[10px] py-[3px] text-[11px] text-[#333]"
                             >
-                              <LinkIcon className="h-[10px] w-[10px] text-[#EA580C]" />
+                              <LinkIcon className="h-[10px] w-[10px] text-[#E40000]" />
                               {srv.title}
                             </span>
                           ))}
@@ -1856,7 +1856,7 @@ export default function FooterAdmin() {
                               key={lnk._id || i}
                               className="flex items-center gap-[4px] rounded-full border border-[#E4C9B4] bg-white px-[10px] py-[3px] text-[11px] text-[#333]"
                             >
-                              <LinkIcon className="h-[10px] w-[10px] text-[#EA580C]" />
+                              <LinkIcon className="h-[10px] w-[10px] text-[#E40000]" />
                               {lnk.title}
                             </span>
                           ))}
@@ -1877,7 +1877,7 @@ export default function FooterAdmin() {
                               key={s._id || i}
                               className="flex items-center gap-[4px] rounded-full border border-[#E4C9B4] bg-white px-[10px] py-[3px] text-[11px] text-[#333]"
                             >
-                              <LinkIcon className="h-[10px] w-[10px] text-[#EA580C]" />
+                              <LinkIcon className="h-[10px] w-[10px] text-[#E40000]" />
                               {s.name}
                             </span>
                           ))}
@@ -1889,7 +1889,7 @@ export default function FooterAdmin() {
                         <Button
                           onClick={() => setEditTarget(item)}
                           variant="outline"
-                          className="h-[34px] gap-[6px] rounded-[10px] border-[#E4C9B4] bg-white px-[12px] text-[12px] font-medium text-[#C2410C] hover:bg-[#FFF4EC] hover:text-[#C2410C] sm:h-[36px] sm:text-[13px]"
+                          className="h-[34px] gap-[6px] rounded-[10px] border-[#E4C9B4] bg-white px-[12px] text-[12px] font-medium text-[#E40000] hover:bg-[#FFF4EC] hover:text-[#E40000] sm:h-[36px] sm:text-[13px]"
                         >
                           <Pencil className="h-[13px] w-[13px]" />
                           Edit

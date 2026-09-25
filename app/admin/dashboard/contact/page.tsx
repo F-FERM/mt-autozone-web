@@ -112,8 +112,8 @@ function Field({
           {label}
         </label>
         {hasChanged && (
-          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-            <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+            <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
             Changed
           </span>
         )}
@@ -124,23 +124,23 @@ function Field({
 }
 
 const inputCls =
-  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors";
+  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors";
 
 const inputChangedCls =
-  "w-full rounded-[10px] border-2 border-[#EA580C] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors";
+  "w-full rounded-[10px] border-2 border-[#E40000] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors";
 
 const textareaCls =
-  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors resize-y min-h-[80px]";
+  "w-full rounded-[10px] border border-[#E4C9B4] bg-white px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors resize-y min-h-[80px]";
 
 const textareaChangedCls =
-  "w-full rounded-[10px] border-2 border-[#EA580C] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#EA580C] focus:outline-none transition-colors resize-y min-h-[80px]";
+  "w-full rounded-[10px] border-2 border-[#E40000] bg-[#FFF9F4] px-[12px] py-[9px] text-[13px] text-[#111111] placeholder:text-[#BBBBBB] focus:border-[#E40000] focus:outline-none transition-colors resize-y min-h-[80px]";
 
 function AddButton({ onClick, label }: { onClick: () => void; label: string }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-[6px] self-start rounded-[10px] border border-dashed border-[#E4C9B4] px-[14px] py-[9px] text-[12px] font-medium text-[#C2410C] transition-colors hover:border-[#EA580C] hover:bg-[#FFF4EC]"
+      className="flex items-center gap-[6px] self-start rounded-[10px] border border-dashed border-[#E4C9B4] px-[14px] py-[9px] text-[12px] font-medium text-[#E40000] transition-colors hover:border-[#E40000] hover:bg-[#FFF4EC]"
     >
       <Plus className="h-[13px] w-[13px]" />
       {label}
@@ -196,8 +196,8 @@ function DescriptionEditor({
           {label}
         </Label>
         {hasChanged && (
-          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-            <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+          <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+            <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
             Changed
           </span>
         )}
@@ -216,7 +216,7 @@ function DescriptionEditor({
             <span className="text-[10px] font-medium text-[#999]">
               Segment {idx + 1}
               {seg.highlight && (
-                <span className="ml-[6px] rounded-full bg-[#EA580C]/10 px-[6px] py-[1px] text-[9px] text-[#EA580C]">
+                <span className="ml-[6px] rounded-full bg-[#E40000]/10 px-[6px] py-[1px] text-[9px] text-[#E40000]">
                   Highlight
                 </span>
               )}
@@ -403,7 +403,7 @@ function ContactPageEditModal({
         {/* HEADER */}
         <div className="flex shrink-0 items-center justify-between border-b border-[#E4C9B4] bg-white px-[20px] py-[14px] sm:px-[28px] sm:py-[16px]">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-widest text-[#EA580C]">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-[#E40000]">
               Edit Contact Page
             </p>
             <h2 className="mt-[1px] text-[16px] font-semibold text-[#111111] sm:text-[18px]">
@@ -424,7 +424,7 @@ function ContactPageEditModal({
             {/* SECTION HEADER */}
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Layers className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Layers className="h-[15px] w-[15px] text-[#E40000]" />
                 Section Header
               </h3>
 
@@ -471,7 +471,7 @@ function ContactPageEditModal({
                     Section Active
                   </Label>
                   {hasChanged("isActive") && (
-                    <CircleDot className="h-[10px] w-[10px] fill-[#EA580C] text-[#EA580C]" />
+                    <CircleDot className="h-[10px] w-[10px] fill-[#E40000] text-[#E40000]" />
                   )}
                 </div>
               </div>
@@ -481,12 +481,12 @@ function ContactPageEditModal({
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <div className="mb-[14px] flex flex-wrap items-center justify-between gap-[8px]">
                 <h3 className="flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                  <Phone className="h-[15px] w-[15px] text-[#EA580C]" />
+                  <Phone className="h-[15px] w-[15px] text-[#E40000]" />
                   Contact Information
                 </h3>
                 {hasChanged("contactInfo") && (
-                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-                    <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+                  <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+                    <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
                     Changed
                   </span>
                 )}
@@ -497,7 +497,7 @@ function ContactPageEditModal({
                 <Field
                   label="Location"
                   hasChanged={hasChanged("contactInfo.location")}
-                  icon={<MapPin className="h-[12px] w-[12px] text-[#EA580C]" />}
+                  icon={<MapPin className="h-[12px] w-[12px] text-[#E40000]" />}
                 >
                   <input
                     className={
@@ -517,7 +517,7 @@ function ContactPageEditModal({
                 <Field
                   label="Email"
                   hasChanged={hasChanged("contactInfo.email")}
-                  icon={<Mail className="h-[12px] w-[12px] text-[#EA580C]" />}
+                  icon={<Mail className="h-[12px] w-[12px] text-[#E40000]" />}
                 >
                   <input
                     type="email"
@@ -538,7 +538,7 @@ function ContactPageEditModal({
                 <Field
                   label="Working Hours"
                   hasChanged={hasChanged("contactInfo.workingHours")}
-                  icon={<Clock className="h-[12px] w-[12px] text-[#EA580C]" />}
+                  icon={<Clock className="h-[12px] w-[12px] text-[#E40000]" />}
                 >
                   <input
                     className={
@@ -557,13 +557,13 @@ function ContactPageEditModal({
                 {/* Phones */}
                 <div className="flex flex-col gap-[8px]">
                   <div className="flex items-center gap-[6px]">
-                    <Phone className="h-[12px] w-[12px] text-[#EA580C]" />
+                    <Phone className="h-[12px] w-[12px] text-[#E40000]" />
                     <Label className="text-[11px] font-semibold uppercase tracking-widest text-[#888888]">
                       Phone Numbers ({form.contactInfo.phone?.length ?? 0})
                     </Label>
                     {hasChanged("contactInfo.phone") && (
-                      <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#EA580C]">
-                        <CircleDot className="h-[10px] w-[10px] fill-[#EA580C]" />
+                      <span className="flex items-center gap-[4px] text-[10px] font-medium text-[#E40000]">
+                        <CircleDot className="h-[10px] w-[10px] fill-[#E40000]" />
                         Changed
                       </span>
                     )}
@@ -610,7 +610,7 @@ function ContactPageEditModal({
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-[7px] rounded-[10px] bg-[#EA580C] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-[7px] rounded-[10px] bg-[#E40000] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {saving ? (
               <Loader2 className="h-[14px] w-[14px] animate-spin" />
@@ -724,7 +724,7 @@ function ContactPageCreateModal({
       >
         <div className="flex shrink-0 items-center justify-between border-b border-[#E4C9B4] bg-white px-[20px] py-[14px] sm:px-[28px] sm:py-[16px]">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-widest text-[#EA580C]">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-[#E40000]">
               Create
             </p>
             <h2 className="mt-[1px] text-[16px] font-semibold text-[#111111] sm:text-[18px]">
@@ -743,7 +743,7 @@ function ContactPageCreateModal({
           <div className="flex flex-col gap-[20px]">
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Layers className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Layers className="h-[15px] w-[15px] text-[#E40000]" />
                 Section Header
               </h3>
               <div className="grid gap-[14px] sm:grid-cols-2">
@@ -785,14 +785,14 @@ function ContactPageCreateModal({
 
             <div className="rounded-[14px] border border-[#E4C9B4] bg-white p-[16px]">
               <h3 className="mb-[14px] flex items-center gap-[8px] text-[13px] font-semibold text-[#111111] sm:text-[14px]">
-                <Phone className="h-[15px] w-[15px] text-[#EA580C]" />
+                <Phone className="h-[15px] w-[15px] text-[#E40000]" />
                 Contact Information
               </h3>
 
               <div className="flex flex-col gap-[14px]">
                 <Field
                   label="Location"
-                  icon={<MapPin className="h-[12px] w-[12px] text-[#EA580C]" />}
+                  icon={<MapPin className="h-[12px] w-[12px] text-[#E40000]" />}
                 >
                   <input
                     className={inputCls}
@@ -806,7 +806,7 @@ function ContactPageCreateModal({
 
                 <Field
                   label="Email"
-                  icon={<Mail className="h-[12px] w-[12px] text-[#EA580C]" />}
+                  icon={<Mail className="h-[12px] w-[12px] text-[#E40000]" />}
                 >
                   <input
                     type="email"
@@ -821,7 +821,7 @@ function ContactPageCreateModal({
 
                 <Field
                   label="Working Hours"
-                  icon={<Clock className="h-[12px] w-[12px] text-[#EA580C]" />}
+                  icon={<Clock className="h-[12px] w-[12px] text-[#E40000]" />}
                 >
                   <input
                     className={inputCls}
@@ -835,7 +835,7 @@ function ContactPageCreateModal({
 
                 <div className="flex flex-col gap-[8px]">
                   <div className="flex items-center gap-[6px]">
-                    <Phone className="h-[12px] w-[12px] text-[#EA580C]" />
+                    <Phone className="h-[12px] w-[12px] text-[#E40000]" />
                     <Label className="text-[11px] font-semibold uppercase tracking-widest text-[#888888]">
                       Phone Numbers ({form.contactInfo.phone?.length ?? 0})
                     </Label>
@@ -877,7 +877,7 @@ function ContactPageCreateModal({
           <button
             onClick={handleCreate}
             disabled={saving}
-            className="flex items-center gap-[7px] rounded-[10px] bg-[#EA580C] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="flex items-center gap-[7px] rounded-[10px] bg-[#E40000] px-[18px] py-[9px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {saving ? (
               <Loader2 className="h-[14px] w-[14px] animate-spin" />
@@ -979,7 +979,7 @@ export default function ContactPageAdmin() {
             color: "#fff",
             fontSize: "14px",
           },
-          success: { iconTheme: { primary: "#EA580C", secondary: "#fff" } },
+          success: { iconTheme: { primary: "#E40000", secondary: "#fff" } },
           error: { iconTheme: { primary: "#DC2626", secondary: "#fff" } },
         }}
       />
@@ -1002,12 +1002,12 @@ export default function ContactPageAdmin() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search..."
-              className="h-[42px] w-full rounded-[12px] border-[#E4E4E4] bg-white pl-[36px] text-[13px] focus-visible:ring-[#EA580C]/30 sm:w-[220px]"
+              className="h-[42px] w-full rounded-[12px] border-[#E4E4E4] bg-white pl-[36px] text-[13px] focus-visible:ring-[#E40000]/30 sm:w-[220px]"
             />
           </div>
           <Button
             onClick={() => setCreateOpen(true)}
-            className="flex h-[42px] items-center justify-center gap-[8px] rounded-[14px] bg-[#EA580C] text-[13px] font-medium text-white hover:bg-[#EA580C] hover:shadow-[0_14px_30px_rgba(234,88,12,0.3)] sm:h-[44px] sm:px-[20px] sm:text-[14px]"
+            className="flex h-[42px] items-center justify-center gap-[8px] rounded-[14px] bg-[#E40000] text-[13px] font-medium text-white hover:bg-[#E40000] hover:shadow-[0_14px_30px_rgba(234,88,12,0.3)] sm:h-[44px] sm:px-[20px] sm:text-[14px]"
           >
             <Plus className="h-[17px] w-[17px]" />
             Add Contact Page
@@ -1019,12 +1019,12 @@ export default function ContactPageAdmin() {
       <div className="mx-auto mt-[22px] max-w-[1600px] sm:mt-[28px] lg:mt-[32px]">
         {loading ? (
           <div className="flex min-h-[200px] items-center justify-center">
-            <Loader2 className="h-[28px] w-[28px] animate-spin text-[#EA580C]" />
+            <Loader2 className="h-[28px] w-[28px] animate-spin text-[#E40000]" />
           </div>
         ) : filtered.length === 0 ? (
           <Card className="rounded-[20px] border border-dashed border-[#E4C9B4] bg-white/60">
             <CardContent className="flex flex-col items-center justify-center gap-[10px] p-[48px] text-center">
-              <Sparkles className="h-[32px] w-[32px] text-[#C2410C]/50" />
+              <Sparkles className="h-[32px] w-[32px] text-[#E40000]/50" />
               <p className="text-[14px] font-medium text-[#333333]">
                 No contact page found
               </p>
@@ -1050,7 +1050,7 @@ export default function ContactPageAdmin() {
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-wrap items-center gap-[8px]">
                             {item.sectionLabel && (
-                              <span className="text-[11px] font-medium uppercase tracking-widest text-[#EA580C] sm:text-[12px]">
+                              <span className="text-[11px] font-medium uppercase tracking-widest text-[#E40000] sm:text-[12px]">
                                 {item.sectionLabel}
                               </span>
                             )}
@@ -1073,7 +1073,7 @@ export default function ContactPageAdmin() {
                           <Button
                             onClick={() => setEditTarget(item)}
                             variant="outline"
-                            className="h-[34px] gap-[6px] rounded-[10px] border-[#E4C9B4] bg-white px-[12px] text-[12px] font-medium text-[#C2410C] hover:bg-[#FFF4EC] hover:text-[#C2410C] sm:h-[36px] sm:text-[13px]"
+                            className="h-[34px] gap-[6px] rounded-[10px] border-[#E4C9B4] bg-white px-[12px] text-[12px] font-medium text-[#E40000] hover:bg-[#FFF4EC] hover:text-[#E40000] sm:h-[36px] sm:text-[13px]"
                           >
                             <Pencil className="h-[13px] w-[13px]" />
                             Edit
@@ -1095,7 +1095,7 @@ export default function ContactPageAdmin() {
                             seg.highlight ? (
                               <span
                                 key={i}
-                                className="font-medium text-[#EA580C]"
+                                className="font-medium text-[#E40000]"
                               >
                                 {seg.text}
                               </span>
@@ -1110,7 +1110,7 @@ export default function ContactPageAdmin() {
                       <div className="mt-[16px] grid grid-cols-1 gap-[8px] sm:grid-cols-2 lg:grid-cols-4">
                         {item.contactInfo?.location && (
                           <div className="flex items-start gap-[8px] rounded-[8px] bg-[#FFF9F4] p-[10px]">
-                            <MapPin className="mt-[2px] h-[14px] w-[14px] shrink-0 text-[#EA580C]" />
+                            <MapPin className="mt-[2px] h-[14px] w-[14px] shrink-0 text-[#E40000]" />
                             <span className="text-[11px] leading-[1.5] text-[#666] sm:text-[12px]">
                               {item.contactInfo.location}
                             </span>
@@ -1118,7 +1118,7 @@ export default function ContactPageAdmin() {
                         )}
                         {item.contactInfo?.email && (
                           <div className="flex items-center gap-[8px] rounded-[8px] bg-[#FFF9F4] p-[10px]">
-                            <Mail className="h-[14px] w-[14px] shrink-0 text-[#EA580C]" />
+                            <Mail className="h-[14px] w-[14px] shrink-0 text-[#E40000]" />
                             <span className="truncate text-[11px] text-[#666] sm:text-[12px]">
                               {item.contactInfo.email}
                             </span>
@@ -1126,7 +1126,7 @@ export default function ContactPageAdmin() {
                         )}
                         {item.contactInfo?.workingHours && (
                           <div className="flex items-center gap-[8px] rounded-[8px] bg-[#FFF9F4] p-[10px]">
-                            <Clock className="h-[14px] w-[14px] shrink-0 text-[#EA580C]" />
+                            <Clock className="h-[14px] w-[14px] shrink-0 text-[#E40000]" />
                             <span className="truncate text-[11px] text-[#666] sm:text-[12px]">
                               {item.contactInfo.workingHours}
                             </span>
@@ -1134,7 +1134,7 @@ export default function ContactPageAdmin() {
                         )}
                         {item.contactInfo?.phone?.length > 0 && (
                           <div className="flex items-start gap-[8px] rounded-[8px] bg-[#FFF9F4] p-[10px]">
-                            <Phone className="mt-[2px] h-[14px] w-[14px] shrink-0 text-[#EA580C]" />
+                            <Phone className="mt-[2px] h-[14px] w-[14px] shrink-0 text-[#E40000]" />
                             <div className="flex flex-col gap-[2px]">
                               {item.contactInfo.phone.map((p, i) => (
                                 <span

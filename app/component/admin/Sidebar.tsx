@@ -119,7 +119,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
                   rounded-lg
 
-                  bg-orange-700
+                  bg-[#E40000]
 
                   text-white
                 "
@@ -189,7 +189,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                               render={<Link href={subItem.url} />}
                               isActive={pathname === subItem.url}
                               className="
-                                data-active:bg-orange-600
+                                data-active:bg-[#E40000]
                                 data-active:text-white
                               "
                             >

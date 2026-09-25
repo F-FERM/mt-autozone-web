@@ -86,7 +86,7 @@ export default function LoginPage() {
           },
           success: {
             iconTheme: {
-              primary: "#EA580C",
+              primary: "#E40000",
               secondary: "#fff",
             },
           },
@@ -123,7 +123,7 @@ export default function LoginPage() {
 
             rounded-full
 
-            bg-[#EA580C]/20
+            bg-[#E40000]/20
 
             blur-[100px]
 
@@ -155,7 +155,7 @@ export default function LoginPage() {
 
             rounded-full
 
-            bg-[#FB923C]/25
+            bg-[#E40000]/25
 
             blur-[100px]
 
@@ -187,7 +187,7 @@ export default function LoginPage() {
 
             rounded-full
 
-            bg-[#FDBA74]/15
+            bg-[#E40000]/15
 
             blur-[80px]
 
@@ -229,7 +229,7 @@ export default function LoginPage() {
 
           overflow-hidden
 
-          bg-[#C2410C]
+          bg-[#E40000]
 
           p-[32px]
 
@@ -462,7 +462,7 @@ export default function LoginPage() {
 
                   rounded-[16px]
 
-                  bg-[#C2410C]
+                  bg-[#E40000]
 
                   text-white
 
@@ -601,7 +601,7 @@ export default function LoginPage() {
 
                       shadow-none
 
-                      focus-visible:ring-[#EA580C]/30
+                      focus-visible:ring-[#E40000]/30
 
                       sm:h-[58px]
 
@@ -674,7 +674,7 @@ export default function LoginPage() {
 
                       shadow-none
 
-                      focus-visible:ring-[#EA580C]/30
+                      focus-visible:ring-[#E40000]/30
 
                       sm:h-[58px]
 
@@ -705,7 +705,7 @@ export default function LoginPage() {
 
                   rounded-[16px]
 
-                  bg-[#EA580C]
+                  bg-[#E40000]
 
                   text-[15px]
                   font-medium
@@ -715,7 +715,7 @@ export default function LoginPage() {
                   transition-all
                   duration-500
 
-                  hover:bg-[#EA580C]
+                  hover:bg-[#E40000]
                   hover:shadow-[0_18px_40px_rgba(234,88,12,0.35)]
 
                   sm:mt-[30px]
@@ -778,7 +778,7 @@ export default function LoginPage() {
                         border-white
                         border-t-transparent
 
-                        group-hover:border-[#EA580C]
+                        group-hover:border-[#E40000]
                       "
                     />
                   ) : (
@@ -788,7 +788,7 @@ export default function LoginPage() {
                           transition-all
                           duration-500
 
-                          group-hover:text-[#EA580C]
+                          group-hover:text-[#E40000]
                         "
                       >
                         Login To Dashboard
@@ -803,7 +803,7 @@ export default function LoginPage() {
                           duration-500
 
                           group-hover:translate-x-[4px]
-                          group-hover:text-[#EA580C]
+                          group-hover:text-[#E40000]
                         "
                       />
                     </>
