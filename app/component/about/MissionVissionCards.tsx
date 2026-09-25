@@ -1,49 +1,159 @@
-import Image from "next/image";
-import missionBg from "../../../public/images/missionvision.jpg";
-import visionBg from "../../../public/images/missionvision.jpg";
+"use client";
 
-const CARDS = [
-  {
-    key: "mission",
-    title: "Our Mission",
-    description:
-      "At M.T. Autozone, our mission is to deliver professional, high-quality car care that exceeds customer expectations. We combine skilled expertise, quality materials, modern techniques, and meticulous attention to detail to ensure every vehicle receives the care it deserves. We continuously strive to improve our standards and provide a reliable experience for every customer. ",
-    image: missionBg,
-    alt: "M.T. Autozone technician working on a vehicle",
-  },
-  {
-    key: "vision",
-    title: "Our Vision",
-    description:
-      "Our vision at M.T. Autozone is to become a leading name in professional car care in Dubai, recognized for quality, precision, innovation, and customer satisfaction. By continuously improving our practices and embracing innovation, we strive to deliver exceptional results and build lasting trust with every customer. Our goal is to create a reputation for excellence, reliability, and professional care, ensuring every vehicle receives the highest standard of attention. ",
-    image: visionBg,
-    alt: "Close-up of automotive detailing tools in use",
-  },
-];
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import api from "@/lib/axios";
+
+// Fallback images
+import missionBg from "../../../public/images/k1.jpg";
+import visionBg from "../../../public/images/k2.jpg";
+
+// ================= TYPES =================
+
+interface DescriptionSegment {
+  text: string;
+  highlight: boolean;
+}
+
+interface MissionBlockApi {
+  title: string;
+  image: string;
+  description: DescriptionSegment[];
+}
+
+interface VisionBlockApi {
+  title: string;
+  image: string;
+  description: DescriptionSegment[];
+}
+
+interface AboutPageApiResponse {
+  _id: string;
+  mission: MissionBlockApi;
+  vision: VisionBlockApi;
+}
+
+interface CardData {
+  key: string;
+  title: string;
+  description: DescriptionSegment[];
+  image: string;
+  alt: string;
+}
+
+// ================= COMPONENT =================
 
 export default function MissionVisionCards() {
+  const [cards, setCards] = useState<CardData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAbout = async () => {
+      try {
+        const res = await api.get<AboutPageApiResponse | AboutPageApiResponse[]>(
+          "/about-page",
+        );
+
+        let apiData: AboutPageApiResponse | null = null;
+        if (Array.isArray(res.data)) {
+          apiData = res.data.length > 0 ? res.data[0] : null;
+        } else if (res.data && typeof res.data === "object") {
+          apiData = res.data;
+        }
+
+        if (!apiData) {
+          setCards([]);
+          return;
+        }
+
+        const result: CardData[] = [];
+
+        if (apiData.mission) {
+          result.push({
+            key: "mission",
+            title: apiData.mission.title || "Our Mission",
+            description: apiData.mission.description ?? [],
+            image: apiData.mission.image || "",
+            alt: "M.T. Autozone technician working on a vehicle",
+          });
+        }
+
+        if (apiData.vision) {
+          result.push({
+            key: "vision",
+            title: apiData.vision.title || "Our Vision",
+            description: apiData.vision.description ?? [],
+            image: apiData.vision.image || "",
+            alt: "Close-up of automotive detailing tools in use",
+          });
+        }
+
+        setCards(result);
+      } catch (err) {
+        console.error("Failed to fetch mission/vision:", err);
+        setCards([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAbout();
+  }, []);
+
+  // Fallback while loading
+  if (isLoading) {
+    return (
+      <section className="relative w-full overflow-hidden bg-black isolate px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-[228px] py-8 sm:py-14 md:py-16">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-stretch gap-5 md:gap-4 lg:gap-5 xl:gap-[20px] w-full max-w-[1464px] mx-auto">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div
+              key={i}
+              className="relative min-h-[240px] animate-pulse rounded-2xl bg-white/5 sm:min-h-[220px] lg:min-h-[216px] w-full md:flex-1"
+            />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (cards.length === 0) return null;
+
+  // Fallback images when API returns empty image URLs
+  const fallbackImages: Record<string, typeof missionBg> = {
+    mission: missionBg,
+    vision: visionBg,
+  };
+
+  const renderDescription = (segments: DescriptionSegment[]) =>
+    segments.map((seg, idx) =>
+      seg.highlight ? (
+        <span key={idx} className="text-[#E40000]">
+           {""}  {seg.text}   {""} 
+        </span>
+      ) : (
+        <span key={idx}>{seg.text}</span>
+      ),
+    );
+
   return (
     <section
       className="
         relative w-full overflow-hidden
         bg-black isolate
-        px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-[228px]
-        py-10 sm:py-14 md:py-16
+        px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-[228px]
+        py-8 sm:py-14 md:py-16
       "
     >
-      {/* Red glow bleeding in from the left, fading to black on the right —
-          same treatment as the Hero's right-side glow, mirrored, so it
-          reads as one continuous light source running down the page's
-          left edge across Hero → Mission → Why Choose Us. */}
+      {/* Red glow from the left */}
       <div
         aria-hidden
         className="
           pointer-events-none absolute inset-y-0 left-0 z-0
           w-full
-          bg-gradient-to-r from-[#E40000]/45 via-[#E40000]/10 to-transparent 
+          bg-gradient-to-r from-[#E40000]/45 via-[#E40000]/10 to-transparent
         "
       />
-      {/* Vertical fade to black at the top, so the glow blends into the gap above */}
+      {/* Fade to black at the top */}
       <div
         aria-hidden
         className="
@@ -53,7 +163,6 @@ export default function MissionVisionCards() {
         "
       />
 
-
       <div
         className="
           relative z-10
@@ -62,40 +171,56 @@ export default function MissionVisionCards() {
           w-full max-w-[1464px] mx-auto
         "
       >
-        {CARDS.map((card) => (
+        {cards.map((card) => (
           <div
             key={card.key}
             className="
               group relative isolate overflow-hidden
               w-full md:flex-1 xl:max-w-[722px]
-              min-h-[216px]
+              min-h-[240px] sm:min-h-[220px] lg:min-h-[216px]
               rounded-2xl lg:rounded-[20px]
-              px-6 py-9 sm:px-8 sm:py-10 lg:px-9 lg:py-[45px]
+              px-5 py-7 sm:px-8 sm:py-10 lg:px-9 lg:py-[45px]
               flex flex-col justify-start gap-2.5
             "
           >
-            {/* Background image (bottom-most layer, z-0) */}
-            <Image
-              src={card.image}
-              alt={card.alt}
-              fill
-              sizes="(max-width: 768px) 100vw, 722px"
-              className="
-                z-0 object-cover
-                transition-opacity duration-500
-                group-hover:opacity-0
-              "
-            />
-            {/* Dark overlay for default state, on top of the image */}
+            {/* Background image */}
+            {card.image ? (
+              <Image
+                src={card.image}
+                alt={card.alt}
+                fill
+                unoptimized
+                sizes="(max-width: 768px) 100vw, 722px"
+                className="
+                  z-0 object-cover
+                  transition-opacity duration-500
+                  group-hover:opacity-0
+                "
+              />
+            ) : (
+              <Image
+                src={fallbackImages[card.key] || missionBg}
+                alt={card.alt}
+                fill
+                sizes="(max-width: 768px) 100vw, 722px"
+                className="
+                  z-0 object-cover
+                  transition-opacity duration-500
+                  group-hover:opacity-0
+                "
+              />
+            )}
+
+            {/* Dark overlay */}
             <div
               className="
                 absolute inset-0 z-10
-                bg-black/85
+                bg-black/80
                 transition-opacity duration-500
                 group-hover:opacity-0
               "
             />
-            {/* White overlay revealed on hover, on top of everything below the text */}
+            {/* White hover overlay */}
             <div
               className="
                 absolute inset-0 z-20
@@ -105,13 +230,13 @@ export default function MissionVisionCards() {
               "
             />
 
-            {/* Title (text sits above all background layers) */}
+            {/* Title */}
             <h3
               className="
                 relative z-30
                 font-poppins font-medium
-                text-xl sm:text-2xl lg:text-[24px]
-                leading-none tracking-normal
+                text-lg sm:text-2xl lg:text-[24px]
+                leading-tight sm:leading-none tracking-normal
                 text-white
                 transition-colors duration-500
                 group-hover:text-[#E40000]
@@ -126,8 +251,8 @@ export default function MissionVisionCards() {
               className="
                 relative z-30
                 font-poppins font-normal
-                text-sm lg:text-[14px]
-                leading-loose lg:leading-[1.9]
+                text-sm
+                leading-relaxed sm:leading-loose lg:leading-[1.9]
                 tracking-normal
                 text-[#A9A9A9]
                 transition-colors duration-500
@@ -135,7 +260,7 @@ export default function MissionVisionCards() {
                 max-w-full lg:max-w-[650px]
               "
             >
-              {card.description}
+              {renderDescription(card.description)}
             </p>
           </div>
         ))}

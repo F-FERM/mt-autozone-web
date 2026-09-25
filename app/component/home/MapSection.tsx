@@ -5,7 +5,7 @@ interface LocationMapProps {
 }
 
 export default function LocationMap({
-  mapQuery = "MT Auto Zone, Al Quoz Industrial Area 1, Dubai, UAE",
+  mapQuery = "MT Autozone Address: 18th B St - Umm Ramool - Dubai - United Arab Emirates",
 }: LocationMapProps) {
   const encodedQuery = encodeURIComponent(mapQuery);
 

@@ -1,17 +1,110 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import about1 from "../../../public/images/about1.jpg";
+import api from "@/lib/axios";
 import MissionVisionCards from "./MissionVissionCards";
 
+// Fallback image
+import about1 from "../../../public/images/about1.jpg";
+
+// ================= TYPES =================
+
+interface DescriptionSegment {
+  text: string;
+  highlight: boolean;
+}
+
+interface AboutPageApiResponse {
+  _id: string;
+  sectionLabel: string;
+  title: string;
+  description: DescriptionSegment[];
+  mainImage: string;
+  isActive: boolean;
+}
+
+interface AboutHeroData {
+  sectionLabel: string;
+  title: string;
+  description: DescriptionSegment[];
+  mainImage: string;
+}
+
+const DEFAULT_DATA: AboutHeroData = {
+  sectionLabel: "About Us",
+  title: "Your Trusted Partner in Automotive Detailing Excellence",
+  description: [
+    { text: "Our vision at ", highlight: false },
+    { text: "M.T. Autozone", highlight: true },
+    {
+      text: " is to deliver exceptional car care through professional expertise, quality materials, modern techniques, and genuine customer service.",
+      highlight: false,
+    },
+  ],
+  mainImage: "",
+};
+
+// ================= COMPONENT =================
+
 export default function AboutUs() {
+  const [data, setData] = useState<AboutHeroData>(DEFAULT_DATA);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAbout = async () => {
+      try {
+        const res = await api.get<AboutPageApiResponse | AboutPageApiResponse[]>(
+          "/about-page",
+        );
+
+        let apiData: AboutPageApiResponse | null = null;
+        if (Array.isArray(res.data)) {
+          apiData = res.data.length > 0 ? res.data[0] : null;
+        } else if (res.data && typeof res.data === "object") {
+          apiData = res.data;
+        }
+
+        if (!apiData) {
+          setData(DEFAULT_DATA);
+          return;
+        }
+
+        setData({
+          sectionLabel: apiData.sectionLabel || DEFAULT_DATA.sectionLabel,
+          title: apiData.title || DEFAULT_DATA.title,
+          description:
+            apiData.description?.length > 0
+              ? apiData.description
+              : DEFAULT_DATA.description,
+          mainImage: apiData.mainImage || "",
+        });
+      } catch (err) {
+        console.error("Failed to fetch about page hero:", err);
+        setData(DEFAULT_DATA);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAbout();
+  }, []);
+
+  const renderDescription = () =>
+    data.description.map((seg, idx) =>
+      seg.highlight ? (
+        <span key={idx} className="text-[#E40000]">
+          {" "} {seg.text} {" "}
+        </span>
+      ) : (
+        <span key={idx}>{seg.text}</span>
+      ),
+    );
+
   return (
     <div className="bg-black">
-      <section
-        className="
-          relative w-full overflow-hidden
-          bg-black isolate
-        "
-      >
-        {/* Red glow bleeding in from the right, fading to black on the left */}
+      <section className="relative w-full overflow-hidden bg-black isolate">
+        {/* Red glow bleeding in from the right */}
         <div
           aria-hidden
           className="
@@ -20,9 +113,8 @@ export default function AboutUs() {
             bg-gradient-to-l from-[#E40000]/65 via-[#E40000]/10 to-transparent
           "
         />
-        {/* Secondary red bloom, bottom-left corner */}
 
-        {/* Vertical fade to black at the bottom, so the glow blends into the gap below */}
+        {/* Vertical fade to black at bottom */}
         <div
           aria-hidden
           className="
@@ -32,45 +124,50 @@ export default function AboutUs() {
           "
         />
 
-
         <div
           className="
-            relative z-10
-            flex flex-col
-           
+            relative z-10 flex flex-col
+            px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16
             pt-8 sm:pt-12 md:pt-14 lg:pt-16 xl:pt-24
-            
             w-full max-w-[1464px] mx-auto
           "
         >
-          {/* About Us eyebrow */}
-          <span
-            className="
-              block w-full
-              font-poppins font-normal
-              text-sm sm:text-base
-              leading-none tracking-normal
-              text-[#E40000]
-              mb-2 sm:mb-3 md:mb-4
-            "
-          >
-            About Us
-          </span>
+          {/* Eyebrow */}
+          {isLoading ? (
+            <div className="h-4 w-24 animate-pulse rounded-md bg-white/10 mb-2 sm:mb-3 md:mb-4" />
+          ) : (
+            <span
+              className="
+                block w-full
+                font-poppins font-normal
+                text-sm sm:text-base
+                leading-none tracking-normal
+                text-[#E40000]
+                mb-2 sm:mb-3 md:mb-4
+              "
+            >
+              {data.sectionLabel}
+            </span>
+          )}
 
           {/* Heading */}
-          <h2
-            className="
-              font-poppins font-semibold
-              text-2xl sm:text-3xl md:text-[32px] lg:text-[36px]
-              leading-tight sm:leading-snug lg:leading-[150%]
-              tracking-normal
-              text-white
-              w-full max-w-[681px] min-h-0 lg:min-h-[108px]
-              mb-4 sm:mb-5 md:mb-6 lg:mb-[30px]
-            "
-          >
-            Your Trusted Partner in Automotive Detailing Excellence
-          </h2>
+          {isLoading ? (
+            <div className="h-8 w-3/4 animate-pulse rounded-md bg-white/10 mb-4 sm:mb-5 md:mb-6 lg:mb-[30px]" />
+          ) : (
+            <h2
+              className="
+                font-poppins font-semibold
+                text-2xl sm:text-3xl md:text-[32px] lg:text-[36px]
+                leading-tight sm:leading-snug lg:leading-[150%]
+                tracking-normal
+                text-white
+                w-full max-w-[681px]
+                mb-4 sm:mb-5 md:mb-6 lg:mb-[30px]
+              "
+            >
+              {data.title}
+            </h2>
+          )}
 
           {/* Image + content row */}
           <div
@@ -85,53 +182,59 @@ export default function AboutUs() {
             <div
               className="
                 relative w-full
-                h-[220px] sm:h-[300px] md:h-[340px] lg:h-[367px]
+                aspect-[16/9] lg:aspect-auto
+                h-auto lg:h-[367px]
                 lg:flex-1 lg:max-w-[722px]
                 flex-shrink-0
                 rounded-2xl lg:rounded-[20px] overflow-hidden
               "
             >
-              <Image
-                src={about1}
-                alt="M.T. Autozone technician detailing a vehicle"
-                fill
-                sizes="(max-width: 1024px) 100vw, 722px"
-                className="object-cover"
-                priority
-              />
+              {data.mainImage ? (
+                <Image
+                  src={data.mainImage}
+                  alt="M.T. Autozone technician detailing a vehicle"
+                  fill
+                  unoptimized
+                  sizes="(max-width: 1024px) 100vw, 722px"
+                  className="object-cover"
+                  priority
+                />
+              ) : (
+                <Image
+                  src={about1}
+                  alt="M.T. Autozone technician detailing a vehicle"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 722px"
+                  className="object-cover"
+                  priority
+                />
+              )}
             </div>
 
             {/* Paragraph */}
-            <p
-              className="
-                font-poppins font-normal
-                text-sm sm:text-base lg:text-[18px]
-                leading-relaxed lg:leading-normal
-                tracking-normal
-                text-[#878787]
-                w-full lg:flex-1 lg:max-w-[719px]
-              "
-            >
-              Our vision at{" "}
-              <span className="text-[#E40000]">M.T. Autozone</span> is to
-              deliver exceptional car care through professional expertise,
-              quality materials, modern techniques, and genuine customer
-              service. We believe every vehicle deserves careful attention
-              and a commitment to excellence. With a strong focus on
-              quality, precision, and customer satisfaction, we work to
-              maintain your vehicle&rsquo;s appearance, comfort, and
-              protection. Our experienced team approaches every vehicle with
-              dedication and attention to detail, ensuring a reliable
-              experience and a finish you can be proud of. At{" "}
-              <span className="text-[#E40000]">M.T. Autozone</span>, we are
-              committed to building lasting relationships with our customers
-              through consistent quality, professional care, and dependable
-              results.
-            </p>
+            {isLoading ? (
+              <div className="space-y-2 w-full lg:flex-1 lg:max-w-[719px]">
+                <div className="h-4 w-full animate-pulse rounded-md bg-white/10" />
+                <div className="h-4 w-full animate-pulse rounded-md bg-white/10" />
+                <div className="h-4 w-2/3 animate-pulse rounded-md bg-white/10" />
+              </div>
+            ) : (
+              <p
+                className="
+                  font-poppins font-normal
+                  text-sm sm:text-base lg:text-[18px]
+                  leading-relaxed lg:leading-normal
+                  tracking-normal
+                  text-[#878787]
+                  w-full lg:flex-1 lg:max-w-[719px]
+                "
+              >
+                {renderDescription()}
+              </p>
+            )}
           </div>
         </div>
       </section>
-
 
       <MissionVisionCards />
     </div>

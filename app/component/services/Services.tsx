@@ -1,271 +1,57 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import serviceBodyWaxing from "../../../public/images/serviceshero.jpg";
-import serviceInteriorDetailing from "../../../public/images/serviceshero.jpg";
-import serviceEngineCleaning from "../../../public/images/serviceshero.jpg";
-import serviceCeramicCoating from "../../../public/images/serviceshero.jpg";
-import serviceHeadlightRestoration from "../../../public/images/serviceshero.jpg";
-import serviceLeatherConditioning from "../../../public/images/serviceshero.jpg";
-import servicePaintCorrection from "../../../public/images/serviceshero.jpg";
-import serviceOdorRemoval from "../../../public/images/serviceshero.jpg";
-import serviceWindowTinting from "../../../public/images/serviceshero.jpg";
-import serviceUndercarriageWash from "../../../public/images/serviceshero.jpg";
-import serviceScratchRemoval from "../../../public/images/serviceshero.jpg";
-import serviceRimCleaning from "../../../public/images/serviceshero.jpg";
-import serviceFullBodyWash from "../../../public/images/serviceshero.jpg";
-import serviceWaxPolish from "../../../public/images/serviceshero.jpg";
-import servicePetHairRemoval from "../../../public/images/serviceshero.jpg";
-import serviceSteamCleaning from "../../../public/images/serviceshero.jpg";
-import serviceDashboardTreatment from "../../../public/images/serviceshero.jpg";
-import serviceTireShine from "../../../public/images/serviceshero.jpg";
+import Link from "next/link";
+import api from "@/lib/axios";
 
-// ASSUMPTION: all service images and all three icons still point to the same
-// placeholder files (serviceshero.jpg / phone.png), exactly as in your code.
-// Swap in the real filenames when you have them.
-import shieldIcon from "../../../public/images/phone.png";
-import sparkleIcon from "../../../public/images/phone.png";
-import sprayIcon from "../../../public/images/phone.png";
+// Fallback image
+import serviceFallback from "../../../public/images/serviceshero.jpg";
 
-type PointIconType = "shield" | "sparkle" | "spray";
+// ================= TYPES =================
 
-const SERVICES: {
+interface FeatureApi {
+  _id?: string;
+  title: string;
+  icon: string; // URL to uploaded icon image
+}
+
+interface ServiceApi {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  image: string;
+  features: FeatureApi[];
+  order: number;
+  isActive: boolean;
+}
+
+interface ServicePageApiResponse {
+  _id: string;
+  services: ServiceApi[];
+}
+
+interface ServiceItem {
+  _id: string;
   key: string;
   title: string;
   description: string;
-  points: { label: string; icon: PointIconType }[];
-  image: typeof serviceBodyWaxing;
-}[] = [
-    {
-      key: "body-waxing",
-      title: "Body Waxing",
-      description:
-        "Your car's paint is protected with the professional body waxing service from dirt and other environmental factors for long-lasting shine.",
-      points: [
-        { label: "UV Protection", icon: "shield" },
-        { label: "Smoother, Glossier", icon: "sparkle" },
-        { label: "Paint Protection", icon: "spray" },
-      ],
-      image: serviceBodyWaxing,
-    },
-    {
-      key: "interior-detailing",
-      title: "Interior Detailing",
-      description:
-        "A deep interior clean that removes dust, stains, and grime, leaving every surface fresh, sanitized, and comfortable to sit in.",
-      points: [
-        { label: "Deep Cleaning", icon: "spray" },
-        { label: "Stain Removal", icon: "shield" },
-        { label: "Fresh Interior", icon: "sparkle" },
-      ],
-      image: serviceInteriorDetailing,
-    },
-    {
-      key: "engine-cleaning",
-      title: "Engine Cleaning",
-      description:
-        "Careful degreasing and cleaning of the engine bay to remove built-up grime, improving performance visibility and presentation.",
-      points: [
-        { label: "Degreasing", icon: "spray" },
-        { label: "Improved Airflow", icon: "sparkle" },
-        { label: "Clean Bay", icon: "shield" },
-      ],
-      image: serviceEngineCleaning,
-    },
-    {
-      key: "ceramic-coating",
-      title: "Ceramic Coating",
-      description:
-        "A durable ceramic layer that shields your paint from scratches, oxidation, and weather damage while giving it a glass-like finish.",
-      points: [
-        { label: "Scratch Resistant", icon: "shield" },
-        { label: "Glossy Finish", icon: "sparkle" },
-        { label: "Weatherproof", icon: "shield" },
-      ],
-      image: serviceCeramicCoating,
-    },
-    {
-      key: "headlight-restoration",
-      title: "Headlight Restoration",
-      description:
-        "Foggy, yellowed headlights are restored to a clear finish, improving night visibility and refreshing your car's overall look.",
-      points: [
-        { label: "Clear Vision", icon: "sparkle" },
-        { label: "UV Sealant", icon: "shield" },
-        { label: "Restored Clarity", icon: "sparkle" },
-      ],
-      image: serviceHeadlightRestoration,
-    },
-    {
-      key: "leather-conditioning",
-      title: "Leather Conditioning",
-      description:
-        "Leather seats and trim are cleaned and conditioned to prevent cracking, keeping the interior soft, supple, and looking new.",
-      points: [
-        { label: "Crack Prevention", icon: "shield" },
-        { label: "Soft Finish", icon: "sparkle" },
-        { label: "Long-Term Care", icon: "spray" },
-      ],
-      image: serviceLeatherConditioning,
-    },
-    {
-      key: "paint-correction",
-      title: "Paint Correction",
-      description:
-        "Swirl marks, light scratches, and oxidation are carefully polished away to restore a smooth, flawless paint finish.",
-      points: [
-        { label: "Swirl Removal", icon: "spray" },
-        { label: "Smooth Finish", icon: "sparkle" },
-        { label: "Restored Gloss", icon: "shield" },
-      ],
-      image: servicePaintCorrection,
-    },
-    {
-      key: "odor-removal",
-      title: "Odor Removal",
-      description:
-        "Stubborn odors are neutralized at the source using professional treatment, leaving your cabin smelling clean and fresh.",
-      points: [
-        { label: "Odor Neutralizing", icon: "spray" },
-        { label: "Fresh Cabin", icon: "sparkle" },
-        { label: "Long-Lasting", icon: "shield" },
-      ],
-      image: serviceOdorRemoval,
-    },
-    {
-      key: "window-tinting",
-      title: "Window Tinting",
-      description:
-        "Quality tint film applied for added privacy, heat reduction, and UV protection without compromising visibility.",
-      points: [
-        { label: "UV Blocking", icon: "shield" },
-        { label: "Heat Reduction", icon: "sparkle" },
-        { label: "Added Privacy", icon: "shield" },
-      ],
-      image: serviceWindowTinting,
-    },
-    {
-      key: "undercarriage-wash",
-      title: "Undercarriage Wash",
-      description:
-        "A thorough wash beneath the vehicle removes road salt, mud, and debris that can lead to rust and long-term corrosion.",
-      points: [
-        { label: "Rust Prevention", icon: "shield" },
-        { label: "Deep Rinse", icon: "spray" },
-        { label: "Debris Removal", icon: "sparkle" },
-      ],
-      image: serviceUndercarriageWash,
-    },
-    {
-      key: "scratch-removal",
-      title: "Scratch Removal",
-      description:
-        "Minor scratches and surface imperfections are treated and blended, restoring a clean, uniform look to your paintwork.",
-      points: [
-        { label: "Surface Repair", icon: "spray" },
-        { label: "Blended Finish", icon: "sparkle" },
-        { label: "Restored Look", icon: "shield" },
-      ],
-      image: serviceScratchRemoval,
-    },
-    {
-      key: "rim-cleaning",
-      title: "Rim Cleaning",
-      description:
-        "Brake dust, grime, and road residue are removed from wheels and rims, restoring their shine and finish.",
-      points: [
-        { label: "Brake Dust Removal", icon: "spray" },
-        { label: "Restored Shine", icon: "sparkle" },
-        { label: "Detailed Finish", icon: "shield" },
-      ],
-      image: serviceRimCleaning,
-    },
-    {
-      key: "full-body-wash",
-      title: "Full Body Wash",
-      description:
-        "A complete hand wash covering every panel of your vehicle, removing dirt and grime for a clean, streak-free finish.",
-      points: [
-        { label: "Hand Washed", icon: "spray" },
-        { label: "Streak-Free", icon: "sparkle" },
-        { label: "Complete Coverage", icon: "shield" },
-      ],
-      image: serviceFullBodyWash,
-    },
-    {
-      key: "wax-polish",
-      title: "Wax & Polish",
-      description:
-        "A combined wax and polish treatment that enhances shine while adding a protective layer against everyday wear.",
-      points: [
-        { label: "Enhanced Shine", icon: "sparkle" },
-        { label: "Protective Layer", icon: "shield" },
-        { label: "Smooth Finish", icon: "sparkle" },
-      ],
-      image: serviceWaxPolish,
-    },
-    {
-      key: "pet-hair-removal",
-      title: "Pet Hair Removal",
-      description:
-        "Embedded pet hair is thoroughly removed from seats, carpets, and upholstery, leaving your interior clean and fresh.",
-      points: [
-        { label: "Deep Extraction", icon: "spray" },
-        { label: "Upholstery Safe", icon: "shield" },
-        { label: "Fresh Interior", icon: "sparkle" },
-      ],
-      image: servicePetHairRemoval,
-    },
-    {
-      key: "steam-cleaning",
-      title: "Steam Cleaning",
-      description:
-        "High-temperature steam lifts dirt and bacteria from surfaces without harsh chemicals, for a safe, deep clean.",
-      points: [
-        { label: "Chemical-Free", icon: "shield" },
-        { label: "Bacteria Removal", icon: "spray" },
-        { label: "Deep Clean", icon: "sparkle" },
-      ],
-      image: serviceSteamCleaning,
-    },
-    {
-      key: "dashboard-treatment",
-      title: "Dashboard Treatment",
-      description:
-        "Dashboard and trim are cleaned and treated to reduce sun damage and fading, keeping surfaces looking refreshed.",
-      points: [
-        { label: "UV Protection", icon: "shield" },
-        { label: "Anti-Fade", icon: "sparkle" },
-        { label: "Refreshed Look", icon: "spray" },
-      ],
-      image: serviceDashboardTreatment,
-    },
-    {
-      key: "tire-shine",
-      title: "Tire Shine",
-      description:
-        "A long-lasting tire dressing that restores a deep black finish, completing your vehicle's fully detailed look.",
-      points: [
-        { label: "Deep Black Finish", icon: "sparkle" },
-        { label: "Long-Lasting", icon: "shield" },
-        { label: "Complete Look", icon: "spray" },
-      ],
-      image: serviceTireShine,
-    },
-  ];
+  image: string;
+  points: { label: string; icon: string }[];
+}
 
-const ICON_MAP = {
-  shield: shieldIcon,
-  sparkle: sparkleIcon,
-  spray: sprayIcon,
-};
+// ================= SMALL COMPONENTS =================
 
-function PointIcon({ type }: { type: PointIconType }) {
+function PointIcon({ src }: { src: string }) {
+  if (!src) return <span className="block h-4 w-4 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />;
   return (
-    // Slightly smaller icon so icon + label fit side by side inside 3 columns
-    <span className="relative block h-5 w-5 shrink-0 sm:h-6 sm:w-6 xl:h-[30px] xl:w-[30px]">
+    <span className="relative block h-4 w-4 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6">
       <Image
-        src={ICON_MAP[type]}
+        src={src}
         alt=""
         fill
+        unoptimized
         sizes="30px"
         className="object-contain"
       />
@@ -299,10 +85,84 @@ function ArrowIcon() {
   );
 }
 
-export default function ServicesGrid() {
+function ServicesGridSkeleton() {
   return (
     <section className="relative isolate w-full bg-black">
-      {/* Red glow — TOP LEFT corner (the large wide glow, previously on the right) */}
+      <div className="relative z-10 grid grid-cols-1 gap-x-6 gap-y-10 px-5 pt-10 pb-16 sm:grid-cols-2 sm:gap-x-7 sm:gap-y-12 sm:px-8 sm:pt-14 sm:pb-20 md:px-12 md:pt-16 md:pb-24 lg:grid-cols-3 lg:gap-x-[30px] lg:gap-y-[45px] lg:px-16 lg:pt-20 lg:pb-28 xl:px-24 xl:pb-32 mx-auto w-full max-w-[1464px]">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div
+            key={i}
+            className="relative min-h-[340px] animate-pulse rounded-[20px] bg-white/5 sm:min-h-[351px]"
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ================= MAIN COMPONENT =================
+
+export default function ServicesGrid() {
+  const [services, setServices] = useState<ServiceItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await api.get<
+          ServicePageApiResponse | ServicePageApiResponse[]
+        >("/service-page");
+
+        let apiData: ServicePageApiResponse | null = null;
+        if (Array.isArray(res.data)) {
+          apiData = res.data.length > 0 ? res.data[0] : null;
+        } else if (res.data && typeof res.data === "object") {
+          apiData = res.data;
+        }
+
+        if (!apiData?.services) {
+          setServices([]);
+          return;
+        }
+
+        // Filter active + sort by order + map to internal shape
+        const mapped: ServiceItem[] = apiData.services
+          .filter((s) => s.isActive)
+          .sort((a, b) => a.order - b.order)
+          .map((s) => ({
+            _id: s._id,
+            key: s.slug || s._id,
+            title: s.title,
+            description: s.description,
+            image: s.image || "",
+            // Take up to 3 features, pass the icon URL directly
+            points: (s.features ?? []).slice(0, 3).map((f) => ({
+              label: f.title,
+              icon: f.icon, // ← URL, not a key
+            })),
+          }));
+
+        setServices(mapped);
+      } catch (err) {
+        console.error("Failed to fetch services:", err);
+        setServices([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  if (isLoading) return <ServicesGridSkeleton />;
+
+  if (services.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="relative isolate w-full bg-black">
+      {/* Red glow — TOP LEFT */}
       <div
         aria-hidden
         className="
@@ -311,7 +171,7 @@ export default function ServicesGrid() {
         "
       />
 
-      {/* Red glow — TOP RIGHT corner (the small corner glow, previously on the left) */}
+      {/* Red glow — TOP RIGHT */}
       <div
         aria-hidden
         className="
@@ -328,17 +188,17 @@ export default function ServicesGrid() {
           gap-y-10 sm:gap-y-12 lg:gap-y-[45px]
           px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24
           pt-10 sm:pt-14 md:pt-16 lg:pt-20
-          pb-16 sm:pb-20 md:pb-24
+          pb-16 sm:pb-20 md:pb-24 lg:pb-28 xl:pb-32
           w-full max-w-[1464px] mx-auto
         "
       >
-        {SERVICES.map((service) => (
+        {services.map((service) => (
           <div
-            key={service.key}
+            key={service._id}
             className="
               group relative isolate overflow-hidden
-              w-full 2xl:max-w-[425px]
-              h-[340px] sm:h-[351px]
+              w-full
+              min-h-[340px] sm:min-h-[351px]
               rounded-[20px]
               pt-[100px] sm:pt-[130px] lg:pt-[151px]
               pr-6 sm:pr-8 lg:pr-[33px]
@@ -349,46 +209,68 @@ export default function ServicesGrid() {
               hover:-translate-y-1 hover:scale-[1.02]
             "
           >
-            {/* Background image */}
-            <Image
-              src={service.image}
-              alt={service.title}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, 425px"
-              className="
-                z-0 object-cover
-                transition-transform duration-500
-                group-hover:scale-105
-              "
-            />
+            {/* Background image — API URL or fallback */}
+            {service.image ? (
+              <Image
+                src={service.image}
+                alt={service.title}
+                fill
+                unoptimized
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 468px"
+                className="
+                  z-0 object-cover
+                  transition-transform duration-500
+                  group-hover:scale-105
+                "
+              />
+            ) : (
+              <Image
+                src={serviceFallback}
+                alt={service.title}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 468px"
+                className="
+                  z-0 object-cover
+                  transition-transform duration-500
+                  group-hover:scale-105
+                "
+              />
+            )}
 
-            {/* Dark gradient overlay — hidden by default, fades in with content on hover */}
+            {/* Dark gradient overlay */}
             <div
               aria-hidden
               className="
                 absolute inset-0 z-10
                 bg-gradient-to-t from-black/90 via-black/50 to-black/10
-                opacity-0
+                opacity-100
                 transition-opacity duration-500 ease-out
-                group-hover:opacity-100
+                [@media(hover:hover)]:opacity-0
+                [@media(hover:hover)]:group-hover:opacity-100
               "
             />
 
-            {/* Content — hidden by default, fades + slides + scales in on hover */}
+            {/* Content */}
             <div
               className="
                 relative z-20 flex flex-col gap-2.5
-                opacity-0 translate-y-3 scale-95
+                opacity-100 translate-y-0 scale-100
                 transition-all duration-500 ease-out
-                group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100
+                [@media(hover:hover)]:opacity-0
+                [@media(hover:hover)]:translate-y-3
+                [@media(hover:hover)]:scale-95
+                [@media(hover:hover)]:group-hover:opacity-100
+                [@media(hover:hover)]:group-hover:translate-y-0
+                [@media(hover:hover)]:group-hover:scale-100
               "
             >
               {/* Title */}
               <h3
                 className="
                   font-poppins font-medium
-                  text-xl lg:text-[24px]
-                  leading-none tracking-normal
+                  text-xl sm:text-[22px] lg:text-[24px]
+                  leading-tight lg:leading-[150%]
+                  tracking-normal
                   text-white
                 "
               >
@@ -408,33 +290,27 @@ export default function ServicesGrid() {
                 {service.description}
               </p>
 
-              {/* 3 feature points — one row, and each point is icon + label on ONE line */}
-              <div className="grid grid-cols-3 gap-2 pt-1 sm:gap-3">
-                {service.points.map((point) => (
-                  <div
-                    key={point.label}
-                    className="flex min-w-0 flex-row items-center gap-1.5 sm:gap-2"
-                  >
-                    <PointIcon type={point.icon} />
-                    <span className="min-w-0 break-words font-poppins text-[11px] font-normal leading-tight text-white sm:text-xs xl:text-sm">
-                      {point.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              {/* Feature points — max 3, icons are uploaded image URLs */}
+              {service.points.length > 0 && (
+                <div className="grid grid-cols-3 gap-2 pt-1 sm:gap-3">
+                  {service.points.map((point, idx) => (
+                    <div
+                      key={`${point.label}-${idx}`}
+                      className="flex min-w-0 flex-row items-center gap-1.5 sm:gap-2"
+                    >
+                      <PointIcon src={point.icon} />
+                      <span className="min-w-0 break-words font-poppins text-[11px] font-normal leading-tight text-white sm:text-xs xl:text-sm">
+                        {point.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* View Service link */}
-              {/* ASSUMPTION: still a plain <button> with no onClick/href, as in your
-                  original. Swap for next/link (<Link href={`/services/${service.key}`}>)
-                  once the service detail routes exist. */}
-              <button
-                type="button"
-                className="
-                  group/btn
-                  flex items-center
-                  gap-2.5
-                  w-fit
-                "
+              <Link
+                href={`/services/${service.key}`}
+                className="group/btn flex items-center gap-2.5 w-fit"
               >
                 <span
                   className="
@@ -448,7 +324,7 @@ export default function ServicesGrid() {
                   View Service
                 </span>
                 <ArrowIcon />
-              </button>
+              </Link>
             </div>
           </div>
         ))}

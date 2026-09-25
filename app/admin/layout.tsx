@@ -20,7 +20,7 @@ export default function AdminLayout({ children }: any) {
 
   useEffect(() => {
     // Skip authorization check for the login page
-    if (pathname === "/admin/login/") {
+    if (pathname === "/admin/login/" || pathname === "/admin/login") {
       setAuthorized(true);
       return;
     }
@@ -28,78 +28,67 @@ export default function AdminLayout({ children }: any) {
     const token = localStorage.getItem("access_token");
 
     if (!token) {
-      router.replace("/admin/login/");
+      router.replace("/admin/login");
     } else {
       setAuthorized(true);
     }
   }, [router, pathname]);
 
-  // Root layouts must ALWAYS return <html> and <body> tags.
-  // While checking auth, we return an empty body to avoid flashing the dashboard.
+  // While checking auth, we return an empty state to avoid flashing the dashboard.
   if (!authorized) {
-    return (
-      <html lang="en">
-        <body></body>
-      </html>
-    );
+    return <></>;
   }
 
   // If we are on the login page, don't show the sidebar or header
-  if (pathname === "/admin/login/") {
-    return (
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    );
+  if (pathname === "/admin/login/" || pathname === "/admin/login") {
+    return <>{children}</>;
   }
 
   return (
-    <html lang="en">
-      <body>
-        <TooltipProvider>
-          <SidebarProvider>
-            {/* <AppSidebar /> */}
+    <>
+      <TooltipProvider>
+        <SidebarProvider>
+          {/* <AppSidebar /> */}
 
-            <SidebarInset>
-              {/* ================= HEADER ================= */}
-              <header
+          <SidebarInset>
+            {/* ================= HEADER ================= */}
+            <header
+              className="
+                flex
+                h-16
+                shrink-0
+                items-center
+                gap-2
+                border-b
+                bg-white
+                px-4
+              "
+            >
+              <SidebarTrigger />
+
+              <h1
                 className="
-                  flex
-                  h-16
-                  shrink-0
-                  items-center
-                  gap-2
-                  border-b
-                  bg-white
-                  px-4
+                  text-[18px]
+                  font-semibold
                 "
               >
-                <SidebarTrigger />
+                Duae Admin
+              </h1>
+            </header>
 
-                <h1
-                  className="
-                    text-[18px]
-                    font-semibold
-                  "
-                >
-                  Duae Admin
-                </h1>
-              </header>
-
-              {/* ================= CONTENT ================= */}
-              <main
-                className="
-                  flex-1
-                  bg-[#F7F7F7]
-                  p-6
-                "
-              >
-                {children}
-              </main>
-            </SidebarInset>
-          </SidebarProvider>
-        </TooltipProvider>
-      </body>
-    </html>
+            {/* ================= CONTENT ================= */}
+            <main
+              className="
+                flex-1
+                bg-[#F7F7F7]
+                p-6
+              "
+            >
+              {children}
+            </main>
+          </SidebarInset>
+        </SidebarProvider>
+      </TooltipProvider>
+    </>
   );
 }

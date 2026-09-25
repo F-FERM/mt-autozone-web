@@ -88,7 +88,7 @@ export default function Navbar() {
 
         {/* ================= DESKTOP CONTACT ================= */}
         <a
-          href="tel:+10000000000"
+          href="/contact-us"
           className="
     group
     hidden md:flex
@@ -197,7 +197,7 @@ export default function Navbar() {
 
           {/* ================= MOBILE CONTACT ================= */}
           <a
-            href="tel:+10000000000"
+            href="/contact-us"
             className="
               group
               flex

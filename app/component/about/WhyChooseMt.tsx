@@ -1,29 +1,53 @@
-const REASONS = [
-  {
-    key: "expert-technicians",
-    title: "Expert Technicians:",
-    description:
-      "Our skilled technicians bring professional expertise and careful attention to detail, ensuring every vehicle receives high-quality care and a superior finish.",
-  },
-  {
-    key: "advanced-technology",
-    title: "Advanced Technology:",
-    description:
-      "With our use of advanced technology and techniques, we ensure efficiency and consistency of results with an improvement of the vehicle's overall appearance.",
-  },
-  {
-    key: "comprehensive-services",
-    title: "Comprehensive Services:",
-    description:
-      "We take care of everything you need like the exterior and interior of your car is handled in order to make sure that your car stays clean, shiny and protected.",
-  },
-  {
-    key: "customer-satisfaction",
-    title: "Customer Satisfaction:",
-    description:
-      "We prioritize customer satisfaction through quality workmanship, transparent communication, reliable service, and a commitment to delivering results that meet your expectations.",
-  },
-];
+"use client";
+
+import { useEffect, useState } from "react";
+import api from "@/lib/axios";
+
+// ================= TYPES =================
+
+interface DescriptionSegment {
+  text: string;
+  highlight: boolean;
+}
+
+interface WhyChoosePointApi {
+  _id?: string;
+  title: string;
+  description: string;
+  order: number;
+  isActive: boolean;
+}
+
+interface AboutPageApiResponse {
+  _id: string;
+  whyChooseLabel: string;
+  whyChooseTitle: string;
+  whyChooseDescription: DescriptionSegment[];
+  whyChoosePoints: WhyChoosePointApi[];
+}
+
+interface WhyChooseData {
+  label: string;
+  title: string;
+  description: DescriptionSegment[];
+  points: WhyChoosePointApi[];
+}
+
+const DEFAULT_DATA: WhyChooseData = {
+  label: "Why",
+  title: "Why Choose MT Auto Zone?",
+  description: [
+    { text: "", highlight: false },
+    { text: "M.T. Autozone", highlight: true },
+    {
+      text: " provides its clients with professional and reliable car care services in Dubai.",
+      highlight: false,
+    },
+  ],
+  points: [],
+};
+
+// ================= CHECK ICON =================
 
 function CheckIcon() {
   return (
@@ -46,13 +70,69 @@ function CheckIcon() {
   );
 }
 
+// ================= COMPONENT =================
+
 export default function WhyChooseUs() {
+  const [data, setData] = useState<WhyChooseData>(DEFAULT_DATA);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAbout = async () => {
+      try {
+        const res = await api.get<AboutPageApiResponse | AboutPageApiResponse[]>(
+          "/about-page",
+        );
+
+        let apiData: AboutPageApiResponse | null = null;
+        if (Array.isArray(res.data)) {
+          apiData = res.data.length > 0 ? res.data[0] : null;
+        } else if (res.data && typeof res.data === "object") {
+          apiData = res.data;
+        }
+
+        if (!apiData) {
+          setData(DEFAULT_DATA);
+          return;
+        }
+
+        const activePoints = (apiData.whyChoosePoints ?? [])
+          .filter((p) => p.isActive)
+          .sort((a, b) => a.order - b.order);
+
+        setData({
+          label: apiData.whyChooseLabel || DEFAULT_DATA.label,
+          title: apiData.whyChooseTitle || DEFAULT_DATA.title,
+          description:
+            apiData.whyChooseDescription?.length > 0
+              ? apiData.whyChooseDescription
+              : DEFAULT_DATA.description,
+          points: activePoints,
+        });
+      } catch (err) {
+        console.error("Failed to fetch why-choose:", err);
+        setData(DEFAULT_DATA);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAbout();
+  }, []);
+
+  const renderDescription = () =>
+    data.description.map((seg, idx) =>
+      seg.highlight ? (
+        <span key={idx} className="text-[#E40000]">
+           {""}  {seg.text}   {""} 
+        </span>
+      ) : (
+        <span key={idx}>{seg.text}</span>
+      ),
+    );
+
   return (
     <section className="relative w-full overflow-hidden bg-black isolate">
-      {/* Red glow bleeding in from the left, fading to black on the right —
-          continues the SAME glow from MissionVisionCards above, at the
-          same color/opacity, so there's no visible seam between the two
-          sections. */}
+      {/* Red glow bleeding in from the left */}
       <div
         aria-hidden
         className="
@@ -62,8 +142,7 @@ export default function WhyChooseUs() {
         "
       />
 
-      {/* Fade to black at the very bottom of this section only, since it's
-          the last one in this group before whatever section follows */}
+      {/* Fade to black at bottom */}
       <div
         aria-hidden
         className="
@@ -79,58 +158,63 @@ export default function WhyChooseUs() {
           flex flex-col lg:flex-row lg:items-start
           px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-[228px]
           py-10 sm:py-14 md:py-16 lg:py-20
-          gap-8 
+          gap-8
           w-full mx-auto
         "
       >
         {/* Left column */}
         <div className="flex flex-col w-full lg:flex-1">
-          <span
-            className="
-              block
-              font-poppins font-normal
-              text-sm sm:text-base
-              leading-none tracking-normal
-              text-[#E40000]
-              mb-2 sm:mb-3 md:mb-4
-            "
-          >
-            Why
-          </span>
+          {isLoading ? (
+            <>
+              <div className="h-4 w-16 animate-pulse rounded-md bg-white/10 mb-2 sm:mb-3 md:mb-4" />
+              <div className="h-8 w-3/4 animate-pulse rounded-md bg-white/10 mb-4 sm:mb-5 md:mb-8" />
+              <div className="space-y-2">
+                <div className="h-4 w-full animate-pulse rounded-md bg-white/10" />
+                <div className="h-4 w-full animate-pulse rounded-md bg-white/10" />
+                <div className="h-4 w-2/3 animate-pulse rounded-md bg-white/10" />
+              </div>
+            </>
+          ) : (
+            <>
+              <span
+                className="
+                  block
+                  font-poppins font-normal
+                  text-sm sm:text-base
+                  leading-none tracking-normal
+                  text-[#E40000]
+                  mb-2 sm:mb-3 md:mb-4
+                "
+              >
+                {data.label}
+              </span>
 
-          <h2
-            className="
-              font-poppins font-semibold
-              text-2xl sm:text-3xl md:text-[32px] lg:text-[36px]
-              leading-tight sm:leading-snug lg:leading-[100%]
-              tracking-normal
-              text-white
-              mb-4 sm:mb-5 md:mb-8
-            "
-          >
-            Why Choose MT Auto Zone?
-          </h2>
+              <h2
+                className="
+                  font-poppins font-semibold
+                  text-2xl sm:text-3xl md:text-[32px] lg:text-[36px]
+                  leading-tight sm:leading-snug lg:leading-[150%]
+                  tracking-normal
+                  text-white
+                  mb-4 sm:mb-5 md:mb-8
+                "
+              >
+                {data.title}
+              </h2>
 
-          <p
-            className="
-              font-poppins font-normal
-              text-sm sm:text-base
-              leading-relaxed lg:leading-[180%]
-              tracking-normal
-              text-[#878787]
-            "
-          >
-            <span className="text-[#E40000]">M.T. Autozone</span> provides
-            its clients with professional and reliable car care services in
-            Dubai, focusing especially on the quality, precision, and
-            satisfaction of clients. Our company uses quality products and
-            professional approaches in order to produce great results and
-            improve the appearance, cleaning, and protection of your
-            vehicle. With careful attention to detail and a customer-focused
-            approach, <span className="text-[#E40000]">M.T. Autozone</span>{" "}
-            ensures every vehicle receives professional care and a clean,
-            polished, and refreshed finish.
-          </p>
+              <p
+                className="
+                  font-poppins font-normal
+                  text-sm sm:text-base
+                  leading-relaxed lg:leading-[180%]
+                  tracking-normal
+                  text-[#878787]
+                "
+              >
+                {renderDescription()}
+              </p>
+            </>
+          )}
         </div>
 
         {/* Right column */}
@@ -141,40 +225,53 @@ export default function WhyChooseUs() {
             w-full lg:w-[722px] lg:flex-shrink-0
           "
         >
-          {REASONS.map((reason) => (
-            <div
-              key={reason.key}
-              className="flex items-center justify-between gap-4 sm:gap-6"
-            >
-              <div className="flex flex-col gap-1 flex-1 min-w-0">
-                <h3
-                  className="
-                    font-poppins font-semibold
-                    text-base sm:text-lg
-                    leading-none tracking-normal
-                    text-white mb-2
-                  "
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between gap-4 sm:gap-6"
                 >
-                  {reason.title}
-                </h3>
-                <p
-                  className="
-                    font-poppins font-normal
-                    text-sm sm:text-base
-                    leading-relaxed
-                    tracking-normal
-                    text-[#A1A1A1]
-                  "
+                  <div className="flex flex-col gap-1 flex-1 min-w-0">
+                    <div className="h-5 w-40 animate-pulse rounded-md bg-white/10 mb-2" />
+                    <div className="h-4 w-full animate-pulse rounded-md bg-white/10" />
+                  </div>
+                  <div className="h-[25px] w-[25px] shrink-0 animate-pulse rounded-full bg-white/10" />
+                </div>
+              ))
+            : data.points.map((point, idx) => (
+                <div
+                  key={point._id || idx}
+                  className="flex items-center justify-between gap-4 sm:gap-6"
                 >
-                  {reason.description}
-                </p>
-              </div>
+                  <div className="flex flex-col gap-1 flex-1 min-w-0">
+                    <h3
+                      className="
+                        font-poppins font-semibold
+                        text-base sm:text-lg
+                        leading-none tracking-normal
+                        text-white mb-2
+                      "
+                    >
+                      {point.title}
+                    </h3>
+                    <p
+                      className="
+                        font-poppins font-normal
+                        text-sm sm:text-base
+                        leading-relaxed
+                        tracking-normal
+                        text-[#A1A1A1]
+                      "
+                    >
+                      {point.description}
+                    </p>
+                  </div>
 
-              <div>
-                <CheckIcon />
-              </div>
-            </div>
-          ))}
+                  <div>
+                    <CheckIcon />
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
     </section>

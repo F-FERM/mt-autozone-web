@@ -50,12 +50,12 @@ const data = {
       icon: Home,
       items: [
         { title: "Hero", url: "/admin/dashboard/home/hero" },
-        { title: "Stats", url: "/admin/dashboard/home/stats/" },
-        { title: "Home services", url: "/admin/dashboard/home/home-services/" },
-        { title: "Home About-Milestones", url: "/admin/dashboard/home/about-us-milestone/" },
-        { title: "Home Contact Client", url: "/admin/dashboard/home/contact-clients/" },
-        { title: "Home Works", url: "/admin/dashboard/home/home-works/" },
-        { title: "Why choose us -Team", url: "/admin/dashboard/home/why-choose-us/" },
+            { title: "Home about", url: "/admin/dashboard/home/home-about" },
+        { title: "Home services", url: "/admin/dashboard/home/home-services" },
+      
+        { title: "Brands", url: "/admin/dashboard/home/home-brands/" },
+         { title: "Contact", url: "/admin/dashboard/home/home-contact/" },
+      
 
       ],
     },
@@ -63,8 +63,7 @@ const data = {
       title: "About",
       icon: Info,
       items: [
-        { title: "About Section", url: "/admin/dashboard/about/about-hero-section/" },
-        { title: "Full Section", url: "/admin/dashboard/about/about-full-section/" },
+        { title: "About Section", url: "/admin/dashboard/about/" },
       ],
     },
     {
@@ -76,16 +75,16 @@ const data = {
       ],
     },
     {
-      title: "Blog",
+      title: "Works",
       icon: Rss,
-      items: [{ title: "Blog", url: "/admin/dashboard/blog-section/" }],
+      items: [{ title: "Works", url: "/admin/dashboard/works/" }],
     },
     {
       title: "Contact Page",
       icon: Contact,
       items: [
         { title: "Contact section", url: "/admin/dashboard/contact/" },
-        { title: "Contact Submission", url: "/admin/dashboard/contact-submission/" },
+     
       ],
     },
     {

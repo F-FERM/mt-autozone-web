@@ -19,9 +19,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "MT Autozone",
   description: "MT Autozone",
-  icons: {
-    icon: "/images/metaicon.png",
-  },
 };
 
 export default function RootLayout({
