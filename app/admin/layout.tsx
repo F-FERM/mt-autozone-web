@@ -72,7 +72,7 @@ export default function AdminLayout({ children }: any) {
                   font-semibold
                 "
               >
-                Duae Admin
+                MT Autozone Admin
               </h1>
             </header>
 
