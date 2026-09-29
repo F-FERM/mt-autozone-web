@@ -6,6 +6,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import api from "@/lib/axios";
 
+interface DescriptionSegment {
+  text: string;
+  highlight: boolean;
+}
+
 interface ServiceCardApi {
   _id: string;
   title: string;
@@ -22,6 +27,7 @@ interface HomeServicesApiResponse {
   _id: string;
   sectionLabel: string;
   title: string;
+  description: DescriptionSegment[];
   backgroundImage: string;
   serviceCards: ServiceCardApi[];
   isActive: boolean;
@@ -41,6 +47,7 @@ interface ServiceCard {
 interface ServicesData {
   sectionLabel: string;
   title: string;
+  description: DescriptionSegment[];
   backgroundImage: string;
   serviceCards: ServiceCard[];
 }
@@ -48,6 +55,13 @@ interface ServicesData {
 const defaultData: ServicesData = {
   sectionLabel: "Services",
   title: "Reliable Automotive Solutions",
+  description: [
+    { text: "M.T. Autozone", highlight: true },
+    {
+      text: ", we deliver professional car care with quality, precision, and attention to detail. Our commitment is to keep your vehicle looking its best while providing a premium experience you can trust.",
+      highlight: false,
+    },
+  ],
   backgroundImage: "/images/services/services-bg.jpg",
   serviceCards: [
     {
@@ -134,9 +148,9 @@ export default function ServicesSection() {
   useEffect(() => {
     const fetchHomeServices = async () => {
       try {
-        const res = await api.get<HomeServicesApiResponse | HomeServicesApiResponse[]>(
-          "/home-services"
-        );
+        const res = await api.get<
+          HomeServicesApiResponse | HomeServicesApiResponse[]
+        >("/home-services");
 
         // Handle both single object and array responses
         let apiData: HomeServicesApiResponse | null = null;
@@ -169,8 +183,14 @@ export default function ServicesSection() {
         setData({
           sectionLabel: apiData.sectionLabel || defaultData.sectionLabel,
           title: apiData.title || defaultData.title,
-          backgroundImage: apiData.backgroundImage || defaultData.backgroundImage,
-          serviceCards: activeCards.length > 0 ? activeCards : defaultData.serviceCards,
+          description:
+            Array.isArray(apiData.description) && apiData.description.length > 0
+              ? apiData.description
+              : defaultData.description,
+          backgroundImage:
+            apiData.backgroundImage || defaultData.backgroundImage,
+          serviceCards:
+            activeCards.length > 0 ? activeCards : defaultData.serviceCards,
         });
       } catch (err) {
         console.error("Failed to fetch home services:", err);
@@ -186,7 +206,7 @@ export default function ServicesSection() {
   if (isLoading) return <ServicesSkeleton />;
 
   return (
-    <section className="relative overflow-hidden bg-black px-4 py-16 sm:px-6 lg:py-24 cursor-pointer">
+    <section className="relative overflow-hidden bg-black px-4 py-16 sm:px-6 lg:py-24">
       {/* decorative right-side photo, hidden below lg since it clashes with text on narrow screens */}
       <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[65%] lg:block xl:w-[58%]">
         <Image
@@ -215,11 +235,17 @@ export default function ServicesSection() {
           <h2 className="mt-3 font-poppins text-2xl font-semibold leading-tight text-white sm:text-[32px] lg:text-[36px]">
             {data.title}
           </h2>
+
+          {/* Description now comes from the API (array of segments) */}
           <p className="mt-4 font-poppins text-sm font-normal leading-relaxed text-[#878787] sm:text-base">
-            At <span className="text-[#E40000]">M.T. Autozone</span> , we deliver professional car care with quality,
-            precision, and attention to detail. Our commitment is to keep
-            your vehicle looking its best while providing a premium
-            experience you can trust.
+            {data.description.map((part, i) => (
+              <span
+                key={i}
+                className={part.highlight ? "text-[#E40000]" : undefined}
+              >
+                {""} {part.text} {""}
+              </span>
+            ))}
           </p>
         </div>
 
