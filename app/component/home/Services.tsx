@@ -186,7 +186,7 @@ export default function ServicesSection() {
   if (isLoading) return <ServicesSkeleton />;
 
   return (
-    <section className="relative overflow-hidden bg-black px-4 py-16 sm:px-6 lg:py-24">
+    <section className="relative overflow-hidden bg-black px-4 py-16 sm:px-6 lg:py-24 cursor-pointer">
       {/* decorative right-side photo, hidden below lg since it clashes with text on narrow screens */}
       <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[65%] lg:block xl:w-[58%]">
         <Image

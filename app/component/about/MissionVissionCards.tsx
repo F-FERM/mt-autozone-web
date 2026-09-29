@@ -141,7 +141,7 @@ export default function MissionVisionCards() {
         relative w-full overflow-hidden
         bg-black isolate
         px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-[228px]
-        py-8 sm:py-14 md:py-16
+        py-8 sm:py-14 md:py-16 
       "
     >
       {/* Red glow from the left */}
@@ -168,7 +168,7 @@ export default function MissionVisionCards() {
           relative z-10
           flex flex-col md:flex-row md:items-stretch
           gap-5 md:gap-4 lg:gap-5 xl:gap-[20px]
-          w-full max-w-[1464px] mx-auto
+          w-full max-w-[1464px] mx-auto cursor-pointer
         "
       >
         {cards.map((card) => (

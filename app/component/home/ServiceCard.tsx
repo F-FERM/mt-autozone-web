@@ -212,7 +212,7 @@ export default function ServiceCards() {
           <article
             key={service._id || cardIdx}
             className="group relative flex h-[340px] w-full overflow-hidden rounded-[20px]
-                       transition-transform duration-300 hover:-translate-y-1
+                       transition-transform duration-300 hover:-translate-y-1 cursor-pointer
                        xs:h-[300px]
                        sm:h-[380px]
                        lg:h-[446px]"

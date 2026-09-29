@@ -189,7 +189,7 @@ export default function ServicesGrid() {
           px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24
           pt-10 sm:pt-14 md:pt-16 lg:pt-20
           pb-16 sm:pb-20 md:pb-24 lg:pb-28 xl:pb-32
-          w-full max-w-[1464px] mx-auto
+          w-full max-w-[1464px] mx-auto cursor-pointer
         "
       >
         {services.map((service) => (

@@ -1,5 +1,4 @@
 import { Toaster } from "sonner";
-import HeroSection from "../component/hero/HeroSection";
 import Footer from "../component/layout/Footer";
 import Navbar from "../component/layout/Navbar";
 
