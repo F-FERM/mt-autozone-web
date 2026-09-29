@@ -106,7 +106,7 @@ export default function OurWorks() {
     data.description.map((seg, idx) =>
       seg.highlight ? (
         <span key={idx} className="text-[#E40000]">
-          {seg.text}
+          {""} {seg.text} {""}
         </span>
       ) : (
         <span key={idx}>{seg.text}</span>
@@ -131,14 +131,13 @@ export default function OurWorks() {
         "
       >
         {/* Red glow bleeding in from the right */}
-        <div
-          aria-hidden
-          className="
-            pointer-events-none absolute inset-y-0 right-0 z-0
-            w-full
-            bg-gradient-to-l from-[#E40000]/65 via-[#E40000]/10 to-transparent
-          "
-        />
+    <div
+  aria-hidden
+  className="
+    pointer-events-none absolute inset-0 z-0
+    bg-[radial-gradient(ellipse_60%_100%_at_100%_0%,rgba(228,0,0,0.65)_0%,rgba(228,0,0,0.25)_45%,transparent_75%)]
+  "
+/>
 
         {/* Bottom hand-off glow */}
         <div
@@ -280,7 +279,7 @@ export default function OurWorks() {
                   className="
                     group
                     mt-6 sm:mt-7 lg:mt-8 flex w-fit items-center gap-2
-                    rounded-[19px] border border-[#E400002B] 
+                    rounded-[19px] border border-[#E400002B] bg-[#FFFFFF24]
                     px-6 py-3
                     font-poppins text-sm font-medium text-white
                     shadow-[-4px_4px_6px_rgba(0,0,0,0.35),4px_4px_6px_rgba(0,0,0,0.35),0_5px_6px_rgba(0,0,0,0.35)]

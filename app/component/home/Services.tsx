@@ -216,7 +216,7 @@ export default function ServicesSection() {
             {data.title}
           </h2>
           <p className="mt-4 font-poppins text-sm font-normal leading-relaxed text-[#878787] sm:text-base">
-            At M.T. Autozone, we deliver professional car care with quality,
+            At <span className="text-[#E40000]">M.T. Autozone</span> , we deliver professional car care with quality,
             precision, and attention to detail. Our commitment is to keep
             your vehicle looking its best while providing a premium
             experience you can trust.
