@@ -10,6 +10,11 @@ import dropIcon from "../../../public/images/ri_paint-line.png";
 import carIcon from "../../../public/images/carbon_car.png";
 import gridIcon from "../../../public/images/fluent_glance-horizontal-sparkles-24-regular.png";
 
+import eyeLeftImg from "../../../public/images/eye1left.png";
+import eyeRightImg from "../../../public/images/eye1right.png";
+import eyeLeft2Img from "../../../public/images/eye2left.png";
+import eyeRight2Img from "../../../public/images/eye2right.png";
+
 import api from "@/lib/axios";
 
 // ================= TYPES =================
@@ -68,6 +73,156 @@ const COMPACT_HEIGHT = 480;
 
 const TABLET_WIDTH = 900;
 const TABLET_HEIGHT = 580;
+
+/* =========================================================
+   CAR + EYES (locked together)
+   =========================================================
+   The car uses object-cover, so on every canvas it is cropped differently.
+   If the eyes were positioned in canvas pixels they would drift off the car.
+
+   Instead, the car image and both eyes live inside ONE wrapper that has the
+   car's own aspect ratio and is sized to "cover" the canvas. The eyes are
+   positioned in % of that wrapper, so they stay glued to the headlights on
+   desktop, tablet and mobile, at any scale.
+
+   The eye positions are defined ONCE, below, using the tablet canvas
+   (900 x 580) as the reference. Those values are the ones you already tuned.
+   To adjust the eyes everywhere, change only EYES_REF.
+
+   eye1 and eye2 images share the SAME box, so eye2 sits exactly where
+   eye1 is.
+*/
+
+type EyeBox = { top: number; left: number; width: number; height: number };
+
+// ✅ Your tuned tablet values (design pixels on the 900 x 580 tablet canvas)
+const EYES_REF: { left: EyeBox; right: EyeBox } = {
+  left: { top: 352, left: 367, width: 60, height: 30 },
+  right: { top: 352, left: 214, width: 60, height: 30 },
+};
+
+// How often the eyes switch between eye1 and eye2 (ms)
+const EYE_SWITCH_INTERVAL = 2000;
+
+const IMG_RATIO = carImg.width / carImg.height;
+
+/** Size and offset of the car image when it "covers" a canvas, centered. */
+function coverBox(canvasW: number, canvasH: number) {
+  const w = Math.max(canvasW, canvasH * IMG_RATIO);
+  const h = w / IMG_RATIO;
+  return { w, h, x: (canvasW - w) / 2, y: (canvasH - h) / 2 };
+}
+
+/** Convert a tablet-canvas box into % of the car image itself. */
+function toImagePct(box: EyeBox) {
+  const ref = coverBox(TABLET_WIDTH, TABLET_HEIGHT);
+  return {
+    left: ((box.left - ref.x) / ref.w) * 100,
+    top: ((box.top - ref.y) / ref.h) * 100,
+    width: (box.width / ref.w) * 100,
+    height: (box.height / ref.h) * 100,
+  };
+}
+
+const EYE_LEFT_PCT = toImagePct(EYES_REF.left);
+const EYE_RIGHT_PCT = toImagePct(EYES_REF.right);
+
+function EyeImage({
+  src,
+  src2,
+  pct,
+  active,
+}: {
+  src: typeof eyeLeftImg;
+  src2: typeof eyeLeftImg;
+  pct: { left: number; top: number; width: number; height: number };
+  /** false = show eye1, true = show eye2 */
+  active: boolean;
+}) {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute select-none mix-blend-screen"
+      style={{
+        left: `${pct.left}%`,
+        top: `${pct.top}%`,
+        width: `${pct.width}%`,
+        height: `${pct.height}%`,
+      }}
+    >
+      {/* eye1 — same box */}
+      <Image
+        src={src}
+        alt=""
+        fill
+        className="object-contain transition-opacity duration-500"
+        style={{ opacity: active ? 0 : 1 }}
+      />
+      {/* eye2 — same box, same size, same position as eye1 */}
+      <Image
+        src={src2}
+        alt=""
+        fill
+        className="object-contain transition-opacity duration-500"
+        style={{ opacity: active ? 1 : 0 }}
+      />
+    </div>
+  );
+}
+
+/**
+ * Background layer: car image + eyes, cropped to the canvas.
+ * `gradientClass` is the optional dark gradient laid over the car.
+ */
+function CarStage({
+  canvasW,
+  canvasH,
+  gradientClass,
+}: {
+  canvasW: number;
+  canvasH: number;
+  gradientClass?: string;
+}) {
+  const { w, h, x, y } = coverBox(canvasW, canvasH);
+  const [eye2, setEye2] = useState(false);
+
+  useEffect(() => {
+    const id = setInterval(() => setEye2((v) => !v), EYE_SWITCH_INTERVAL);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      <div
+        className="absolute"
+        style={{ left: x, top: y, width: w, height: h }}
+      >
+        <Image
+          src={carImg}
+          alt="MT Auto Zone"
+          fill
+          priority
+          className="object-cover object-center opacity-90"
+        />
+        <EyeImage
+          src={eyeLeftImg}
+          src2={eyeLeft2Img}
+          pct={EYE_LEFT_PCT}
+          active={eye2}
+        />
+        <EyeImage
+          src={eyeRightImg}
+          src2={eyeRight2Img}
+          pct={EYE_RIGHT_PCT}
+          active={eye2}
+        />
+      </div>
+      {gradientClass ? (
+        <div className={`absolute inset-0 ${gradientClass}`} />
+      ) : null}
+    </div>
+  );
+}
 
 function useCanvasScale(designWidth: number, designHeight: number) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -323,16 +478,12 @@ function CompactCanvas({ data }: { data: HomeHeroData }) {
           transform: `scale(${scale})`,
         }}
       >
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={carImg}
-            alt="MT Auto Zone"
-            fill
-            priority
-            className="object-cover object-center opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60" />
-        </div>
+        {/* Car + eyes */}
+        <CarStage
+          canvasW={COMPACT_WIDTH}
+          canvasH={COMPACT_HEIGHT}
+          gradientClass="bg-gradient-to-b from-black/50 via-transparent to-black/60"
+        />
 
         <p
           className="absolute left-[24px] top-[150px] z-[2] select-none font-poppins text-[58px] font-medium leading-none text-white/90"
@@ -469,16 +620,12 @@ function TabletCanvas({ data }: { data: HomeHeroData }) {
           transform: `scale(${scale})`,
         }}
       >
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={carImg}
-            alt="MT Auto Zone"
-            fill
-            priority
-            className="object-cover object-center opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
-        </div>
+        {/* Car + eyes */}
+        <CarStage
+          canvasW={TABLET_WIDTH}
+          canvasH={TABLET_HEIGHT}
+          gradientClass="bg-gradient-to-b from-black/40 via-transparent to-black/60"
+        />
 
         <p
           className="absolute left-[60px] top-[190px] z-[2] select-none font-poppins text-[100px] font-medium leading-none text-white/90"
@@ -577,15 +724,8 @@ function DesktopHero({ data }: { data: HomeHeroData }) {
           transform: `scale(${scale})`,
         }}
       >
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={carImg}
-            alt="MT Auto Zone"
-            fill
-            priority
-            className="object-cover object-center opacity-90"
-          />
-        </div>
+        {/* Car + eyes */}
+        <CarStage canvasW={DESIGN_WIDTH} canvasH={DESIGN_HEIGHT} />
 
         {/* Card 1 — dynamic eyebrow + eyebrowDescription */}
         <article
