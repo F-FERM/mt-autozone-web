@@ -119,7 +119,6 @@ export default function OurWorks() {
       e.preventDefault();
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-   
   };
 
   return (
@@ -131,13 +130,13 @@ export default function OurWorks() {
         "
       >
         {/* Red glow bleeding in from the right */}
-    <div
-  aria-hidden
-  className="
-    pointer-events-none absolute inset-0 z-0
-    bg-[radial-gradient(ellipse_60%_100%_at_100%_0%,rgba(228,0,0,0.65)_0%,rgba(228,0,0,0.25)_45%,transparent_75%)]
-  "
-/>
+        <div
+          aria-hidden
+          className="
+            pointer-events-none absolute inset-0 z-0
+            bg-[radial-gradient(ellipse_60%_100%_at_100%_0%,rgba(228,0,0,0.65)_0%,rgba(228,0,0,0.25)_45%,transparent_75%)]
+          "
+        />
 
         {/* Bottom hand-off glow */}
         <div
@@ -205,11 +204,11 @@ export default function OurWorks() {
               w-full
             "
           >
-            {/* Image */}
+            {/* Image — height slightly increased */}
             <div
               className="
                 relative w-full
-                h-[220px] sm:h-[300px] md:h-[340px] lg:h-[367px]
+                h-[195px] sm:h-[260px] md:h-[295px] lg:h-[320px]
                 lg:flex-1 lg:max-w-[722px]
                 flex-shrink-0
                 rounded-2xl lg:rounded-[20px] overflow-hidden
@@ -246,7 +245,7 @@ export default function OurWorks() {
             {/* Paragraph + button column */}
             <div
               className="
-                flex flex-col
+                flex min-w-0 flex-col
                 w-full lg:flex-1 lg:max-w-[719px]
               "
             >
@@ -260,11 +259,11 @@ export default function OurWorks() {
                 <p
                   className="
                     font-poppins font-normal
-                    text-sm sm:text-base lg:text-[18px]
+                    text-sm sm:text-[15px] lg:text-[16px]
                     leading-relaxed lg:leading-normal
                     tracking-normal
-                    text-[#878787]
-                    w-full
+                    text-[#C0C0C0]
+                    w-full break-words
                   "
                 >
                   {renderDescription()}
@@ -272,39 +271,58 @@ export default function OurWorks() {
               )}
 
               {/* View Works button — smooth-scrolls to the projects grid below */}
-              {!isLoading && (
+              {!isLoading && data.buttonText && (
                 <a
                   href={`#${PROJECTS_GRID_ID}`}
                   onClick={handleViewWorksClick}
                   className="
-                    group
-                    mt-6 sm:mt-7 lg:mt-8 flex w-fit items-center gap-2
-                    rounded-[19px] border border-[#E400002B] bg-[#FFFFFF24]
-                    px-6 py-3
-                    font-poppins text-sm font-medium text-white
-                    shadow-[-4px_4px_6px_rgba(0,0,0,0.35),4px_4px_6px_rgba(0,0,0,0.35),0_5px_6px_rgba(0,0,0,0.35)]
-                    transition-[background,box-shadow]
-                    duration-300 ease-out
-                    hover:bg-[linear-gradient(135deg,#4A2929_0%,#572C2C_25%,#8B2525_55%,#C91A1A_78%,#E00000_100%)]
-                    hover:shadow-[-6px_6px_8px_rgba(0,0,0,0.55),6px_6px_8px_rgba(0,0,0,0.55),0_7px_8px_rgba(0,0,0,0.55)]
+                    group relative overflow-hidden
+                    mx-auto mt-5 sm:mt-6 lg:mt-8
+                    flex w-fit max-w-full shrink-0 items-center justify-center
+                    h-11 sm:h-[50px] lg:h-[55px]
+                    min-w-[170px] sm:min-w-[200px] lg:min-w-[221px]
+                    gap-2 sm:gap-[13px]
+                    px-6 sm:px-8 lg:px-[40px]
+                    py-3 lg:py-[17px]
+                    rounded-[19px]
+                    border border-[#E400002B]
+                    text-sm sm:text-base lg:text-[18px]
+                    bg-[#FFFFFF24]
+                    font-poppins font-medium leading-none text-white
+                    shadow-[0_3px_4px_rgba(0,0,0,0.35)]
+                    transition-[box-shadow,border-color] duration-300 ease-out
+                    hover:border-transparent
+                    hover:shadow-[0_7px_6px_rgba(0,0,0,0.55)]
+                    lg:mx-0
                   "
                 >
-                  {data.buttonText}
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="transition-transform duration-300 ease-out group-hover:rotate-[45deg]"
-                  >
-                    <path
-                      d="M7 17L17 7M17 7H8M17 7V16"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  {/* Hover gradient layer */}
+                  <span
+                    aria-hidden
+                    className="
+                      pointer-events-none absolute -inset-px rounded-[19px]
+                      opacity-0 group-hover:opacity-100
+                      transition-opacity duration-300 ease-out
+                      bg-[radial-gradient(ellipse_70%_120%_at_0%_100%,#4a1f1f_0%,rgba(74,31,31,0.85)_30%,rgba(74,31,31,0.45)_55%,rgba(74,31,31,0)_85%),linear-gradient(90deg,#8a2e2e_0%,#b02222_40%,#d10c0c_75%,#e00000_100%)]
+                    "
+                  />
+
+                  <span className="relative z-10 flex items-center gap-2 sm:gap-[13px]">
+                    <span className="whitespace-nowrap">{data.buttonText}</span>
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="h-5 w-5 shrink-0 transition-transform duration-300 ease-out group-hover:rotate-[45deg] lg:h-6 lg:w-6"
+                    >
+                      <path
+                        d="M7 17L17 7M17 7H8M17 7V16"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
                 </a>
               )}
             </div>

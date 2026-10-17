@@ -44,7 +44,7 @@ interface ContactData {
 // ================= ICONS =================
 
 const LocationIcon = (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
     <path
       d="M12 22s7-7.05 7-12a7 7 0 10-14 0c0 4.95 7 12 7 12z"
       stroke="#E40000"
@@ -57,7 +57,7 @@ const LocationIcon = (
 );
 
 const EmailIcon = (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
     <rect
       x="2.5"
       y="4.5"
@@ -78,7 +78,7 @@ const EmailIcon = (
 );
 
 const PhoneIcon = (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
     <path
       d="M4.5 3.5h3.2l1.5 4.2-2.1 1.7a12.5 12.5 0 006 6l1.7-2.1 4.2 1.5v3.2c0 1-.9 1.8-1.9 1.7A17 17 0 013 5.4a1.8 1.8 0 011.7-1.9z"
       stroke="#E40000"
@@ -90,7 +90,7 @@ const PhoneIcon = (
 );
 
 const HoursIcon = (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
     <circle cx="12" cy="12" r="9" stroke="#E40000" strokeWidth="1.8" />
     <path
       d="M12 7v5l3.5 2"
@@ -269,22 +269,22 @@ export default function ContactInfoSection() {
           w-full max-w-[1464px] mx-auto
           px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12
           lg:flex-row lg:items-start lg:justify-between
-          lg:gap-4
+          lg:gap-8 xl:gap-12 2xl:gap-16
         "
       >
         {/* LEFT SECTION */}
-        <div className="flex w-full flex-col gap-5 text-center lg:flex-1 lg:max-w-[724px] lg:text-left">
+        <div className="flex w-full min-w-0 flex-col gap-4 text-center lg:flex-1 lg:max-w-[724px] lg:gap-5 lg:text-left">
           {isLoading ? (
             <>
               <div className="mx-auto h-4 w-24 animate-pulse rounded-md bg-white/10 lg:mx-0" />
               <div className="mx-auto h-10 w-3/4 animate-pulse rounded-md bg-white/10 lg:mx-0" />
               <div className="h-4 w-full animate-pulse rounded-md bg-white/10" />
               <div className="h-4 w-full animate-pulse rounded-md bg-white/10" />
-              <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-[11px]">
+              <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-[11px] lg:grid-cols-1 xl:grid-cols-2">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <div
                     key={i}
-                    className="min-h-[150px] animate-pulse rounded-[20px] bg-white/5"
+                    className="min-h-[130px] animate-pulse rounded-[20px] bg-white/5 xl:min-h-[150px]"
                   />
                 ))}
               </div>
@@ -297,55 +297,55 @@ export default function ContactInfoSection() {
               </p>
 
               {/* Title */}
-              <h2 className="font-poppins text-2xl font-semibold leading-tight tracking-normal text-white sm:text-[30px] lg:text-[36px] lg:leading-none">
+              <h2 className="font-poppins text-2xl font-semibold leading-tight tracking-normal text-white sm:text-[30px] lg:text-[30px] lg:leading-tight xl:text-[36px] xl:leading-none">
                 {data.title}
               </h2>
 
               {/* Description */}
-              <p className="font-poppins text-sm font-normal leading-[150%] tracking-normal text-[#878787] sm:text-base w-full">
+              <p className="w-full font-poppins text-sm font-normal leading-[150%] tracking-normal text-[#878787] sm:text-base lg:text-[15px] xl:text-base">
                 {renderDescription()}
               </p>
 
               {/* INFO CARDS */}
-             {infoCards.length > 0 && (
-  <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-[11px] w-full">
-    {infoCards.map((card) => (
-      <div
-        key={card.key}
-        className="
-          flex w-full min-w-0 flex-col items-start justify-center
-          text-left
-          min-h-[150px]
-          rounded-[20px]
-          gap-[10px]
-          pt-[21px] pr-[26px] pb-[21px] pl-[26px]
-          overflow-hidden
-        "
-        style={{
-          background: "#A2A2A221",
-          backdropFilter: "blur(4px)",
-          WebkitBackdropFilter: "blur(4px)",
-        }}
-      >
-        <div className="flex min-w-0 items-center justify-start gap-2.5">
-          {card.icon}
-          <h3 className="font-poppins text-lg font-medium leading-tight tracking-normal text-white sm:text-2xl sm:leading-none">
-            {card.title}
-          </h3>
-        </div>
-        <p className="w-full min-w-0 break-words font-poppins text-sm font-normal leading-[150%] tracking-normal text-[#A9A9A9] sm:text-base">
-          {card.value}
-        </p>
-      </div>
-    ))}
-  </div>
-)}
+              {infoCards.length > 0 && (
+                <div className="mt-2 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-[11px] lg:grid-cols-1 lg:gap-3 xl:grid-cols-2 xl:gap-[11px]">
+                  {infoCards.map((card) => (
+                    <div
+                      key={card.key}
+                      className="
+                        flex w-full min-w-0 flex-col items-start justify-center
+                        text-left
+                        min-h-[130px] xl:min-h-[150px]
+                        rounded-[20px]
+                        gap-[10px]
+                        px-5 py-4 xl:px-[26px] xl:py-[21px]
+                        overflow-hidden
+                      "
+                      style={{
+                        background: "#A2A2A221",
+                        backdropFilter: "blur(4px)",
+                        WebkitBackdropFilter: "blur(4px)",
+                      }}
+                    >
+                      <div className="flex min-w-0 items-center justify-start gap-2.5">
+                        {card.icon}
+                        <h3 className="font-poppins text-lg font-medium leading-tight tracking-normal text-white sm:text-xl xl:text-2xl xl:leading-none">
+                          {card.title}
+                        </h3>
+                      </div>
+                      <p className="w-full min-w-0 break-words font-poppins text-sm font-normal leading-[150%] tracking-normal text-[#A9A9A9] sm:text-[15px] xl:text-base">
+                        {card.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </>
           )}
         </div>
 
         {/* RIGHT SECTION — Form (unchanged) */}
-        <div className="w-full lg:w-auto rounded-[30px]">
+        <div className="w-full rounded-[30px] lg:w-auto lg:shrink-0">
           <ContactForm />
         </div>
       </div>

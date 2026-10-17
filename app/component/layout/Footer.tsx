@@ -117,6 +117,25 @@ function activeSorted<T extends { order: number; isActive: boolean }>(
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 }
 
+// ================= SHARED CLASSES =================
+
+/* Column heading. `capitalize` fixes API values like "company" -> "Company" */
+const HEADING_CLASSES =
+  "font-poppins text-xl font-normal capitalize leading-tight text-[#DDDDDD] sm:text-[28px] sm:leading-none lg:text-[36px]";
+
+/* Column wrapper: gap UNDER the heading */
+const COLUMN_CLASSES = "flex w-full flex-col gap-5 sm:gap-7 lg:gap-8";
+
+/* List wrapper: gap BETWEEN the points */
+const LIST_CLASSES = "flex flex-col gap-4 sm:gap-[22px] lg:gap-6";
+
+const LINK_CLASSES =
+  "font-poppins text-sm font-normal leading-snug text-[#878787] transition-colors duration-300 hover:text-white sm:text-base sm:leading-none";
+
+/* Contact lines: always stay on ONE line from sm up */
+const CONTACT_LINK_CLASSES =
+  "font-poppins text-sm font-normal leading-snug text-[#878787] transition-colors duration-300 hover:text-white break-words sm:whitespace-nowrap sm:text-base sm:leading-none";
+
 // ================= COMPONENT =================
 
 export default function Footer() {
@@ -185,47 +204,63 @@ export default function Footer() {
           </div>
 
           <div className="mb-4 flex w-full shrink-0 items-center justify-between gap-4 sm:mb-8 sm:w-auto sm:justify-start">
+            {/* GET QUOTE — same hover style as the Navbar Contact button */}
             <Link
               href="/contact-us"
               className="
-                group
-                flex items-center gap-2
-                rounded-[19px] border border-[#E400002B] bg-[#FFFFFF24]
+                group relative overflow-hidden
+                flex shrink-0 items-center justify-center
+                rounded-[19px]
+                border border-[#E4000038]
+                bg-[#FFFFFF24]
                 px-5 py-2.5 sm:px-6 sm:py-3
-                font-poppins text-sm font-medium text-white
+                font-poppins text-sm font-medium text-white sm:text-base
                 shadow-[0_3px_4px_rgba(0,0,0,0.35)]
-                transition-[background,box-shadow]
-                duration-300 ease-out
-                hover:bg-[linear-gradient(135deg,#4A2929_0%,#572C2C_25%,#8B2525_55%,#C91A1A_78%,#E00000_100%)]
+                transition-[box-shadow,border-color] duration-300 ease-out
+                hover:border-transparent
                 hover:shadow-[0_7px_6px_rgba(0,0,0,0.55)]
-                sm:text-base
               "
             >
-              Get Quote
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                className="-rotate-45 transition-transform duration-300 ease-out group-hover:rotate-0"
-              >
-                <path
-                  d="M7 17L17 7M17 7H8M17 7V16"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              {/* Hover gradient layer (same as Contact button) */}
+              <span
+                aria-hidden
+                className="
+                  pointer-events-none absolute -inset-px rounded-[19px]
+                  opacity-0 group-hover:opacity-100
+                  transition-opacity duration-300 ease-out
+                  bg-[radial-gradient(ellipse_70%_120%_at_0%_100%,#4a1f1f_0%,rgba(74,31,31,0.85)_30%,rgba(74,31,31,0.45)_55%,rgba(74,31,31,0)_85%),linear-gradient(90deg,#8a2e2e_0%,#b02222_40%,#d10c0c_75%,#e00000_100%)]
+                "
+              />
+
+              <span className="relative z-10 flex items-center gap-2 sm:gap-3">
+                Get Quote
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                  className="h-[18px] w-[18px] shrink-0 -rotate-45 transition-transform duration-300 ease-out group-hover:rotate-0 sm:h-5 sm:w-5"
+                >
+                  <path
+                    d="M7 17L17 7M17 7H8M17 7V16"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
             </Link>
 
+            {/* SCROLL TO TOP — bigger button, bigger arrow, bigger float */}
             <button
               onClick={scrollToTop}
               aria-label="Scroll to top"
-              className="footer-float flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#2A2A2A] text-white transition-colors duration-300 hover:bg-[#E40000] sm:h-12 sm:w-12"
+              className="footer-float flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#2A2A2A] text-white transition-colors duration-300 hover:bg-[#E40000] sm:h-14 sm:w-14 lg:h-16 lg:w-16"
             >
-              <ArrowUp size={18} className="sm:hidden" />
-              <ArrowUp size={20} className="hidden sm:block" />
+              <ArrowUp
+                strokeWidth={2}
+                className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              />
             </button>
           </div>
         </div>
@@ -233,10 +268,11 @@ export default function Footer() {
         <div className="h-px w-full bg-white/10" />
 
         {/* ADDRESS / SERVICES / COMPANY / CONTACT */}
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:flex lg:flex-row lg:justify-between lg:gap-8">
-          {/* ADDRESS */}
-          <div className="flex w-full flex-col gap-3 sm:gap-[17px] lg:max-w-[350px]">
-            <h3 className="font-poppins text-xl font-normal leading-tight text-[#DDDDDD] sm:text-[28px] sm:leading-none lg:text-[36px]">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-12 lg:flex lg:flex-row lg:justify-between lg:gap-8">
+          {/* ADDRESS — wider */}
+        {/* ADDRESS — slightly narrower */}
+<div className={`${COLUMN_CLASSES} lg:max-w-[350px] xl:max-w-[400px]`}>
+            <h3 className={HEADING_CLASSES}>
               {data.addressTitle || "Address"}
             </h3>
             <p className="font-poppins text-sm font-normal leading-[150%] text-[#878787] sm:text-base">
@@ -244,7 +280,7 @@ export default function Footer() {
             </p>
 
             {socials.length > 0 && (
-              <div className="mt-2 flex items-center gap-5 sm:gap-[27px]">
+              <div className="mt-1 flex items-center gap-5 sm:mt-2 sm:gap-[27px]">
                 {socials.map((s) => {
                   const icon = resolveIcon(s.icon);
                   if (!icon) return null;
@@ -277,20 +313,20 @@ export default function Footer() {
 
           {/* SERVICES */}
           {services.length > 0 && (
-            <div className="flex w-full flex-col gap-3 sm:gap-[17px] lg:max-w-[248px]">
-              <h3 className="font-poppins text-xl font-normal leading-tight text-[#DDDDDD] sm:text-[28px] sm:leading-none lg:text-[36px]">
+            <div className={`${COLUMN_CLASSES} lg:max-w-[248px]`}>
+              <h3 className={HEADING_CLASSES}>
                 {data.servicesTitle || "Services"}
               </h3>
-              <ul className="flex flex-col gap-3 sm:gap-[17px]">
+              <ul className={LIST_CLASSES}>
                 {services.map((service) => (
                   <li
                     key={service._id || service.title}
-                    className="flex items-start gap-2"
+                    className="flex items-start gap-2.5"
                   >
-                    <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[#878787]" />
+                    <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-[#878787]" />
                     <Link
                       href={service.link || "/services"}
-                      className="font-poppins text-sm font-normal leading-snug text-[#878787] transition-colors duration-300 hover:text-white sm:text-base sm:leading-none"
+                      className={LINK_CLASSES}
                     >
                       {service.title}
                     </Link>
@@ -302,21 +338,18 @@ export default function Footer() {
 
           {/* COMPANY */}
           {companyLinks.length > 0 && (
-            <div className="flex w-full flex-col gap-3 sm:gap-[17px] lg:max-w-[248px]">
-              <h3 className="font-poppins text-xl font-normal leading-tight text-[#DDDDDD] sm:text-[28px] sm:leading-none lg:text-[36px]">
+            <div className={`${COLUMN_CLASSES} lg:max-w-[248px]`}>
+              <h3 className={HEADING_CLASSES}>
                 {data.companyTitle || "Company"}
               </h3>
-              <ul className="flex flex-col gap-3 sm:gap-[17px]">
+              <ul className={LIST_CLASSES}>
                 {companyLinks.map((link) => (
                   <li
                     key={link._id || link.title}
-                    className="flex items-start gap-2"
+                    className="flex items-start gap-2.5"
                   >
-                    <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-[#878787]" />
-                    <Link
-                      href={link.link || "/"}
-                      className="font-poppins text-sm font-normal leading-snug text-[#878787] transition-colors duration-300 hover:text-white sm:text-base sm:leading-none"
-                    >
+                    <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-[#878787]" />
+                    <Link href={link.link || "/"} className={LINK_CLASSES}>
                       {link.title}
                     </Link>
                   </li>
@@ -326,15 +359,15 @@ export default function Footer() {
           )}
 
           {/* CONTACT */}
-          <div className="flex w-full flex-col gap-3 sm:gap-[17px] lg:max-w-[320px]">
-            <h3 className="font-poppins text-xl font-normal leading-tight text-[#DDDDDD] sm:text-[28px] sm:leading-none lg:text-[36px]">
+          <div className={`${COLUMN_CLASSES} lg:w-auto`}>
+            <h3 className={HEADING_CLASSES}>
               {data.contactTitle || "Contact"}
             </h3>
-            <div className="flex flex-col gap-3 sm:gap-[17px]">
+            <div className={LIST_CLASSES}>
               {data.phone && (
                 <a
                   href={`tel:${phoneDigits ? `+${phoneDigits}` : ""}`}
-                  className="font-poppins text-sm font-normal leading-snug text-[#878787] transition-colors duration-300 hover:text-white sm:text-base sm:leading-none"
+                  className={CONTACT_LINK_CLASSES}
                 >
                   Phone: {data.phone}
                 </a>
@@ -342,7 +375,7 @@ export default function Footer() {
               {data.email && (
                 <a
                   href={`mailto:${data.email}`}
-                  className="font-poppins text-sm font-normal leading-snug text-[#878787] transition-colors duration-300 hover:text-white sm:text-base sm:leading-none"
+                  className={CONTACT_LINK_CLASSES}
                 >
                   Email: {data.email}
                 </a>
@@ -350,9 +383,9 @@ export default function Footer() {
               {data.salesEmail && (
                 <a
                   href={`mailto:${data.salesEmail}`}
-                  className="font-poppins text-sm font-normal leading-snug text-[#878787] transition-colors duration-300 hover:text-white sm:text-base sm:leading-none"
+                  className={CONTACT_LINK_CLASSES}
                 >
-                  Sales: {data.salesEmail}
+                 For Sales: {data.salesEmail}
                 </a>
               )}
             </div>
@@ -387,7 +420,7 @@ export default function Footer() {
       <style>{`
         @keyframes footer-arrow-float {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
+          50% { transform: translateY(-16px); }
         }
         .footer-float {
           animation: footer-arrow-float 2.2s ease-in-out infinite;

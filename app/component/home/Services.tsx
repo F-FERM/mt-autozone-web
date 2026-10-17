@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { MoveRight } from "lucide-react";
 import api from "@/lib/axios";
 
 interface DescriptionSegment {
@@ -111,9 +112,13 @@ const defaultData: ServicesData = {
   ],
 };
 
+/* Space is OUTSIDE the section (margin), inner padding stays as original */
+const SECTION_CLASSES =
+  "relative mt-24 overflow-hidden bg-black px-4 py-16 sm:mt-28 sm:px-6 lg:mt-36 lg:py-24";
+
 function ServicesSkeleton() {
   return (
-    <section className="relative overflow-hidden bg-black px-4 py-16 sm:px-6 lg:py-24">
+    <section className={SECTION_CLASSES}>
       <div className="relative z-10 mx-auto max-w-[1464px]">
         <div className="mx-auto max-w-[700px] text-center">
           <div className="mx-auto h-4 w-24 animate-pulse rounded-md bg-white/10" />
@@ -122,13 +127,13 @@ function ServicesSkeleton() {
           <div className="mx-auto mt-2 h-4 w-2/3 animate-pulse rounded-md bg-white/10" />
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-[10px] sm:grid-cols-2 sm:mt-14 lg:mt-16">
+        <div className="mt-10 grid grid-cols-1 gap-[10px] sm:mt-14 sm:grid-cols-2 lg:mt-16">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-[20px] bg-white/5 px-5 py-8 sm:min-h-[300px] sm:px-6 sm:py-9 lg:min-h-[300px] lg:px-8 lg:py-10"
+              className="relative flex min-h-[280px] flex-col justify-end overflow-hidden rounded-[20px] bg-white/5 px-5 py-8 sm:min-h-[300px] sm:px-6 sm:py-9 lg:px-8 lg:py-10"
             >
-              <div className="mb-3 h-10 w-10 animate-pulse rounded-md bg-white/10" />
+              <div className="mb-3 h-14 w-14 animate-pulse rounded-md bg-white/10" />
               <div className="h-6 w-1/2 animate-pulse rounded-md bg-white/10" />
               <div className="mt-3 h-4 w-full animate-pulse rounded-md bg-white/10" />
               <div className="mt-2 h-4 w-4/5 animate-pulse rounded-md bg-white/10" />
@@ -206,7 +211,7 @@ export default function ServicesSection() {
   if (isLoading) return <ServicesSkeleton />;
 
   return (
-    <section className="relative overflow-hidden bg-black px-4 py-16 sm:px-6 lg:py-24">
+    <section className={SECTION_CLASSES}>
       {/* decorative right-side photo, hidden below lg since it clashes with text on narrow screens */}
       <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[65%] lg:block xl:w-[58%]">
         <Image
@@ -228,28 +233,29 @@ export default function ServicesSection() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1464px]">
-        <div className="mx-auto max-w-[700px] text-center">
-          <p className="font-poppins text-sm font-normal leading-none text-[#E40000] sm:text-base">
-            {data.sectionLabel}
-          </p>
-          <h2 className="mt-3 font-poppins text-2xl font-semibold leading-tight text-white sm:text-[32px] lg:text-[36px]">
-            {data.title}
-          </h2>
+       <div className="mx-auto w-full max-w-[1000px] text-center">
+  <p className="font-poppins text-sm font-normal leading-none text-[#E40000] sm:text-base">
+    {data.sectionLabel}
+  </p>
 
-          {/* Description now comes from the API (array of segments) */}
-          <p className="mt-4 font-poppins text-sm font-normal leading-relaxed text-[#878787] sm:text-base">
-            {data.description.map((part, i) => (
-              <span
-                key={i}
-                className={part.highlight ? "text-[#E40000]" : undefined}
-              >
-                {""} {part.text} {""}
-              </span>
-            ))}
-          </p>
-        </div>
+  <h2 className="mt-3 font-poppins text-2xl font-semibold leading-tight text-white sm:text-[32px] lg:text-[36px]">
+    {data.title}
+  </h2>
 
-        <div className="mt-10 grid grid-cols-1 gap-[10px] sm:grid-cols-2 sm:mt-14 lg:mt-16">
+  {/* Description comes from the API (array of segments) */}
+  <p className="mt-4 w-full font-poppins text-sm font-normal leading-relaxed text-[#878787] sm:text-base">
+    {data.description.map((part, i) => (
+      <span
+        key={i}
+        className={part.highlight ? "text-[#E40000]" : undefined}
+      >
+        {part.text}{" "}
+      </span>
+    ))}
+  </p>
+</div>
+
+        <div className="mt-10 grid grid-cols-1 gap-[10px] sm:mt-14 sm:grid-cols-2 lg:mt-16">
           {data.serviceCards.map((service, index) => (
             <motion.article
               key={service._id || index}
@@ -283,20 +289,20 @@ export default function ServicesSection() {
               <div className="pointer-events-none absolute inset-0 bg-white opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
               <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
-                {/* Icon */}
+                {/* Icon: 56x56, top/left -1px, no rotation, full opacity */}
                 {service.icon ? (
-                  <div className="relative mb-1 h-8 w-8 sm:mb-3 sm:h-10 sm:w-10">
+                  <div className="relative -left-px -top-px mb-1 h-14 w-14 rotate-0 opacity-100 sm:mb-3">
                     <Image
                       src={service.icon}
                       alt=""
                       fill
                       unoptimized
-                      sizes="40px"
+                      sizes="56px"
                       className="object-contain"
                     />
                   </div>
                 ) : (
-                  <div className="mb-1 h-8 w-8 sm:mb-3 sm:h-10 sm:w-10" />
+                  <div className="mb-1 h-14 w-14 sm:mb-3" />
                 )}
 
                 <h3 className="font-poppins text-lg font-semibold leading-snug text-white transition-colors duration-300 group-hover:text-[#111111] sm:text-xl lg:text-[22px]">
@@ -309,11 +315,15 @@ export default function ServicesSection() {
 
                 <Link
                   href={service.buttonLink}
-                  className="inline-flex w-fit items-center gap-2 font-poppins text-lg font-normal leading-none text-[#E40000] transition-all duration-300 hover:gap-3 sm:text-xl lg:text-2xl"
+                  className="inline-flex w-fit items-center font-poppins text-lg font-normal leading-none text-[#E40000] sm:text-xl lg:text-2xl"
                 >
                   {service.buttonText}
-                  <span className="-translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
-                    →
+
+                  {/* Below lg: arrow always visible (no hover on touch).
+                      lg and up: wrapper is 0 wide and opens on card hover,
+                      so the arrow slides out from behind the text. */}
+                  <span className="ml-2 inline-flex w-5 items-center overflow-hidden transition-all duration-300 ease-out sm:w-6 lg:w-0 lg:group-hover:w-7">
+                    <MoveRight className="h-5 w-5 shrink-0 translate-x-0 opacity-100 transition-all duration-300 ease-out sm:h-6 sm:w-6 lg:h-7 lg:w-7 lg:-translate-x-full lg:opacity-0 lg:group-hover:translate-x-0 lg:group-hover:opacity-100" />
                   </span>
                 </Link>
               </div>

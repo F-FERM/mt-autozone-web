@@ -120,6 +120,23 @@ const FALLBACK_CARDS: ServiceCardData[] = [
   },
 ];
 
+// Feature item layout (icon + label).
+// Always 3 items in one row, each as wide as its own content (no equal-width columns). Icon sits LEFT of the label (like the design)
+// whenever the card is wide enough, and goes ABOVE the label when the card is narrow:
+//   < 420px      -> icon above label   (small phones)
+//   420-639px    -> icon left          (1 card per row, wide)
+//   640-767px    -> icon above label   (2 cards per row, narrow)
+//   768-1023px   -> icon left          (2 cards per row, wide)
+//   1024-1279px  -> icon above label   (3 cards per row, narrow)
+//   1280px+      -> icon left          (3 cards per row, wide)
+const FEATURE_ITEM_LAYOUT =
+  "flex min-w-0 shrink flex-col items-start gap-1.5 " +
+  "min-[420px]:flex-row min-[420px]:items-center min-[420px]:gap-2 " +
+  "sm:flex-col sm:items-start sm:gap-1.5 " +
+  "md:flex-row md:items-center md:gap-2 " +
+  "lg:flex-col lg:items-start lg:gap-1.5 " +
+  "xl:flex-row xl:items-center xl:gap-2";
+
 // ================= COMPONENT =================
 
 export default function ServiceCards() {
@@ -190,7 +207,7 @@ export default function ServiceCards() {
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
-            className="relative h-[340px] w-full animate-pulse overflow-hidden rounded-[20px] bg-white/5 xs:h-[300px] sm:h-[380px] lg:h-[446px]"
+            className="relative h-[420px] w-full animate-pulse overflow-hidden rounded-[20px] bg-white/5 sm:h-[420px] lg:h-[446px]"
           />
         ))}
       </section>
@@ -201,7 +218,7 @@ export default function ServiceCards() {
 
   return (
     <section
-      className="mx-auto grid w-full max-w-[1464px] grid-cols-1 gap-4 px-4 py-10
+      className="mx-auto grid w-full max-w-[1464px] grid-cols-1 gap-4 px-4
                  sm:grid-cols-2 sm:gap-3 sm:px-6
                  lg:grid-cols-3 lg:gap-[10px]"
     >
@@ -211,11 +228,10 @@ export default function ServiceCards() {
         return (
           <article
             key={service._id || cardIdx}
-            className="group relative flex h-[340px] w-full overflow-hidden rounded-[20px]
-                       transition-transform duration-300 hover:-translate-y-1 cursor-pointer
-                       xs:h-[300px]
-                       sm:h-[380px]
-                       lg:h-[446px]"
+            className="group relative flex min-h-[420px] w-full cursor-pointer overflow-hidden rounded-[20px]
+                       transition-transform duration-300 hover:-translate-y-1
+                       sm:min-h-[420px]
+                       lg:min-h-[446px]"
           >
             {isImageRemote ? (
               <Image
@@ -241,7 +257,7 @@ export default function ServiceCards() {
             {/* default readability overlay */}
             <div
               className="pointer-events-none absolute inset-0 bg-gradient-to-t
-                         from-black/80 via-black/30 to-transparent
+                         from-black/85 via-black/35 to-transparent
                          transition-opacity duration-300 group-hover:opacity-0"
             />
 
@@ -255,38 +271,42 @@ export default function ServiceCards() {
               }}
             />
 
-            {/* content */}
+            {/* content: pinned to the bottom, padding grows with the screen */}
             <div
-              className="relative z-10 mt-auto flex flex-col gap-3
+              className="relative z-10 mt-auto flex w-full min-w-0 flex-col gap-1
                          px-5 pb-6
-                         sm:px-7 sm:pb-8
-                         lg:px-10 lg:pb-[50px]"
+                         min-[420px]:px-8 min-[420px]:pb-8
+                         sm:px-6 sm:pb-7
+                         md:px-8 md:pb-8
+                         lg:px-7 lg:pb-9
+                         xl:px-10 xl:pb-[50px]"
             >
-              <h3 className="font-poppins text-lg font-semibold leading-tight text-white sm:text-xl lg:text-[22px]">
+              <h3 className="font-poppins text-[18px] font-semibold leading-tight text-white min-[420px]:text-[20px] lg:text-[20px] xl:text-[22px]">
                 {service.title}
               </h3>
 
-              <p className="font-poppins text-[13px] font-normal leading-snug text-[#C4C4C4] sm:text-[14px] lg:text-[16px]">
+              <p className="font-poppins text-[13px] font-normal leading-[150%] text-[#C4C4C4] min-[420px]:text-[14px] xl:text-[16px]">
                 {service.description}
               </p>
 
-              {/* feature icons row */}
+              {/* feature row: always 3 in one row */}
               {service.items.length > 0 && (
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="flex flex-nowrap items-start justify-start gap-x-3 pt-1 xl:gap-x-4">
                   {service.items.map((item, iIdx) => {
-                    const isIconRemote = typeof item.icon === "string";
+                    const hasRemoteIcon =
+                      typeof item.icon === "string" && item.icon.length > 0;
                     const fallbackIcon =
                       FALLBACK_ICONS[(cardIdx * 3 + iIdx) % FALLBACK_ICONS.length];
 
                     return (
                       <div
                         key={`${item.label}-${iIdx}`}
-                        className="flex items-center gap-2"
+                        className={FEATURE_ITEM_LAYOUT}
                       >
-                        {isIconRemote ? (
+                        {hasRemoteIcon ? (
                           <div className="relative h-6 w-6 shrink-0">
                             <Image
-                              src={item.icon}
+                              src={item.icon as string}
                               alt=""
                               fill
                               unoptimized
@@ -296,14 +316,16 @@ export default function ServiceCards() {
                           </div>
                         ) : (
                           <Image
-                            src={fallbackIcon}
+                            src={
+                              typeof item.icon === "string" ? fallbackIcon : item.icon
+                            }
                             alt=""
-                            width={20}
-                            height={20}
-                            className="h-6 w-6 shrink-0"
+                            width={24}
+                            height={24}
+                            className="h-6 w-6 shrink-0 object-contain"
                           />
                         )}
-                        <span className="font-poppins text-[11px] font-medium leading-[160%] text-[#D3D3D3] sm:text-[12px]">
+                        <span className="min-w-0 max-w-[88px] break-words font-poppins text-[11px] font-medium leading-[150%] text-[#D3D3D3] sm:text-[12px]">
                           {item.label}
                         </span>
                       </div>

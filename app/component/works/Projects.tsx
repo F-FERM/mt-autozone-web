@@ -234,7 +234,7 @@ export default function ProjectsGrid() {
                 aria-hidden
                 className="
                   pointer-events-none absolute inset-0
-                  bg-gradient-to-t from-black/70 via-black/10 to-transparent
+                  bg-gradient-to-t from-black/50 via-black/10 to-transparent
                 "
               />
 
@@ -295,7 +295,7 @@ export default function ProjectsGrid() {
                         <span
                           className="
                             max-w-[80px] font-poppins text-xs font-normal
-                            leading-[150%] text-white sm:text-sm
+                            leading-[150%] text-[#D3D3D3] sm:text-sm
                           "
                         >
                           {feature.label}

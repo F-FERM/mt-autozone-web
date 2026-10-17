@@ -90,12 +90,13 @@ export default function ServicesHero() {
     fetchServicePage();
   }, []);
 
-  // Render description segments with highlight styling
+  // Render description segments with highlight styling.
+  // No extra spaces around highlighted text, so it reads "M.T. Autozone, we ..."
   const renderDescription = () =>
     data.description.map((seg, idx) =>
       seg.highlight ? (
         <span key={idx} className="text-[#E40000]">
-        {""} {seg.text} {""}
+          {seg.text}
         </span>
       ) : (
         <span key={idx}>{seg.text}</span>
@@ -138,25 +139,28 @@ export default function ServicesHero() {
         style={{ backgroundColor: "#0000009C" }}
       />
 
-      {/* Content */}
+      {/* Content: sits slightly below center, like the reference */}
       <div
         className="
           relative z-10
-          flex flex-col items-center
-          min-h-full
+          flex flex-col items-center justify-center
+          min-h-[inherit]
           px-5 sm:px-8 md:px-12
-          py-10 sm:py-12 md:py-14
-          gap-3 sm:gap-4 lg:gap-[19px]
+          pt-16 pb-8
+          sm:pt-20 sm:pb-8
+          md:pt-24 md:pb-6
+          lg:pt-[90px] lg:pb-6
+          2xl:pt-[100px] 2xl:pb-[25px]
+          gap-3
           w-full max-w-[1464px] mx-auto
-          justify-center
           text-center
         "
       >
         {isLoading ? (
           <>
             <div className="h-4 w-24 animate-pulse rounded-md bg-white/10" />
-            <div className="h-8 w-3/4 animate-pulse rounded-md bg-white/10 sm:h-10" />
-            <div className="h-4 w-full max-w-[880px] animate-pulse rounded-md bg-white/10" />
+            <div className="h-8 w-3/4 max-w-[575px] animate-pulse rounded-md bg-white/10 sm:h-10" />
+            <div className="mt-4 h-4 w-full max-w-[880px] animate-pulse rounded-md bg-white/10" />
           </>
         ) : (
           <>
@@ -188,7 +192,7 @@ export default function ServicesHero() {
               className="
                 font-poppins font-normal
                 text-sm sm:text-base
-                leading-relaxed lg:leading-[180%]
+                leading-relaxed lg:leading-[150%]
                 tracking-normal
                 text-[#C0C0C0]
                 max-w-[880px]

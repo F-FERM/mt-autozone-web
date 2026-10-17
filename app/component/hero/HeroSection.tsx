@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import carImg from "../../../public/images/homemaincar.png";
-import card1Bg from "../../../public/images/card1car.jpg";
+import card1Bg from "../../../public/images/car9.jpg";
 import checkIcon from "../../../public/images/qlementine-icons_certified-16.png";
 import dropIcon from "../../../public/images/ri_paint-line.png";
 import carIcon from "../../../public/images/carbon_car.png";
@@ -67,6 +67,10 @@ const FALLBACK: HomeHeroData = {
 /* ---------- Canvas sizes ---------- */
 const DESIGN_WIDTH = 1920;
 const DESIGN_HEIGHT = 900;
+
+// Both desktop cards share this top so they start on the same line.
+// Change only this value to move them together.
+const CARDS_TOP = 108;
 
 const COMPACT_WIDTH = 390;
 const COMPACT_HEIGHT = 480;
@@ -729,17 +733,48 @@ function DesktopHero({ data }: { data: HomeHeroData }) {
 
         {/* Card 1 — dynamic eyebrow + eyebrowDescription */}
         <article
-          className="absolute z-[4] overflow-hidden rounded-[16px]"
-          style={{ top: 108, left: 162, width: 425, height: 197 }}
+          className="absolute z-[4] isolate transform-gpu overflow-hidden rounded-[20px] bg-black"
+          style={{ top: CARDS_TOP, left: 162, width: 425, height: 197 }}
         >
-          <Image src={card1Bg} alt="" fill className="object-cover object-right" />
-          <div className="relative z-10 flex h-full flex-col justify-center gap-3 px-6">
-            <h3 className="font-poppins text-[22px] font-medium leading-[150%] text-white">
+          {/* Image panel: starts at 42% of the card and runs to the right edge */}
+          <div className="absolute inset-y-0 left-[42%] right-0 overflow-hidden rounded-r-[20px]">
+            <Image
+              src={card1Bg}
+              alt=""
+              fill
+              className="object-cover object-right"
+            />
+
+            {/* Soft blur on the left part of the image, with no hard edge */}
+            <div
+              aria-hidden
+              className="absolute inset-0 backdrop-blur-[10px]"
+              style={{
+                WebkitMaskImage:
+                  "linear-gradient(to right, #000 0%, rgba(0,0,0,0.6) 10%, transparent 20%)",
+                maskImage:
+                  "linear-gradient(to right, #000 0%, rgba(0,0,0,0.6) 10%, transparent 20%)",
+              }}
+            />
+
+            {/* Black fade so the image blends into the card */}
+            <div
+              aria-hidden
+              className="absolute -left-px inset-y-0 right-0 bg-gradient-to-r from-black via-black/5 to-transparent"
+            />
+          </div>
+
+          {/* Text */}
+          <div className="relative z-10 flex h-full flex-col justify-center gap-3 pl-[32px] pr-6">
+            <h3
+              className="font-poppins text-[22px] font-medium leading-[150%] text-white"
+              style={{ maxWidth: 270 }}
+            >
               {data.eyebrow}
             </h3>
             <p
               className="font-poppins text-[16px] font-normal leading-[150%] text-[#C8C8C8]"
-              style={{ width: 306, height: 72 }}
+              style={{ width: 306 }}
             >
               {data.eyebrowDescription}
             </p>
@@ -747,10 +782,10 @@ function DesktopHero({ data }: { data: HomeHeroData }) {
         </article>
 
         <p
-          className="absolute left-[282px] top-[356px] z-[2] select-none font-poppins text-[140px] font-medium leading-none text-white/90"
+          className="absolute left-[282px] top-[356px] z-[1] select-none font-poppins text-[140px] font-medium leading-none text-white/55"
           style={{ letterSpacing: "-6px" }}
         >
-          MT <span className="text-white/40">AUTO</span>
+          MT <span className="text-white/18">AUTO</span>
         </p>
 
         <p className="absolute right-[465px] top-[607px] z-[2] select-none font-poppins text-[166px] font-medium leading-none tracking-tight text-white/25">
@@ -802,7 +837,7 @@ function DesktopHero({ data }: { data: HomeHeroData }) {
         {/* Card 2 — dynamic subtitle, static features + button */}
         <article
           className="absolute z-[3] flex flex-col gap-[13px] rounded-[20px] border border-[#2f2f2f] bg-[#78787833] py-5 backdrop-blur-sm"
-          style={{ top: 108, left: 1297, width: 523, height: 444 }}
+          style={{ top: CARDS_TOP, left: 1297, width: 523, height: 444 }}
         >
           <h3 className="px-[42px] font-poppins text-[24px] font-medium leading-[150%] text-white">
             {data.subtitle}
@@ -827,10 +862,10 @@ function DesktopHero({ data }: { data: HomeHeroData }) {
 
         {/* ✅ Description — dynamic */}
         <div
-          className="absolute z-[5] flex items-center rounded-[10px] px-[30px] py-[10px] backdrop-blur-[4.4px]"
-          style={{ top: 741, left: 162, width: 782, height: 68, background: "#62626254" }}
+          className="absolute z-[5] flex items-center rounded-[10px] px-[30px] py-[10px] backdrop-blur-[4.9px]"
+          style={{ top: 722, left: 162, width: 782, height: 80, background: "#6262621A" }}
         >
-          <p className="font-poppins text-[15px] font-normal leading-snug text-white">
+          <p className="font-poppins text-[15px] font-normal leading-[150%] text-white">
             {data.description}
           </p>
         </div>

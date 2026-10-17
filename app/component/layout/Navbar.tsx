@@ -16,6 +16,74 @@ const NAV_LINKS = [
   { label: "Works", href: "/works" },
 ];
 
+/* One contact button, reused for desktop and mobile. Size comes from className. */
+function ContactButton({
+  className = "",
+  onClick,
+}: {
+  className?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <Link
+      href="/contact-us"
+      onClick={onClick}
+      className={`
+        group relative overflow-hidden
+        items-center justify-center
+        shrink-0 font-poppins
+
+        rounded-[19px]
+        border border-[#E4000038]
+        bg-[#FFFFFF24]
+
+        shadow-[0_3px_4px_rgba(0,0,0,0.35)]
+        transition-[box-shadow,border-color] duration-300 ease-out
+
+        hover:border-transparent
+        hover:shadow-[0_7px_6px_rgba(0,0,0,0.55)]
+        ${className}
+      `}
+    >
+      {/* Hover gradient layer */}
+      <span
+        aria-hidden
+        className="
+          pointer-events-none absolute -inset-px rounded-[19px]
+          opacity-0 group-hover:opacity-100
+          transition-opacity duration-300 ease-out
+          bg-[radial-gradient(ellipse_70%_120%_at_0%_100%,#4a1f1f_0%,rgba(74,31,31,0.85)_30%,rgba(74,31,31,0.45)_55%,rgba(74,31,31,0)_85%),linear-gradient(90deg,#8a2e2e_0%,#b02222_40%,#d10c0c_75%,#e00000_100%)]
+        "
+      />
+
+      <span className="relative z-10 flex items-center gap-[10px] xl:gap-[14px]">
+        <span
+          className="
+            text-white whitespace-nowrap font-medium leading-none
+            text-[16px] xl:text-[20px]
+          "
+        >
+          Contact
+        </span>
+
+        <Image
+          src={phoneIcon}
+          alt="Phone"
+          width={25}
+          height={25}
+          className="
+            w-[20px] h-[20px] xl:w-[25px] xl:h-[25px]
+            object-contain shrink-0
+            rotate-0
+            group-hover:rotate-[-120deg]
+            transition-transform duration-300 ease-out
+          "
+        />
+      </span>
+    </Link>
+  );
+}
+
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -26,19 +94,14 @@ export default function Navbar() {
       style={{ background: "#0d0d0d" }}
     >
       <div
-        className="mx-auto flex items-center justify-between gap-[10px] px-5 sm:px-10 lg:px-20"
+        className="mx-auto flex items-center justify-between gap-3 px-4 sm:px-8 lg:px-12 xl:px-20"
         style={{ maxWidth: "1920px" }}
       >
         {/* ================= LOGO ================= */}
         <Link
           href="/"
           aria-label="AutoZone home"
-          className="flex items-center shrink-0 py-3"
-          style={{
-            width: "182px",
-            maxWidth: "40vw",
-            height: "84px",
-          }}
+          className="flex items-center shrink-0 py-3 w-[120px] sm:w-[150px] xl:w-[182px]"
         >
           <Image
             src={autozonelogo}
@@ -50,20 +113,16 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* ================= DESKTOP NAV ================= */}
+        {/* ================= DESKTOP NAV (lg and up) ================= */}
         <nav
           className="
-            hidden
-            md:flex
-            items-center
-            justify-between
-            shrink-0
+            hidden lg:flex
+            flex-1 max-w-[590px]
+            mx-auto
+            items-center justify-between
+            gap-4
             font-poppins
           "
-          style={{
-            width: "590px",
-            height: "24px",
-          }}
         >
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
@@ -72,13 +131,8 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="transition-colors duration-200"
-                style={{
-                  fontWeight: 500,
-                  fontSize: "16px",
-                  lineHeight: "100%",
-                  color: isActive ? "#E40000" : "#EBEBEB",
-                }}
+                className="transition-colors duration-200 font-medium text-[15px] xl:text-[16px] leading-none hover:text-[#E40000]"
+                style={{ color: isActive ? "#E40000" : "#EBEBEB" }}
               >
                 {link.label}
               </Link>
@@ -87,93 +141,31 @@ export default function Navbar() {
         </nav>
 
         {/* ================= DESKTOP CONTACT ================= */}
-        <a
-          href="/contact-us"
-          className="
-    group
-    hidden md:flex
-    items-center
-    justify-center
-    shrink-0
-    font-poppins
+        <ContactButton className="hidden lg:flex w-[150px] h-[48px] xl:w-[181px] xl:h-[55px]" />
 
-    w-[181px]
-    h-[55px]
-
-    rounded-[19px]
-
-    border
-    border-[#E4000038]
-
-    bg-[#FFFFFF24]
-
-    shadow-[0_3px_4px_rgba(0,0,0,0.35)]
-
-    transition-[background,box-shadow]
-    duration-300
-    ease-out
-
-    hover:bg-[linear-gradient(135deg,#4A2929_0%,#572C2C_25%,#8B2525_55%,#C91A1A_78%,#E00000_100%)]
-    hover:shadow-[0_7px_6px_rgba(0,0,0,0.55)]
-  "
-        >
-          <div className="flex items-center gap-[10px]">
-            <span
-              className="text-white whitespace-nowrap"
-              style={{
-                fontWeight: 500,
-                fontSize: "20px",
-                lineHeight: "100%",
-              }}
-            >
-              Contact
-            </span>
-
-            <span className="flex items-center justify-center w-[25px] h-[25px] shrink-0">
-              <Image
-                src={phoneIcon}
-                alt="Phone"
-                width={25}
-                height={25}
-                className="
-          w-[25px]
-          h-[25px]
-          object-contain
-          rotate-0
-          group-hover:rotate-[-45deg]
-          transition-transform
-          duration-300
-          ease-out
-        "
-              />
-            </span>
-          </div>
-        </a>
-        {/* ================= MOBILE MENU ================= */}
+        {/* ================= MOBILE MENU BUTTON ================= */}
         <button
           type="button"
           aria-label="Toggle menu"
-          className="md:hidden text-white p-2"
+          aria-expanded={mobileOpen}
+          className="lg:hidden text-white p-2 -mr-2"
           onClick={() => setMobileOpen((v) => !v)}
         >
           {mobileOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
-      {/* ================= MOBILE DRAWER ================= */}
+      {/* ================= MOBILE / TABLET DRAWER ================= */}
       {mobileOpen && (
         <div
           className="
-            md:hidden
-            flex
-            flex-col
-            gap-5
-            px-6
-            pb-6
-            pt-2
+            lg:hidden
+            flex flex-col gap-5
+            px-4 sm:px-8
+            pb-6 pt-4
             font-poppins
-            border-t
-            border-[#3a1010]
+            border-t border-[#3a1010]
+            max-h-[calc(100vh-84px)] overflow-y-auto
           "
         >
           {NAV_LINKS.map((link) => {
@@ -184,78 +176,18 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                style={{
-                  fontWeight: 500,
-                  fontSize: "16px",
-                  color: isActive ? "#E40000" : "#EBEBEB",
-                }}
+                className="font-medium text-[16px] leading-none"
+                style={{ color: isActive ? "#E40000" : "#EBEBEB" }}
               >
                 {link.label}
               </Link>
             );
           })}
 
-          {/* ================= MOBILE CONTACT ================= */}
-          <a
-            href="/contact-us"
-            className="
-              group
-              flex
-              items-center
-              justify-center
-              mt-2
-
-              h-[55px]
-
-              rounded-[19px]
-
-              border
-              border-[#E400002B]
-
-              bg-[#FFFFFF24]
-
-              shadow-[5px_7px_12px_rgba(0,0,0,0.45)]
-
-              transition-all
-              duration-300
-
-              hover:bg-[#E40000]
-              hover:border-[#E40000]
-              hover:shadow-[6px_8px_14px_rgba(0,0,0,0.65)]
-            "
-          >
-            <div className="flex items-center gap-[10px]">
-              <span
-                className="text-white"
-                style={{
-                  fontWeight: 500,
-                  fontSize: "16px",
-                  lineHeight: "100%",
-                }}
-              >
-                Contact
-              </span>
-
-              <Image
-                src={phoneIcon}
-                alt="Phone"
-                width={20}
-                height={20}
-                className="
-                  w-[20px]
-                  h-[20px]
-                  object-contain
-
-                  rotate-0
-                  group-hover:rotate-[-90deg]
-
-                  transition-transform
-                  duration-300
-                  ease-out
-                "
-              />
-            </div>
-          </a>
+          <ContactButton
+            onClick={() => setMobileOpen(false)}
+            className="flex w-full sm:w-[220px] h-[52px] mt-2"
+          />
         </div>
       )}
     </header>

@@ -46,6 +46,15 @@ interface BrandsData {
   brands: Brand[];
 }
 
+// ================= SPEED =================
+
+/**
+ * Time for one full loop of the marquee.
+ * Lower number = faster. (Was 16s, now 8s.)
+ * Try 6s for faster, 12s for slower.
+ */
+const MARQUEE_DURATION = "4s";
+
 // ================= FALLBACK DATA =================
 
 const defaultBrands: Brand[] = [
@@ -66,16 +75,18 @@ const defaultData: BrandsData = {
   brands: defaultBrands,
 };
 
+const SECTION_STYLE = {
+  backgroundImage:
+    "radial-gradient(120% 55% at 100% 100%, rgba(228,0,0,0.45) 0%, rgba(228,0,0,0) 15%), linear-gradient(90deg, #000000 0%, #050000 40%, #200000 65%, #5a0000 85%, #8a0000 100%)",
+};
+
 // ================= SKELETON =================
 
 function BrandsSkeleton() {
   return (
     <section
       className="relative overflow-hidden bg-black py-12 sm:py-16 lg:py-24"
-      style={{
-        backgroundImage:
-          "radial-gradient(120% 55% at 100% 100%, rgba(228,0,0,0.45) 0%, rgba(228,0,0,0) 15%), linear-gradient(90deg, #000000 0%, #050000 40%, #200000 65%, #5a0000 85%, #8a0000 100%)",
-      }}
+      style={SECTION_STYLE}
     >
       <div className="relative z-10 mx-auto flex max-w-[702px] flex-col items-center gap-3 px-4 text-center sm:px-6">
         <div className="h-4 w-20 animate-pulse rounded-md bg-white/10" />
@@ -164,10 +175,7 @@ export default function BrandsSection() {
   return (
     <section
       className="relative overflow-hidden bg-black py-12 sm:py-16 lg:py-24"
-      style={{
-        backgroundImage:
-          "radial-gradient(120% 55% at 100% 100%, rgba(228,0,0,0.45) 0%, rgba(228,0,0,0) 15%), linear-gradient(90deg, #000000 0%, #050000 40%, #200000 65%, #5a0000 85%, #8a0000 100%)",
-      }}
+      style={SECTION_STYLE}
     >
       <div className="relative z-10 mx-auto flex max-w-[702px] flex-col items-center gap-3 px-4 text-center sm:px-6">
         <p className="font-poppins text-sm font-normal leading-none text-[#E40000] sm:text-base">
@@ -199,10 +207,8 @@ export default function BrandsSection() {
         {/* ACTUAL MARQUEE CONTAINER */}
         <div className="relative overflow-hidden">
           <div
-            className="flex w-max items-center gap-6 sm:gap-8 lg:gap-10"
-            style={{
-              animation: "brands-marquee-scroll 16s linear infinite",
-            }}
+            className="brands-marquee-track flex w-max items-center gap-6 sm:gap-8 lg:gap-10"
+            style={{ ["--marquee-duration" as string]: MARQUEE_DURATION }}
           >
             {track.map((brand, i) => (
               <div
@@ -232,13 +238,17 @@ export default function BrandsSection() {
       </div>
 
       <style>{`
+        .brands-marquee-track {
+          animation: brands-marquee-scroll var(--marquee-duration, 8s) linear infinite;
+          will-change: transform;
+        }
         @keyframes brands-marquee-scroll {
           from { transform: translateX(0); }
           to { transform: translateX(-50%); }
         }
         @media (prefers-reduced-motion: reduce) {
-          section .flex[style*="brands-marquee-scroll"] {
-            animation: none !important;
+          .brands-marquee-track {
+            animation: none;
           }
         }
       `}</style>

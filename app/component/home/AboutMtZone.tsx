@@ -442,9 +442,9 @@ export default function AboutSection() {
   const litMask =
     litRenderW > 0
       ? [
-        "linear-gradient(#000, #000)",
-        `radial-gradient(${beamRx}px ${beamRy}px at ${beamCx}px ${beamCy}px, #000 0%, #000 ${BEAM_SOLID_PCT}%, transparent 100%)`,
-      ].join(", ")
+          "linear-gradient(#000, #000)",
+          `radial-gradient(${beamRx}px ${beamRy}px at ${beamCx}px ${beamCy}px, #000 0%, #000 ${BEAM_SOLID_PCT}%, transparent 100%)`,
+        ].join(", ")
       : undefined;
   const litMaskSize = `${carPxW}px ${carPxH}px, 100% 100%`;
   const litMaskPosition = `${carPxX}px ${carPxY}px, 0 0`;
@@ -453,20 +453,20 @@ export default function AboutSection() {
   // A soft cone that starts at the headlight and widens to the far left end of
   // the section (over the text), like the design.
   const BEAM_OPACITY = 0.3; // brightness right at the headlight (0-1)
-  const BEAM_END_OPACITY = 0.08; // brightness at the far left end (0-1)
+  const BEAM_END_OPACITY = 0.22; // brightness at the far left end (0-1). Keep <= BEAM_OPACITY
   const BEAM_BLUR = 36; // px. Higher = softer edges
   const BEAM_START_HALF = 14; // px. Half-height of the beam at the headlight
 
   const beamReady = sectionInfo.w > 0 && fitScale > 0 && litRenderW > 0;
   const beamX = sectionInfo.offX + litLeft + carPxX; // headlight x inside section
   const beamY = sectionInfo.offY + litTop + beamCy; // headlight y inside section
-  const beamClip = `polygon(${beamX}px ${beamY - BEAM_START_HALF}px, -120px -80px, -120px ${sectionInfo.h + 80}px, ${beamX}px ${beamY + BEAM_START_HALF}px)`;
-  const beamBg = `linear-gradient(to right, rgba(255,255,255,${BEAM_END_OPACITY}) 0px, rgba(255,255,255,${BEAM_OPACITY}) ${beamX}px, transparent ${beamX}px)`;
+  const beamClip = `polygon(${beamX}px ${beamY - BEAM_START_HALF}px, -300px -80px, -300px ${sectionInfo.h + 80}px, ${beamX}px ${beamY + BEAM_START_HALF}px)`;
+  const beamBg = `linear-gradient(to right, rgba(255,255,255,${BEAM_END_OPACITY}) 0px, rgba(255,255,255,${(BEAM_END_OPACITY + BEAM_OPACITY) / 2}) ${beamX * 0.5}px, rgba(255,255,255,${BEAM_OPACITY}) ${beamX}px, transparent ${beamX}px)`;
 
   return (
     <section
       ref={sectionRef}
-      className="relative mx-auto w-full max-w-[1920px] overflow-hidden py-10"
+      className="relative mx-auto w-full max-w-[1920px] overflow-hidden py-2 sm:py-5 lg:py-6"
     >
       {/* Wide headlight beam: spreads from the car to the end of the section */}
       {beamReady && (
@@ -485,9 +485,11 @@ export default function AboutSection() {
         </div>
       )}
 
-      <div className="relative z-10 mx-auto flex max-w-[1464px] flex-col items-center gap-10 px-4 sm:px-6 lg:flex-row lg:items-center lg:gap-16">
+      {/* Container: side padding drops to 0 once the screen is as wide as the container (1464px),
+          so the text starts exactly at the container edge like the design. */}
+      <div className="relative z-10 mx-auto flex w-full max-w-[1464px] flex-col items-center gap-8 px-4 sm:gap-10 sm:px-6 md:px-8 lg:flex-row lg:items-center lg:gap-12 lg:px-10 min-[1464px]:px-0 xl:gap-16">
         {/* LEFT CONTENT */}
-        <div className="relative z-10 flex w-full max-w-[631px] flex-col gap-3.5 text-center lg:text-left">
+        <div className="relative z-10 flex w-full min-w-0 max-w-[631px] flex-col gap-3.5 text-center lg:text-left">
           {isLoading ? (
             <>
               <div className="mx-auto h-4 w-20 animate-pulse rounded-md bg-white/10 lg:mx-0" />
@@ -504,7 +506,7 @@ export default function AboutSection() {
               <h2 className="font-poppins text-[26px] font-semibold leading-tight text-white sm:text-[30px] lg:text-[36px] lg:leading-[100%]">
                 {data.title}
               </h2>
-              <p className="font-poppins text-base font-normal leading-[150%] text-[#cfcfcf] break-words">
+              <p className="break-words font-poppins text-sm font-normal leading-[150%] text-[#cfcfcf] sm:text-base">
                 {renderDescription()}
               </p>
 
@@ -512,35 +514,50 @@ export default function AboutSection() {
                 <a
                   href={data.buttonLink}
                   className="
-                    group
-                    mx-auto mt-4 flex w-fit items-center gap-2
-                    rounded-[19px] border border-[#E400002B] bg-[#FFFFFF24]
-                    px-6 py-3
-                    font-poppins text-sm font-medium text-white
+                    group relative overflow-hidden
+                    mx-auto mt-4 flex w-fit max-w-full shrink-0 items-center justify-center
+                    h-[55px] min-w-[221px]
+                    gap-[13px] px-[40px] py-[17px]
+                    rounded-[19px]
+                    border border-[#E400002B] text-[18px]
+                    bg-[#FFFFFF24]
+                    font-poppins text-sm font-medium leading-none text-white
                     shadow-[0_3px_4px_rgba(0,0,0,0.35)]
-                    transition-[background,box-shadow]
-                    duration-300 ease-out
-                    hover:bg-[linear-gradient(135deg,#4A2929_0%,#572C2C_25%,#8B2525_55%,#C91A1A_78%,#E00000_100%)]
+                    transition-[box-shadow,border-color] duration-300 ease-out
+                    hover:border-transparent
                     hover:shadow-[0_7px_6px_rgba(0,0,0,0.55)]
                     lg:mx-0
                   "
                 >
-                  {data.buttonText}
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="transition-transform duration-300 ease-out group-hover:rotate-[45deg]"
-                  >
-                    <path
-                      d="M7 17L17 7M17 7H8M17 7V16"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  {/* Hover gradient layer (same as Contact button) */}
+                  <span
+                    aria-hidden
+                    className="
+                      pointer-events-none absolute -inset-px rounded-[19px]
+                      opacity-0 group-hover:opacity-100
+                      transition-opacity duration-300 ease-out
+                      bg-[radial-gradient(ellipse_70%_120%_at_0%_100%,#4a1f1f_0%,rgba(74,31,31,0.85)_30%,rgba(74,31,31,0.45)_55%,rgba(74,31,31,0)_85%),linear-gradient(90deg,#8a2e2e_0%,#b02222_40%,#d10c0c_75%,#e00000_100%)]
+                    "
+                  />
+
+                  <span className="relative z-10 flex items-center gap-[13px]">
+                    <span className="whitespace-nowrap">{data.buttonText}</span>
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="shrink-0 transition-transform duration-300 ease-out group-hover:rotate-[45deg]"
+                    >
+                      <path
+                        d="M7 17L17 7M17 7H8M17 7V16"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
                 </a>
               )}
             </>
@@ -548,7 +565,7 @@ export default function AboutSection() {
         </div>
 
         {/* RIGHT — BEFORE / AFTER SLIDER */}
-        <div className="w-full max-w-[940px]">
+        <div className="w-full min-w-0 max-w-[940px]">
           <div
             ref={carBoxRef}
             onMouseEnter={() => setIsHoveringCar(true)}
@@ -558,8 +575,9 @@ export default function AboutSection() {
             {/* Normal car images (before / midway / after).
                 Fully hidden while the lit image is showing, so only one car is visible. */}
             <div
-              className={`absolute inset-0 ${showLight ? "invisible" : "visible"
-                }`}
+              className={`absolute inset-0 ${
+                showLight ? "invisible" : "visible"
+              }`}
             >
               {/* Before image (bottom layer) */}
               {isBeforeRemote ? (
@@ -646,8 +664,9 @@ export default function AboutSection() {
                 aria-hidden
                 priority
                 draggable={false}
-                className={`pointer-events-none absolute max-w-none ${showLight || LIT_DEBUG ? "visible" : "invisible"
-                  }`}
+                className={`pointer-events-none absolute max-w-none ${
+                  showLight || LIT_DEBUG ? "visible" : "invisible"
+                }`}
                 style={{
                   left: litLeft,
                   top: litTop,
@@ -672,7 +691,7 @@ export default function AboutSection() {
             ref={barRef}
             onMouseDown={handleBarMouseDown}
             onTouchStart={handleBarTouchStart}
-            className="relative mt-6 h-[3px] w-full cursor-pointer rounded-full bg-white/15 py-3"
+            className="relative mt-4 h-[3px] w-full cursor-pointer touch-none rounded-full bg-white/15 py-3 sm:mt-6"
           >
             <div className="absolute left-0 top-1/2 h-[3px] w-full -translate-y-1/2 rounded-full bg-white/15" />
             <div

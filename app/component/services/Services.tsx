@@ -41,18 +41,33 @@ interface ServiceItem {
   points: { label: string; icon: string }[];
 }
 
+/* Grid spacing shared by the skeleton and the real grid.
+   2xl (1536px+): 1464px wide grid, 94px column gap, 137px row gap,
+   which gives 425px wide cards like the reference. */
+const GRID_CLASSES = `
+  relative z-10
+  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+  gap-x-6 sm:gap-x-7 lg:gap-x-8 xl:gap-x-12 2xl:gap-x-[94px]
+  gap-y-10 sm:gap-y-12 lg:gap-y-16 xl:gap-y-24 2xl:gap-y-[137px]
+  px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-0
+  pt-10 sm:pt-14 md:pt-16 lg:pt-20
+  pb-16 sm:pb-20 md:pb-24 lg:pb-28 xl:pb-32
+  w-full max-w-[1464px] mx-auto
+`;
+
 // ================= SMALL COMPONENTS =================
 
 function PointIcon({ src }: { src: string }) {
-  if (!src) return <span className="block h-4 w-4 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />;
+  if (!src)
+    return <span className="block h-5 w-5 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />;
   return (
-    <span className="relative block h-4 w-4 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6">
+    <span className="relative block h-5 w-5 shrink-0 sm:h-5 sm:w-5 lg:h-6 lg:w-6">
       <Image
         src={src}
         alt=""
         fill
         unoptimized
-        sizes="30px"
+        sizes="24px"
         className="object-contain"
       />
     </span>
@@ -88,11 +103,11 @@ function ArrowIcon() {
 function ServicesGridSkeleton() {
   return (
     <section className="relative isolate w-full bg-black">
-      <div className="relative z-10 grid grid-cols-1 gap-x-6 gap-y-10 px-5 pt-10 pb-16 sm:grid-cols-2 sm:gap-x-7 sm:gap-y-12 sm:px-8 sm:pt-14 sm:pb-20 md:px-12 md:pt-16 md:pb-24 lg:grid-cols-3 lg:gap-x-[30px] lg:gap-y-[45px] lg:px-16 lg:pt-20 lg:pb-28 xl:px-24 xl:pb-32 mx-auto w-full max-w-[1464px]">
+      <div className={GRID_CLASSES}>
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={i}
-            className="relative min-h-[340px] animate-pulse rounded-[20px] bg-white/5 sm:min-h-[351px]"
+            className="relative min-h-[320px] animate-pulse rounded-[20px] bg-white/5 sm:min-h-[340px] lg:min-h-[351px]"
           />
         ))}
       </div>
@@ -138,7 +153,7 @@ export default function ServicesGrid() {
             // Take up to 3 features, pass the icon URL directly
             points: (s.features ?? []).slice(0, 3).map((f) => ({
               label: f.title,
-              icon: f.icon, // ← URL, not a key
+              icon: f.icon,
             })),
           }));
 
@@ -180,43 +195,30 @@ export default function ServicesGrid() {
         "
       />
 
-      <div
-        className="
-          relative z-10
-          grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
-          gap-x-6 sm:gap-x-7 lg:gap-x-[30px]
-          gap-y-10 sm:gap-y-12 lg:gap-y-[45px]
-          px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24
-          pt-10 sm:pt-14 md:pt-16 lg:pt-20
-          pb-16 sm:pb-20 md:pb-24 lg:pb-28 xl:pb-32
-          w-full max-w-[1464px] mx-auto cursor-pointer
-        "
-      >
+      <div className={`${GRID_CLASSES} cursor-pointer`}>
         {services.map((service) => (
           <div
             key={service._id}
             className="
-              group relative isolate overflow-hidden
+              group relative isolate overflow-hidden transform-gpu
               w-full
-              min-h-[340px] sm:min-h-[351px]
+              min-h-[320px] sm:min-h-[340px] lg:min-h-[351px]
               rounded-[20px]
-              pt-[100px] sm:pt-[130px] lg:pt-[151px]
-              pr-6 sm:pr-8 lg:pr-[33px]
-              pb-8 sm:pb-9 lg:pb-[39px]
-              pl-6 sm:pl-8 lg:pl-[34px]
+              pt-8
+              pl-6 pr-6 pb-8
+              sm:pl-8 sm:pr-8 sm:pb-9
+              xl:pl-[34px] xl:pr-[33px] xl:pb-[47px]
               flex flex-col justify-end
-              transition-transform duration-500 ease-out
-              hover:-translate-y-1 hover:scale-[1.02]
             "
           >
-            {/* Background image — API URL or fallback */}
+            {/* Background image — always visible */}
             {service.image ? (
               <Image
                 src={service.image}
                 alt={service.title}
                 fill
                 unoptimized
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 468px"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 425px"
                 className="
                   z-0 object-cover
                   transition-transform duration-500
@@ -228,7 +230,7 @@ export default function ServicesGrid() {
                 src={serviceFallback}
                 alt={service.title}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 468px"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 425px"
                 className="
                   z-0 object-cover
                   transition-transform duration-500
@@ -237,39 +239,36 @@ export default function ServicesGrid() {
               />
             )}
 
-            {/* Dark gradient overlay */}
+            {/* Dark gradient overlay — hidden at first, fades in on hover so the text is readable */}
             <div
               aria-hidden
               className="
                 absolute inset-0 z-10
                 bg-gradient-to-t from-black/90 via-black/50 to-black/10
-                opacity-100
-                transition-opacity duration-500 ease-out
-                [@media(hover:hover)]:opacity-0
-                [@media(hover:hover)]:group-hover:opacity-100
+                opacity-0
+                transition-opacity duration-500
+                group-hover:opacity-100
+                group-focus-within:opacity-100
               "
             />
 
-            {/* Content */}
+            {/* Content — hidden at first, fades in on hover, bottom aligned */}
             <div
               className="
-                relative z-20 flex flex-col gap-2.5
-                opacity-100 translate-y-0 scale-100
-                transition-all duration-500 ease-out
-                [@media(hover:hover)]:opacity-0
-                [@media(hover:hover)]:translate-y-3
-                [@media(hover:hover)]:scale-95
-                [@media(hover:hover)]:group-hover:opacity-100
-                [@media(hover:hover)]:group-hover:translate-y-0
-                [@media(hover:hover)]:group-hover:scale-100
+                relative z-20 flex flex-col
+                opacity-0
+                transition-opacity duration-500
+                group-hover:opacity-100
+                group-focus-within:opacity-100
               "
             >
               {/* Title */}
               <h3
                 className="
+                  mb-1
                   font-poppins font-medium
                   text-xl sm:text-[22px] lg:text-[24px]
-                  leading-tight lg:leading-[150%]
+                  leading-tight lg:leading-[1.25]
                   tracking-normal
                   text-white
                 "
@@ -280,9 +279,10 @@ export default function ServicesGrid() {
               {/* Description */}
               <p
                 className="
+                  mb-2.5
                   font-poppins font-normal
-                  text-sm lg:text-[14px]
-                  leading-relaxed
+                  text-sm
+                  leading-[1.5]
                   tracking-normal
                   text-[#ADADAD]
                 "
@@ -290,16 +290,16 @@ export default function ServicesGrid() {
                 {service.description}
               </p>
 
-              {/* Feature points — max 3, icons are uploaded image URLs */}
+              {/* Feature points — 3 equal columns, always one row, label wraps below inside its column */}
               {service.points.length > 0 && (
-                <div className="grid grid-cols-3 gap-2 pt-1 sm:gap-3">
+                <div className="mb-4 grid w-full grid-cols-3 items-start gap-x-3 xl:mb-5 xl:gap-x-[25px]">
                   {service.points.map((point, idx) => (
                     <div
                       key={`${point.label}-${idx}`}
-                      className="flex min-w-0 flex-row items-center gap-1.5 sm:gap-2"
+                      className="flex min-w-0 flex-row items-start gap-1.5"
                     >
                       <PointIcon src={point.icon} />
-                      <span className="min-w-0 break-words font-poppins text-[11px] font-normal leading-tight text-white sm:text-xs xl:text-sm">
+                      <span className="min-w-0 break-words font-poppins text-[11px] font-normal leading-[1.4] text-white sm:text-xs">
                         {point.label}
                       </span>
                     </div>
@@ -309,8 +309,8 @@ export default function ServicesGrid() {
 
               {/* View Service link */}
               <Link
-                href={`/services/${service.key}`}
-                className="group/btn flex items-center gap-2.5 w-fit"
+                href={`/services`}
+                className="group/btn flex w-fit items-center gap-4 lg:gap-5"
               >
                 <span
                   className="

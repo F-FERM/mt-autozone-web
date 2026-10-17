@@ -41,6 +41,10 @@ interface CardData {
   alt: string;
 }
 
+/* Shared so the skeleton and the real cards always have the same height */
+const CARD_HEIGHT_CLASSES =
+  "min-h-[150px] sm:min-h-[170px] lg:min-h-[180px]";
+
 // ================= COMPONENT =================
 
 export default function MissionVisionCards() {
@@ -108,7 +112,7 @@ export default function MissionVisionCards() {
           {Array.from({ length: 2 }).map((_, i) => (
             <div
               key={i}
-              className="relative min-h-[240px] animate-pulse rounded-2xl bg-white/5 sm:min-h-[220px] lg:min-h-[216px] w-full md:flex-1"
+              className={`relative ${CARD_HEIGHT_CLASSES} animate-pulse rounded-2xl bg-white/5 w-full md:flex-1 xl:max-w-[722px] lg:rounded-[20px]`}
             />
           ))}
         </div>
@@ -174,14 +178,16 @@ export default function MissionVisionCards() {
         {cards.map((card) => (
           <div
             key={card.key}
-            className="
+            className={`
               group relative isolate overflow-hidden
               w-full md:flex-1 xl:max-w-[722px]
-              min-h-[240px] sm:min-h-[220px] lg:min-h-[216px]
+              ${CARD_HEIGHT_CLASSES}
               rounded-2xl lg:rounded-[20px]
-              px-5 py-7 sm:px-8 sm:py-10 lg:px-9 lg:py-[45px]
-              flex flex-col justify-start gap-2.5
-            "
+              px-5 pt-8 pb-5
+              sm:px-7 sm:pt-10 sm:pb-6
+              lg:px-9 lg:pt-[48px] lg:pb-8
+              flex flex-col justify-start gap-2
+            `}
           >
             {/* Background image */}
             {card.image ? (
@@ -235,12 +241,12 @@ export default function MissionVisionCards() {
               className="
                 relative z-30
                 font-poppins font-medium
-                text-lg sm:text-2xl lg:text-[24px]
+                text-lg sm:text-xl lg:text-[24px]
                 leading-tight sm:leading-none tracking-normal
                 text-white
                 transition-colors duration-500
                 group-hover:text-[#E40000]
-                max-w-full lg:max-w-[650px] mb-2
+                max-w-full lg:max-w-[650px]
               "
             >
               {card.title}
@@ -251,8 +257,8 @@ export default function MissionVisionCards() {
               className="
                 relative z-30
                 font-poppins font-normal
-                text-sm
-                leading-relaxed sm:leading-loose lg:leading-[1.9]
+                text-[13px] sm:text-sm
+                leading-relaxed sm:leading-[1.7] lg:leading-[1.6]
                 tracking-normal
                 text-[#A9A9A9]
                 transition-colors duration-500

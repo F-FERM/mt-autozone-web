@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 
 import api from "@/lib/axios";
 
@@ -231,32 +231,24 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="group flex w-full items-center justify-center rounded-[19px] border border-[#E400002B] bg-[#FFFFFF24] px-6 py-3.5 font-poppins text-sm font-normal text-white transition-all duration-300 hover:bg-[linear-gradient(90deg,#5A1717_0%,#E40000_50%,#7A1717_100%)] disabled:cursor-not-allowed disabled:opacity-70 sm:px-[60px] sm:py-4 sm:text-base md:min-h-[65px] lg:w-[593px]"
+          className="group flex w-full items-center justify-center rounded-[19px] border border-[#E400002B] bg-[#FFFFFF24] px-6 py-3.5 font-poppins text-base font-medium  text-white transition-all duration-300 hover:bg-[linear-gradient(105deg,#5A1717_0%,#E40000_30%,#B00000_70%,#7A1717_100%)] disabled:cursor-not-allowed disabled:opacity-70 sm:px-[60px] sm:py-4 md:min-h-[65px] lg:w-[593px]"
         >
-          <span className="mx-auto flex items-center gap-2">
+          <span className="mx-auto flex items-center gap-3">
             {submitting ? (
               <>
-                <Loader2 size={18} className="animate-spin" />
+                <Loader2 className="h-5 w-5 animate-spin" />
                 Sending...
               </>
             ) : (
               <>
                 Send
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                >
-                  <path
-                    d="M7 17L17 7M17 7H8M17 7V16"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                {/* Fixed 20px on every screen size.
+                    Idle: points up-right. Hover: points right, like the reference. */}
+                <ArrowRight
+                  aria-hidden="true"
+                  strokeWidth={2}
+                  className="h-5 w-5 shrink-0 -rotate-45 transition-transform duration-300 ease-out group-hover:rotate-0"
+                />
               </>
             )}
           </span>
