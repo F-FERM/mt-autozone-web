@@ -121,6 +121,13 @@ export default function ServicesGrid() {
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Ids of cards that have been hovered/focused at least once.
+  // Once a card is in this set, its content stays visible on desktop.
+  const [revealed, setRevealed] = useState<Set<string>>(new Set());
+
+  const reveal = (id: string) =>
+    setRevealed((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
+
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -196,138 +203,144 @@ export default function ServicesGrid() {
       />
 
       <div className={`${GRID_CLASSES} cursor-pointer`}>
-        {services.map((service) => (
-          <div
-            key={service._id}
-            className="
-              group relative isolate overflow-hidden transform-gpu
-              w-full
-              min-h-[320px] sm:min-h-[340px] lg:min-h-[351px]
-              rounded-[20px]
-              pt-8
-              pl-6 pr-6 pb-8
-              sm:pl-8 sm:pr-8 sm:pb-9
-              xl:pl-[34px] xl:pr-[33px] xl:pb-[47px]
-              flex flex-col justify-end
-            "
-          >
-            {/* Background image — always visible */}
-            {service.image ? (
-              <Image
-                src={service.image}
-                alt={service.title}
-                fill
-                unoptimized
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 425px"
-                className="
-                  z-0 object-cover
-                  transition-transform duration-500
-                  group-hover:scale-105
-                "
-              />
-            ) : (
-              <Image
-                src={serviceFallback}
-                alt={service.title}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 425px"
-                className="
-                  z-0 object-cover
-                  transition-transform duration-500
-                  group-hover:scale-105
-                "
-              />
-            )}
+        {services.map((service) => {
+          const isRevealed = revealed.has(service._id);
 
-            {/* Dark gradient overlay — hidden at first, fades in on hover so the text is readable */}
-            <div
-              aria-hidden
-              className="
-                absolute inset-0 z-10
-                bg-gradient-to-t from-black/90 via-black/50 to-black/10
-                opacity-0
-                transition-opacity duration-500
-                group-hover:opacity-100
-                group-focus-within:opacity-100
-              "
-            />
+          // Mobile/tablet (< lg): always visible.
+          // Desktop (lg+): hidden until first hover, then stays visible.
+          const visibility = isRevealed ? "lg:opacity-100" : "lg:opacity-0";
 
-            {/* Content — hidden at first, fades in on hover, bottom aligned */}
+          const imageClasses = `
+            z-0 object-cover
+            transition-transform duration-500
+            ${isRevealed ? "lg:scale-105" : ""}
+          `;
+
+          return (
             <div
+              key={service._id}
+              onMouseEnter={() => reveal(service._id)}
+              onFocus={() => reveal(service._id)}
               className="
-                relative z-20 flex flex-col
-                opacity-0
-                transition-opacity duration-500
-                group-hover:opacity-100
-                group-focus-within:opacity-100
+                group relative isolate overflow-hidden transform-gpu
+                w-full
+                min-h-[320px] sm:min-h-[340px] lg:min-h-[351px]
+                rounded-[20px]
+                pt-8
+                pl-6 pr-6 pb-8
+                sm:pl-8 sm:pr-8 sm:pb-9
+                xl:pl-[34px] xl:pr-[33px] xl:pb-[47px]
+                flex flex-col justify-end
               "
             >
-              {/* Title */}
-              <h3
-                className="
-                  mb-1
-                  font-poppins font-medium
-                  text-xl sm:text-[22px] lg:text-[24px]
-                  leading-tight lg:leading-[1.25]
-                  tracking-normal
-                  text-white
-                "
-              >
-                {service.title}
-              </h3>
-
-              {/* Description */}
-              <p
-                className="
-                  mb-2.5
-                  font-poppins font-normal
-                  text-sm
-                  leading-[1.5]
-                  tracking-normal
-                  text-[#ADADAD]
-                "
-              >
-                {service.description}
-              </p>
-
-              {/* Feature points — 3 equal columns, always one row, label wraps below inside its column */}
-              {service.points.length > 0 && (
-                <div className="mb-4 grid w-full grid-cols-3 items-start gap-x-3 xl:mb-5 xl:gap-x-[25px]">
-                  {service.points.map((point, idx) => (
-                    <div
-                      key={`${point.label}-${idx}`}
-                      className="flex min-w-0 flex-row items-start gap-1.5"
-                    >
-                      <PointIcon src={point.icon} />
-                      <span className="min-w-0 break-words font-poppins text-[11px] font-normal leading-[1.4] text-white sm:text-xs">
-                        {point.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+              {/* Background image — always visible */}
+              {service.image ? (
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  unoptimized
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 425px"
+                  className={imageClasses}
+                />
+              ) : (
+                <Image
+                  src={serviceFallback}
+                  alt={service.title}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 48vw, (max-width: 1464px) 32vw, 425px"
+                  className={imageClasses}
+                />
               )}
 
-              {/* View Service link */}
-              <Link
-                href={`/services`}
-                className="group/btn flex w-fit items-center gap-4 lg:gap-5"
+              {/* Dark gradient overlay — always on mobile, after first hover on desktop */}
+              <div
+                aria-hidden
+                className={`
+                  absolute inset-0 z-10
+                  bg-gradient-to-t from-black/90 via-black/50 to-black/10
+                  transition-opacity duration-500
+                  opacity-100
+                  ${visibility}
+                `}
+              />
+
+              {/* Content — always on mobile, after first hover on desktop */}
+              <div
+                className={`
+                  relative z-20 flex flex-col
+                  transition-opacity duration-500
+                  opacity-100
+                  ${visibility}
+                `}
               >
-                <span
+                {/* Title */}
+                <h3
                   className="
-                    font-poppins font-normal
-                    text-base lg:text-[19px]
-                    leading-none tracking-normal
-                    text-[#E40000]
-                    whitespace-nowrap
+                    mb-1
+                    font-poppins font-medium
+                    text-xl sm:text-[22px] lg:text-[24px]
+                    leading-tight lg:leading-[1.25]
+                    tracking-normal
+                    text-white
                   "
                 >
-                  View Service
-                </span>
-                <ArrowIcon />
-              </Link>
+                  {service.title}
+                </h3>
+
+                {/* Description */}
+                <p
+                  className="
+                    mb-2.5
+                    font-poppins font-normal
+                    text-sm
+                    leading-[1.5]
+                    tracking-normal
+                    text-[#ADADAD]
+                  "
+                >
+                  {service.description}
+                </p>
+
+                {/* Feature points — 3 equal columns, always one row, label wraps below inside its column */}
+                {service.points.length > 0 && (
+                  <div className="mb-4 grid w-full grid-cols-3 items-start gap-x-3 xl:mb-5 xl:gap-x-[25px]">
+                    {service.points.map((point, idx) => (
+                      <div
+                        key={`${point.label}-${idx}`}
+                        className="flex min-w-0 flex-row items-start gap-1.5"
+                      >
+                        <PointIcon src={point.icon} />
+                        <span className="min-w-0 break-words font-poppins text-[11px] font-normal leading-[1.4] text-white sm:text-xs">
+                          {point.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* View Service link */}
+                <Link
+                  href={`/services`}
+                  className="group/btn flex w-fit items-center gap-4 lg:gap-5"
+                >
+                  <span
+                    className="
+                      font-poppins font-normal
+                      text-base lg:text-[19px]
+                      leading-none tracking-normal
+                      text-[#E40000]
+                      whitespace-nowrap
+                    "
+                  >
+                    View Service
+                  </span>
+                  <ArrowIcon />
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
