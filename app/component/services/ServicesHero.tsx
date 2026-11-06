@@ -96,7 +96,7 @@ export default function ServicesHero() {
     data.description.map((seg, idx) =>
       seg.highlight ? (
         <span key={idx} className="text-[#E40000]">
-          {seg.text}
+         {""} {seg.text} {""}
         </span>
       ) : (
         <span key={idx}>{seg.text}</span>
